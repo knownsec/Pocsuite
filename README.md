@@ -58,7 +58,8 @@ Pocsuite 支持命令行模式(cli)和交互式控制台模式(console)
 
 
 假定你已经有一个 PoC(poc_example.py),并且将基保存在 test 目录下面:
-**PoC 目前支持.py 文件和 .json 文件两种，两者用法一样,具体参考下方说明**
+
+PoC 目前支持.py 文件和 .json 文件两种，两者用法一样,具体参考下方说明
 
 Verify 模式，验证目标是否存在漏洞:
 
