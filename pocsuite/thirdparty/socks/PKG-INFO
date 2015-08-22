@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: PySocks
+Version: 1.5.4
+Summary: A Python SOCKS client module. See https://github.com/Anorov/PySocks for more information.
+Home-page: https://github.com/Anorov/PySocks
+Author: Anorov
+Author-email: anorov.vorona@gmail.com
+License: BSD
+Description: UNKNOWN
+Keywords: socks,proxy
+Platform: UNKNOWN
