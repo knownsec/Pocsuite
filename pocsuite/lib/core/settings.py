@@ -8,6 +8,7 @@ See the file 'docs/COPYING' for copying permission
 
 import os
 import subprocess
+import time
 import sys
 
 from lib.core.revision import getRevisionNumber
