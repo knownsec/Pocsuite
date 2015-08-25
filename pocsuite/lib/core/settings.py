@@ -13,7 +13,7 @@ import sys
 
 from lib.core.revision import getRevisionNumber
 
-VERSION = "0.1"
+VERSION = "0.3"
 REVISION = getRevisionNumber()
 SITE = "http://sebug.net"
 VERSION_STRING = "pocsuite/%s%s" % (VERSION, "-%s" % REVISION if REVISION else "-nongit-%s" % time.strftime("%Y%m%d", time.gmtime(os.path.getctime(__file__))))
@@ -30,12 +30,12 @@ GIT_PAGE = "https://github.com/knownsec/Pocsuite"
 LEGAL_DISCLAIMER = "Usage of pocsuite for attacking targets without prior mutual consent is illegal."
 
 
-BANNER = """\033[01;33m 
-                              ,--. ,--.         
+BANNER = """\033[01;33m
+                              ,--. ,--.
  ,---. ,---. ,---.,---.,--.,--`--,-'  '-.,---.  \033[01;37m{\033[01;%dm%s\033[01;37m}\033[01;33m
-| .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. : 
-| '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --. 
-|  |-' `---' `---`----' `----'`--' `--'  `----'  
+| .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. :
+| '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --.
+|  |-' `---' `---`----' `----'`--' `--'  `----'
 `--'                                            \033[0m\033[4;37m%s\033[0m
 
 """ % ((31 + hash(REVISION) % 6) if REVISION else 30, VERSION_STRING.split('/')[-1], SITE)
