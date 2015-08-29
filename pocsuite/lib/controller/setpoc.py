@@ -38,9 +38,9 @@ def setPocFile():
 
 
 def setTemporaryPoc(pocFile):
-    pocFilename = os.path.split(pocFile)[1]
-    if not pocFilename.startswith("_"):
-        pocFilename = "_" + pocFilename
+    pocFilename = "_" + os.path.split(pocFile)[1]
+    if not os.path.isdir(paths.POCSUITE_TMP_PATH):
+        os.makedirs(paths.POCSUITE_TMP_PATH)
     pocname = os.path.join(paths.POCSUITE_TMP_PATH, pocFilename)
     poc = readFile(pocFile)
     retVal = multipleReplace(poc, POC_IMPORTDICT)
