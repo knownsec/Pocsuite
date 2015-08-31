@@ -134,7 +134,7 @@ Attack 模式:
     unload      查看未加载的 PoC
     clear       移出所有已加载的 PoC
 ```
-
+**注意：控制台视图下只能加载 pocsuite/modules/ 目录下的 PoC**
 
 #### 使用 pcs-console 测试步骤:
 
