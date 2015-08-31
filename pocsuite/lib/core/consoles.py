@@ -7,15 +7,13 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import os
-import sys
-import readline
 from lib.core.data import kb
 from lib.core.data import conf
 from lib.core.data import paths
 from lib.core.common import banner
+from lib.core.settings import IS_WIN
 from lib.core.common import filepathParser
 from lib.core.option import initializeKb
-from lib.core.option import initOptions
 from lib.core.option import registerPocFromFile
 from lib.core.option import setMultipleTarget
 from lib.core.option import _setHTTPUserAgent
@@ -24,19 +22,22 @@ from lib.core.option import _setHTTPCookies
 from lib.core.option import _setHTTPProxy
 from lib.core.option import _setHTTPTimeout
 from lib.core.settings import HTTP_DEFAULT_HEADER
-from lib.core.settings import PCS_OPTIONS
 from lib.controller.check import pocViolation
 from lib.controller.setpoc import setPocFile
 from lib.controller.controller import start
 from thirdparty.cmd2.cmd2 import Cmd
 from thirdparty.oset.pyoset import oset
 from thirdparty.prettytable.prettytable import PrettyTable
+from thirdparty.colorama.initialise import init as coloramainit
 
-
-if "libedit" in readline.__doc__:
-    readline.parse_and_bind("bind ^I rl_complete")
-else:
-    readline.parse_and_bind("tab: complete")
+try:
+    import readline
+    if "libedit" in readline.__doc__:
+        readline.parse_and_bind("bind ^I rl_complete")
+    else:
+        readline.parse_and_bind("tab: complete")
+except:
+    pass
 
 
 def initializePoc(folders):
@@ -72,6 +73,8 @@ def avaliable():
 class baseConsole(Cmd):
 
     def __init__(self):
+        if IS_WIN:
+            coloramainit()
         Cmd.__init__(self)
         os.system("clear")
         banner()

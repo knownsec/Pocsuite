@@ -47,14 +47,13 @@ def modulePath():
 def pcsInit(PCS_OPTIONS=None):
     try:
         paths.POCSUITE_ROOT_PATH = modulePath()
-
         setPaths()
 
-        banner()
         argsDict = PCS_OPTIONS or parseCmdOptions()
 
         cmdLineOptions.update(argsDict)
         initOptions(cmdLineOptions)
+        banner()
         conf.showTime = True
 
         dataToStdout("[!] legal disclaimer: %s\n\n" % LEGAL_DISCLAIMER)
