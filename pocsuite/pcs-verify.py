@@ -18,8 +18,6 @@ if __name__ == "__main__":
     try:
         pocFile, targetUrl = sys.argv[1: 3]
     except ValueError:
-        banner()
-
         excMsg = "usage: python pcs-verify.py [pocfile] [url]\n"
         excMsg += "pocsuite: error: too few arguments"
         dataToStdout(excMsg)
@@ -27,3 +25,4 @@ if __name__ == "__main__":
 
     PCS_OPTIONS.update({'url': targetUrl, 'pocFile': pocFile})
     pcsInit(PCS_OPTIONS)
+    banner()
