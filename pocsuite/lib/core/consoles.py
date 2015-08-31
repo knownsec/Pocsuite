@@ -45,6 +45,8 @@ def initializePoc(folders):
     # Usage: pcs-console.py modules/wordpress tests
     # 调用方式如上时可以将modules/wordpress 和 tests两个文件夹下的poc导入
     pocNumber = 0
+    if not os.path.isdir(paths.POCSUITE_MODULES_PATH):
+        os.makedirs(paths.POCSUITE_MODULES_PATH)
     folders.append(paths.POCSUITE_MODULES_PATH)
     for folder in folders:
         files = os.listdir(folder)
