@@ -6,6 +6,7 @@ Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
 
+import os
 import sys
 import json
 from lib.core.data import kb
