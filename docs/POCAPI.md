@@ -297,7 +297,7 @@ class TestPOC(POCBase):
             result['VerifyInfo']['URL'] = self.url
             result['VerifyInfo']['Payload'] = urllib.urlencode(payload)
 
-        return self.parse_attack(result) if verify else 'e4f5fd37a92eb41ba575c81bf0d31591' in response
+        return self.parse_attack(result)
 
     def parse_attack(self, result):
         output = Output(self)
