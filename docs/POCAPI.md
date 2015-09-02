@@ -162,8 +162,9 @@ POC编写说明
                 "params": "test=123&sebug=1234",
                 "necessary": "",
                 "headers": {"cookie": "123"},
-                "res": {
-                    "raw": ["baidu","google"],
+                "status":"200",
+                "match": {
+                    "regex": ["baidu","google"],
                     "time": "time"
                 }
             },
@@ -174,8 +175,9 @@ POC编写说明
                 "params": "test=sebug",
                 "necessary": "",
                 "headers": "",
-                "res":{
-                    "raw": [],
+                "status": "200",
+                "match":{
+                    "regex": [""],
                     "time": "0.01"
                 }
             }
@@ -198,18 +200,54 @@ POC编写说明
     
     > headers：自定义请求头部
     
-    > res：返回体，其中：
+    > status: 返回的 HTTP 状态码
     
-    > > raw：表示字符串匹配，为数组类型，当且仅当raw中所有的元素都匹配成功的情况下，返回True，否则返回False.
+    > match：返回体，其中：
+    
+    > > regex：表示字符串匹配，为数组类型，当且仅当regex中所有的元素都匹配成功的情况下，返回True，否则返回False."
     
     > > time：为时间差
     
-    > > 当raw和time同时存在时，取raw，time失效。
+    > > 当regex和time同时存在时，取regex，time失效。
     
     **verify中每个元素代表一个请求。**
         
-**填写attack部分:**
-attack部分和verify部分类似，不再缀述。
+    **填写attack部分:**
+    ```
+{
+    "pocInfo":{},
+    "pocExecute":{
+        "verify":[],
+        "attack":[
+            {
+                "step": "1",
+                "method": "get",
+                "vulPath": "/api.php",
+                "params": "test=123&sebug=1234",
+                "necessary": "",
+                "headers": {"cookie": "123"},
+                "status":"200",
+                "match": {
+                    "regex": ["baidu","google"],
+                    "time": "time"
+                },
+                "result":{
+                  "AdminInfo":{
+                    "Password":"<regex>www(.+)com"
+                  }
+                }
+            }        
+        ]
+    }
+}
+    ```
+    attack部分和verify部分类似，比verify 部分多一个 "result".
+    
+    > "result": 为输出，其类型为 dict 
+    
+    > "AdminInfo": 是管理员信息，此项为见 result 说明
+    
+    > "Password": 是result中 AdminInfo 中的字段，其值支持正则表达式，如果需要使用正则表达式来获取页面信息，则需要在表达式字符串前加`<regex>`
 
 
 附录:
@@ -297,7 +335,7 @@ class TestPOC(POCBase):
             result['VerifyInfo']['URL'] = self.url
             result['VerifyInfo']['Payload'] = urllib.urlencode(payload)
 
-        return self.parse_attack(result) if verify else 'e4f5fd37a92eb41ba575c81bf0d31591' in response
+        return self.parse_attack(result)
 
     def parse_attack(self, result):
         output = Output(self)
@@ -336,8 +374,9 @@ register(TestPOC)
                 "params": "test=123&shit=1234",
                 "necessary": "",
                 "headers": {"cookie": "123"},
-                "res": {
-                    "raw": ["baidu"],
+                "status":"300",
+                "match": {
+                    "regex": ["baidu"],
                     "time": "time"
                 }
             },
@@ -345,11 +384,12 @@ register(TestPOC)
                 "step": "2",
                 "method": "get",
                 "vulPath": "/api.php",
-                "params": "test=shit",
+                "params": "test=sebug",
                 "necessary": "",
                 "headers": "",
-                "res":{
-                    "raw": [],
+                "status":"200",
+                "match":{
+                    "regex": [],
                     "time": "0.01"
                 }
             }
@@ -361,22 +401,16 @@ register(TestPOC)
                 "vulPath": "/api.php",
                 "params": "test=attack",
                 "necessary": "",
-                "headers": "shit",
-                "res":{
-                    "raw": [],
+                "headers": "",
+                "status":"300",
+                "match":{
+                    "regex": [],
                     "time": ""
-                }
-            },
-            {
-                "step": "0",
-                "method": "get",
-                "vulPath": "/api.php",
-                "params": "test=attack",
-                "necessary": "",
-                "headers": "shit",
-                "res":{
-                    "raw": [],
-                    "time": ""
+                },
+                "result“:{
+                  "AdminInfo":{
+                    "Password": "<regex>www(.+)com"
+                  }
                 }
             }
         ]
@@ -397,42 +431,41 @@ register(TestPOC)
 #### result各key对应的含义:
 
 ```
-correspond：[
-
+result：[
     {  name: 'DBInfo'，        value：'数据库内容' }，
-    {  name: 'Username'，      value: '管理员用户名'},
-    {  name: 'Password'，      value：'管理员密码' }，
-    {  name: 'Salt'，          value: '加密盐值'},
-    {  name: 'Uid'，           value: '用户ID'},
-    {  name: 'Groupid'，       value: '用户组ID'},
+        {  name: 'Username'，      value: '管理员用户名'},
+        {  name: 'Password'，      value：'管理员密码' }，
+        {  name: 'Salt'，          value: '加密盐值'},
+        {  name: 'Uid'，           value: '用户ID'},
+        {  name: 'Groupid'，       value: '用户组ID'},
 
     {  name: 'ShellInfo'，     value: 'Webshell信息'},
-    {  name: 'URL'，           value: 'Webshell地址'},
-    {  name: 'Content'，       value: 'Webshell内容'},
+        {  name: 'URL'，           value: 'Webshell地址'},
+        {  name: 'Content'，       value: 'Webshell内容'},
 
     {  name: 'FileInfo'，      value: '文件信息'},
-    {  name: 'Filename'，      value: '文件名称'},
-    {  name: 'Content'，       value: '文件内容'},
+        {  name: 'Filename'，      value: '文件名称'},
+        {  name: 'Content'，       value: '文件内容'},
 
     {  name: 'XSSInfo'，       value: '跨站脚本信息'},
-    {  name: 'URL'，           value: '验证URL'},
-    {  name: 'Payload'，       value: '验证Payload'},
+        {  name: 'URL'，           value: '验证URL'},
+        {  name: 'Payload'，       value: '验证Payload'},
 
     {  name: 'AdminInfo'，     value: '管理员信息'},
-    {  name: 'Uid'，           value: '管理员ID'},
-    {  name: 'Username'，      value: '管理员用户名'},
-    {  name: 'Password'，      value: '管理员密码'},
+        {  name: 'Uid'，           value: '管理员ID'},
+        {  name: 'Username'，      value: '管理员用户名'},
+        {  name: 'Password'，      value: '管理员密码'},
 
     {  name: 'Database'，      value：'数据库信息' }，
-    {  name: 'Hostname'，      value: '数据库主机名'},
-    {  name: 'Username'，      value：'数据库用户名' }，
-    {  name: 'Password'，      value: '数据库密码'},
-    {  name: 'DBname'，        value: '数据库名'},
+        {  name: 'Hostname'，      value: '数据库主机名'},
+        {  name: 'Username'，      value：'数据库用户名' }，
+        {  name: 'Password'，      value: '数据库密码'},
+        {  name: 'DBname'，        value: '数据库名'},
 
     {  name: 'VerifyInfo'，    value: '验证信息'},
-    {  name: 'URL'，           value: '验证URL'},
-    {  name: 'Postdata'，      value: '验证POST数据'},
-    {  name: 'Path'，          value: '网站绝对路径'},
+        {  name: 'URL'，           value: '验证URL'},
+        {  name: 'Postdata'，      value: '验证POST数据'},
+        {  name: 'Path'，          value: '网站绝对路径'},
 
     {  name: 'SiteAttr'，      value: '网站服务器信息'},
     {  name: 'Process'，       value: '服务器进程'}
@@ -440,6 +473,7 @@ correspond：[
     ]
     
 ```
+
 
 #### 漏洞类型规范
 
