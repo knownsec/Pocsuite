@@ -51,6 +51,7 @@ def initOptions(inputOptions=AttribDict()):
     conf.randomAgent = inputOptions.randomAgent
     conf.agent = inputOptions.agent
     conf.cookie = inputOptions.cookie
+    conf.headers = inputOptions.headers
     conf.referer = inputOptions.referer
     conf.threads = inputOptions.threads
     conf.report = inputOptions.report
@@ -90,6 +91,7 @@ def init():
     _setHTTPReferer()
     _setHTTPCookies()
     _setHTTPTimeout()
+    _setHTTPExtraHeaders()
 
     setPocFile()
     registerPocFromFile()
@@ -97,7 +99,6 @@ def init():
 
     setMultipleTarget()
     _setHTTPProxy()
-
 
 # TODO
 def _setHTTPUserAgent():
@@ -153,6 +154,26 @@ def _setHTTPReferer():
 
         conf.httpHeaders[HTTP_HEADER.REFERER] = conf.referer
 
+
+def _setHTTPExtraHeaders():
+    if conf.headers:
+        infoMsg = "setting extra HTTP headers"
+        logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
+
+        conf.headers = conf.headers.split("\n") if "\n" in conf.headers else conf.headers.split("\\n")
+
+        for headerValue in conf.headers:
+            if not headerValue.strip():
+                continue
+
+            if headerValue.count(':') >= 1:
+                header, value = (_.lstrip() for _ in headerValue.split(":", 1))
+
+                if header and value:
+                    conf.httpHeaders[header] = value
+            else:
+                errMsg = "invalid header value: %s. Valid header format is 'name:value'" % repr(headerValue).lstrip('u')
+                raise PocsuiteSyntaxException(errMsg)
 
 def setMultipleTarget():
 
