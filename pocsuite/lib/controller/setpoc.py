@@ -12,6 +12,8 @@ import json
 from lib.core.data import kb
 from lib.core.data import conf
 from lib.core.data import paths
+from lib.core.data import logger
+from lib.core.enums import CUSTOM_LOGGING
 from lib.core.common import multipleReplace
 from lib.core.common import readFile, writeFile
 from lib.core.settings import POC_IMPORTDICT
