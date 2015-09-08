@@ -12,6 +12,8 @@ import json
 from lib.core.data import kb
 from lib.core.data import conf
 from lib.core.data import paths
+from lib.core.data import logger
+from lib.core.enums import CUSTOM_LOGGING
 from lib.core.common import multipleReplace
 from lib.core.common import readFile, writeFile
 from lib.core.settings import POC_IMPORTDICT
@@ -28,13 +30,16 @@ def setPocFile():
         for pocFile in conf.pocFile.split(','):
             retVal = setTemporaryPoc(pocFile)
             kb.pocFiles.add(retVal)
-    else:
+    elif os.path.isdir(conf.pocFile):
         pyFiles = glob.glob(conf.pocFile + "*.py")
         jsonFiles = glob.glob(conf.pocFile + "*.json")
         pocFiles = pyFiles + jsonFiles
         for pocFile in pocFiles:
             retVal = setTemporaryPoc(pocFile)
             kb.pocFiles.add(retVal)
+    else:
+        errMsg = "can't find any valid PoCs"
+        logger.log(CUSTOM_LOGGING.ERROR, errMsg)
 
 
 def setTemporaryPoc(pocFile):

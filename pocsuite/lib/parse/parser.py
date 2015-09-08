@@ -67,6 +67,9 @@ def parseCmdOptions():
     request.add_argument("--timeout", dest="timeout",
                          help="Seconds to wait before timeout connection (default 30)")
 
+    request.add_argument("--headers", dest="headers",
+                         help="Extra headers (e.g. \"Accept-Language: zh-CN,zh;q=0.8\")")
+
     optimization = parser.add_argument_group("optimization")
 
     optimization.add_argument("--threads", dest="threads", type=int, default=1,

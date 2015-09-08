@@ -37,6 +37,10 @@ def start():
 
     resultTable = PrettyTable(["target-url", "poc-name", "poc-id", "component", "version", "status"])
     resultTable.padding_width = 1
+
+    if not kb.results:
+        return
+
     for row in kb.results:
         resultTable.add_row(list(row)[:-1])
 
