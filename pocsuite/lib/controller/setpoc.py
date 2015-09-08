@@ -28,13 +28,16 @@ def setPocFile():
         for pocFile in conf.pocFile.split(','):
             retVal = setTemporaryPoc(pocFile)
             kb.pocFiles.add(retVal)
-    else:
+    elif os.path.isdir(conf.pocFile):
         pyFiles = glob.glob(conf.pocFile + "*.py")
         jsonFiles = glob.glob(conf.pocFile + "*.json")
         pocFiles = pyFiles + jsonFiles
         for pocFile in pocFiles:
             retVal = setTemporaryPoc(pocFile)
             kb.pocFiles.add(retVal)
+    else:
+        errMsg = "can't find any valid PoCs"
+        logger.log(CUSTOM_LOGGING.ERROR, errMsg)
 
 
 def setTemporaryPoc(pocFile):

@@ -84,6 +84,9 @@ def registerPocFromFile():
                 logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
         elif path.endswith(".json"):
             registerJsonPoc(path)
+        else:
+            warnMsg = "invalid PoC file %s" % path
+            logger.log(CUSTOM_LOGGING.WARNING, errMsg)
 
 
 def init():
