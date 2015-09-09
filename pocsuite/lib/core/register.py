@@ -10,6 +10,8 @@ import os
 import sys
 import json
 from lib.core.data import kb
+from lib.core.data import logger
+from lib.core.enums import CUSTOM_LOGGING
 from lib.core.common import filepathParser
 from lib.core.common import changeToPyImportType
 
@@ -40,7 +42,11 @@ def registerPyPoc(path):
     except ImportError:
         # TODO 需要再搞一下
         addSysPath(_)
-        __import__(moduleName, fromlist=["*"])
+        try:
+            __import__(moduleName, fromlist=["*"])
+        except ImportError, ex:
+            errMsg = "%s register failed \"%s\"" % (path, str(ex))
+            logger.log(CUSTOM_LOGGING.ERROR, errMsg)
 
 
 def addSysPath(*paths):
