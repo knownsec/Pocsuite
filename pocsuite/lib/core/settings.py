@@ -13,7 +13,7 @@ import sys
 
 from lib.core.revision import getRevisionNumber
 
-VERSION = "0.3"
+VERSION = "1.0.0dev"
 REVISION = getRevisionNumber()
 SITE = "http://sebug.net"
 VERSION_STRING = "pocsuite/%s%s" % (VERSION, "-%s" % REVISION if REVISION else "-nongit-%s" % time.strftime("%Y%m%d", time.gmtime(os.path.getctime(__file__))))
