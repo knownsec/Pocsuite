@@ -4,56 +4,69 @@
 | .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. :
 | '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --.
 |  |-' `---' `---`----' `----'`--' `--'  `----'
-`--'                            http://sebug.net
+`--'                                   sebug.net
 
 ```
-Pocsuite
----
----
+Pocsuite 使用帮助文档
+================
+
+*   [Pocsuite 简介](#pocsuite)
+*   [安装](#install)
+*   [使用方法](#usage)
+    *   [命令行模式](#climode)
+    *   [控制台交互式视图模式](#consolemode)
+    *   [Pocsuite 报告自动生成](#report)
+*   [PoC 编写规范及注意事项](#pocnote)
+*   [Pocsuite 中文帮助](#helpchinese)
+*   [感谢](#thanks)
+*   [相关链接](#links)
+
+* * *
+
+
+<h2 id="pocsuite">Pocsuite 简介</h2>
+
 Pocsuite 是知道创宇安全研究团队打造的一款基于漏洞与 PoC 的漏洞验证框架。Pocsuite 是知道创宇安全研究团队发展的基石，是团队发展至今一直维护的一个项目，保障了我们的 Web 安全研究能力的领先。
 
 在获取到相关漏洞详情后，任何有一定 Python 开发基础的人都可以基于 Pocsuite 开发出对应漏洞的 PoC 或者 Exp ，轻而易举的就可以直接使用 Pocsuite 进行相关的验证和调用，而无需考虑底层代码架构等。
 
-在 Sebug 重新改版上线之际，知道创宇安全研究团队正式对外开放 Pocsuite 框架，任何安全研究人员都可以基于 Pocsuite 进行 PoC 后者 Exp 的开发，同时也可以加入 Sebug 漏洞社区，为 Pocsuite 提供贡献或者贡献相关的 PoC。
+在 Sebug 重新改版上线之际，知道创宇安全研究团队正式对外开放 Pocsuite 框架，任何安全研究人员都可以基于 Pocsuite 进行 PoC 或者 Exp 的开发，同时也可以加入 Sebug 漏洞社区，为 Pocsuite 提供贡献或者贡献相关的 PoC。
 
 
-安装
----
----
+<h2 id="install">安装</h2>
 
 你可以通过用 Git 来克隆代码仓库中的最新源代码
 
 ```bash
-    git clone git@github.com:knownsec/pocsuite.git
+    $ git clone git@github.com:knownsec/pocsuite.git
 ```
-或者你可以点击 [这里](https://github.com/knownsec/pocsuite/archive/master.zip) 下载最新的源代码 zip 包,并解压
+或者你可以点击 [这里](https://github.com/knownsec/Pocsuite/archive/master.zip) 下载最新的源代码 zip 包,并解压
 
 ```bash
-    $ wget https://github.com/knownsec/pocsuite/archive/master.zip
+    $ wget https://github.com/knownsec/Pocsuite/archive/master.zip
     $ unzip master.zip
 ```
 
 无需其它安装进入 pocsuite 目录,输入即可使用
 
-```
-    python pocsuite.py --version
+```bash
+    $ python pocsuite.py --version
 ```
 
-使用
----
----
+<h2 id="usage">使用方法</h2>
+
 
 Pocsuite 支持命令行模式(cli)和交互式控制台模式(console)
 
-#### 命令行模式
+<h3 id="climode">命令行模式</h3>
 
 命令行模式可以对目标发起 Verify 和 Attack 模式的测试,
 
 进入 pocsuite 目录,执行 pocsuite.py
 
 获取命令帮助列表
-```
-    python pocsuite.py -h
+```bash
+    $ python pocsuite.py -h
 ```
 
 
@@ -63,38 +76,38 @@ PoC 目前支持.py 文件和 .json 文件两种，两者用法一样,具体参�
 
 Verify 模式，验证目标是否存在漏洞:
 
-```
-    python pocsuite.py -r test/poc_example.py -u http://www.example.com/ --verify
+```bash
+    $ python pocsuite.py -r tests/poc_example.py -u http://www.example.com/ --verify
 ```
 Attack 模式:
 ```
-    python pocsuite.py -r test/poc_example.py -u http://www.example.com/ --attack
+    python pocsuite.py -r tests/poc_example.py -u http://www.example.com/ --attack
 
 ```
 如果你有一个 URL 文件(url.txt),要批量验证,你可以:
 
-```
-    python pocsuite.py -r test/poc_example.py -f url.txt --verify
+```bash
+    $ python pocsuite.py -r tests/poc_example.py -f url.txt --verify
 ```
 > Attack 模式的批量处理，只需要替换 ```--verify``` 参数为 ```--attack``` 即可.
 
 
-加载 test 目录下的所有 PoC 对目标测试:
+加载 任意目录(比如: tests)下的所有 PoC 对目标测试:
 
-```
-    python pocsuite.py -r test/ -u http://www.example.com --verify
+```bash
+    $ python pocsuite.py -r tests/ -u http://www.example.com --verify
 ```
 
 使用多线程,默认线程数为 1:
-```
-    python pocsuite.py -r test/ -f url.txt --verify --threads 10
+```bash
+    $ python pocsuite.py -r tests/ -f url.txt --verify --threads 10
 ```
 
-#### 控制台交互式视图
+<h3 id="consolemode">控制台交互式视图模式</h3>
 
 进入控制台交互式视图:
-```
-    python pcs-console.py
+```bash
+    $ python pcs-console.py
 ```
 
 通用命令：
@@ -184,25 +197,21 @@ Pcs>verify
 [15:13:26] [*] poc:'_poc_example1' target:'www.example.com'
     ```
 
-PoC 报告自动生成
----
----
-Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果自动生成报告并保存，在扫描参数后加 ```--report [report_file]``` 即可生成 HTML 格式报告。
+<h3 id="report">Pocsuite 报告自动生成</h3>
 
-```
-    python pocsuite.py -r tests/poc_example2.py -u example.com --verify --report /tmp/report.html
+Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果自动生成报告并保存，在扫描参数后加 `--report [report_file]` 即可生成 HTML 格式报告。
+
+```bash
+    $ python pocsuite.py -r tests/poc_example2.py -u example.com --verify --report /tmp/report.html
 ```
 上述命令执行后，会调用 poc_example2.py 并将结果保存到 /tmp/report.html中。
 
 
-PoC 编写规范及注意事项
----
----
+<h2 id="pocnote">PoC 编写规范及注意事项</h2>
+
 PoC 支持 Python 和 JSON 两种格式，详情参见[PoC 编写规范](./docs/POCAPI.md)
 
-Pocsuite 中文帮助
----
----
+<h2 id="helpchinese">Pocsuite 中文帮助</h2>
 
 ```
 使用方法: python pocsuite.py [选项]
@@ -237,15 +246,13 @@ Pocsuite 中文帮助
 
 ```
 
-感谢
----
----
+<h2 id="thanks">感谢</h2>
+
 * 感谢来自不同同学的建议和帮助
 * 也欢迎更多同学参与 Pocsuite 的贡献
 * [感谢列表](./docs/THANKS.md)
 
-相关链接
----
----
-* Sebug http://sebug.net
-* 知道创宇 http://www.knownsec.com
+<h2 id="links">相关链接</h2>
+
+* Sebug [http://sebug.net](http://sebug.net)
+* 知道创宇 [http://www.knownsec.com](http://sebug.net)
