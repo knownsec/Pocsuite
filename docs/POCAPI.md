@@ -7,7 +7,7 @@
 `--'                                   sebug.net
 
 ```
-POC编写说明文档
+PoC 编写说明文档
 ---
 ---
 
@@ -128,6 +128,8 @@ Pocsuite 支持 Python 2.7，如若编写 Python 格式的 PoC，需要开发者
     ```
 
 <h2 id="pocjson">PoC json脚本编写步骤:</h2>
+
+json 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即可。**目前 json 支持的漏洞类型比较局限，如果想实现理复杂的业务逻辑，建议使用 Python**
 
 1. 首先新建一个.json文件,文件名应当符合 **poc命名规范** 
 
@@ -436,6 +438,14 @@ register(TestPOC)
 }
 
 ```
+
+使用json PoC 检测目标：
+
+![verify](./images/poc_json_verify.png)
+
+使用json PoC 攻击目标：
+![attack](./images/poc_json_attack.png)
+
 
 <h2 id="pocstandard">PoC 规范说明</h2>
 
