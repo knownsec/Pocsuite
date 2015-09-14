@@ -292,6 +292,7 @@ class pocConsole(Cmd):
     def do_load(self, args):
         if args.isdigit():
             conf.pocFile = kb.unloadedList[int(args)]
+            del kb.unloadedList[int(args)]
             pass
         else:
             conf.pocFile = args
