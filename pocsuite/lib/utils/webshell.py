@@ -29,6 +29,7 @@ class Webshell:
 
     def set_pwd(self, pwd):
         self._password = pwd
+        self._check_data[self._password] = self._check_statement
 
     def get_pwd(self):
         return self._password
