@@ -27,6 +27,11 @@ from lib.core.handlejson import execReq
 from lib.core.threads import runThreads
 from thirdparty.prettytable.prettytable import PrettyTable
 
+from lib.core.poc import POCBase
+from lib.core.poc import Output
+from lib.core.register import addSysPath
+from lib.core.common import parseTargetUrl
+
 
 def start():
     if kb.targets and kb.targets.qsize() > 1:
@@ -58,6 +63,8 @@ def pocThreads():
     """
     while not kb.targets.empty() and kb.threadContinue:
         target, poc, pocname = kb.targets.get()
+
+
         infoMsg = "poc:'%s' target:'%s'" % (pocname, target)
         logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
         # TODO json
@@ -65,10 +72,22 @@ def pocThreads():
             pocInfo, pocDevil = poc['pocInfo'], poc["pocExecute"]
             result = execReq(poc, conf.mode, target)
             output = (target, pocname, pocInfo["vulID"], pocInfo["appName"], pocInfo["appVersion"], "success" if result else "failed", time.strftime("%Y-%m-%d %X", time.localtime()))
-        else:
+        elif isinstance(poc, POCBase):
             result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=True)
             output = (target, pocname, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()))
             result.show_result()
+        else:
+            addSysPath(poc)
+            try:
+                module = __import__(pocname, fromlist=['*'])
+            except ImportError, ex:
+                errMsg = "%s register failed \"%s\"" % (poc, str(ex))
+                logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+
+            module.io_info['URL'] = parseTargetUrl(target)
+            module.main(module.io_info)
+
+            output = (target, pocname, 'id', 'appname', 'appversionl', 'success' if module.io_info['Status'] else 'failure', time.strftime("%Y-%m-%d %X", time.localtime()))
 
         kb.results.add(output)
 

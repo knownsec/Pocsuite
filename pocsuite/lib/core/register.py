@@ -49,6 +49,13 @@ def registerPyPoc(path):
             logger.log(CUSTOM_LOGGING.ERROR, errMsg)
 
 
+def registerOldPoc(path):
+    _, pocname = filepathParser(path)
+    if pocname in kb.registeredPocs:
+        return
+    kb.registeredPocs[pocname] = _
+
+
 def addSysPath(*paths):
     for path in paths:
         if not path.startswith('/'):

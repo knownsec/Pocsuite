@@ -28,6 +28,7 @@ from lib.core.common import safeExpandUser
 from lib.core.common import getPublicTypeMembers
 from lib.core.register import registerJsonPoc
 from lib.core.register import registerPyPoc
+from lib.core.register import registerOldPoc
 from lib.core.exception import PocsuiteFilePathException
 from lib.core.exception import PocsuiteSyntaxException
 from lib.controller.check import pocViolation
@@ -82,6 +83,13 @@ def registerPocFromFile():
             else:
                 warnMsg = "%s is old version poc" % path
                 logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
+                
+                try:
+                    registerOldPoc(path)
+                except:
+                    logger.log(CUSTOM_LOGGING.WARNING, 'importError')
+
+
         elif path.endswith(".json"):
             registerJsonPoc(path)
         else:
@@ -195,9 +203,9 @@ def setMultipleTarget():
 
     for line in getFileItems(conf.urlFile):
         for pocname, poc in kb.registeredPocs.items():
-            if not isinstance(poc, dict):
+            if isinstance(poc, object):
                 kb.targets.put((line.strip(), copy.copy(poc), pocname))
-            else:
+            elif isinstance(poc, dict):
                 kb.targets.put((line.strip(), poc, pocname))
 
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pocsuite.net import req
-from pocsuite.poc import Output, POCBase
-from pocsuite.utils import register
+from lib.request.basic import req
+from lib.core.poc import Output, POCBase
+from lib.core.register import registerPoc as register
 from pocsuite.lib.utils.password import getWeakPassword
 from pocsuite.lib.utils.password import getLargeWeakPassword
 
