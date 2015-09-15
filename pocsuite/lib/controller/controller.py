@@ -86,7 +86,15 @@ def pocThreads():
 
             module.io_info['URL'] = parseTargetUrl(target)
             module.main(module.io_info)
-            # module.io_info['Result']
+
+            result = Output()
+            result.url, result.vulID, result.name = target, '', pocname
+
+            if module.io_info['Status']:
+                result.success(module.io_info['Result'])
+            else:
+                result.fail('Not vulnerable.')
+            result.show_result()
 
             output = (target, pocname, 'N/A', 'N/A', 'N/A', 'success' if module.io_info['Status'] else 'failure', time.strftime("%Y-%m-%d %X", time.localtime()))
 
