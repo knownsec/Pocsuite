@@ -86,8 +86,9 @@ def pocThreads():
 
             module.io_info['URL'] = parseTargetUrl(target)
             module.main(module.io_info)
+            # module.io_info['Result']
 
-            output = (target, pocname, 'id', 'appname', 'appversionl', 'success' if module.io_info['Status'] else 'failure', time.strftime("%Y-%m-%d %X", time.localtime()))
+            output = (target, pocname, 'N/A', 'N/A', 'N/A', 'success' if module.io_info['Status'] else 'failure', time.strftime("%Y-%m-%d %X", time.localtime()))
 
         kb.results.add(output)
 
