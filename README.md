@@ -80,8 +80,8 @@ Verify 模式，验证目标是否存在漏洞:
     $ python pocsuite.py -r tests/poc_example.py -u http://www.example.com/ --verify
 ```
 Attack 模式:
-```
-    python pocsuite.py -r tests/poc_example.py -u http://www.example.com/ --attack
+```bash
+    $ python pocsuite.py -r tests/poc_example.py -u http://www.example.com/ --attack
 
 ```
 如果你有一个 URL 文件(url.txt),要批量验证,你可以:
