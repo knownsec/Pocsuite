@@ -70,7 +70,7 @@ Pocsuite 支持命令行模式(cli)和交互式控制台模式(console)
 ```
 
 
-假定你已经有一个 PoC(poc_example.py),并且将其保存在 test 目录下面:
+假定你已经有一个 PoC(poc_example.py),并且将其保存在 tests 目录(**任意目录, 以下如无说明默认为 ./tests **)下面:
 
 PoC 目前支持.py 文件和 .json 文件两种，两者用法一样,具体参考下方说明
 
@@ -92,7 +92,7 @@ Attack 模式:
 > Attack 模式的批量处理，只需要替换 ```--verify``` 参数为 ```--attack``` 即可.
 
 
-加载 任意目录(比如: tests)下的所有 PoC 对目标测试:
+加载 任意目录(如: tests)下的所有 PoC 对目标测试:
 
 ```bash
     $ python pocsuite.py -r tests/ -u http://www.example.com --verify
