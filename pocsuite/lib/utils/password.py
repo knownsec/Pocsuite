@@ -20,6 +20,5 @@ def getLargeWeakPassword():
     return getFileItems(paths.LARGE_WEAK_PASS)
 
 
-def genPassword(length=8, chars=string.letters+string.digits):
+def genPassword(length=8, chars=string.letters + string.digits):
     return "".join([choice(chars) for _ in range(length)])
-

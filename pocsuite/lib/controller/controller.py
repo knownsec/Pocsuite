@@ -52,6 +52,7 @@ def start():
     if conf.report:
         _setReport()
 
+
 def pocThreads():
     """
     @function multiThread executing
@@ -67,6 +68,8 @@ def pocThreads():
             output = (target, pocname, pocInfo["vulID"], pocInfo["appName"], pocInfo["appVersion"], "success" if result else "failed", time.strftime("%Y-%m-%d %X", time.localtime()))
         else:
             result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=True)
+            if not result:
+                continue
             output = (target, pocname, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()))
             result.show_result()
 

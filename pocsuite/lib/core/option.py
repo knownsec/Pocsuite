@@ -38,7 +38,6 @@ from thirdparty.oset.pyoset import oset
 from thirdparty.colorama.initialise import init as coloramainit
 
 
-
 def initOptions(inputOptions=AttribDict()):
     if IS_WIN:
         coloramainit()
@@ -104,6 +103,8 @@ def init():
     _setHTTPProxy()
 
 # TODO
+
+
 def _setHTTPUserAgent():
     """
     @function Set the HTTP User-Agent header.
@@ -177,6 +178,7 @@ def _setHTTPExtraHeaders():
             else:
                 errMsg = "invalid header value: %s. Valid header format is 'name:value'" % repr(headerValue).lstrip('u')
                 raise PocsuiteSyntaxException(errMsg)
+
 
 def setMultipleTarget():
 

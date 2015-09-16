@@ -78,7 +78,6 @@ def parseCmdOptions():
     optimization.add_argument("--report", dest="report",
                               help="Save a html report to file (e.g. \"./report.html\")")
 
-
     args = parser.parse_args()
     return args.__dict__
 

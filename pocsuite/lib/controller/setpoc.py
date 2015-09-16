@@ -31,8 +31,8 @@ def setPocFile():
             retVal = setTemporaryPoc(pocFile)
             kb.pocFiles.add(retVal)
     elif os.path.isdir(conf.pocFile):
-        pyFiles = glob.glob(conf.pocFile + "*.py")
-        jsonFiles = glob.glob(conf.pocFile + "*.json")
+        pyFiles = glob.glob(os.path.join(conf.pocFile, "*.py"))
+        jsonFiles = glob.glob(os.path.join(conf.pocFile, "*.json"))
         pocFiles = pyFiles + jsonFiles
         for pocFile in pocFiles:
             retVal = setTemporaryPoc(pocFile)

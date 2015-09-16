@@ -20,7 +20,7 @@ def pocViolation():
     #logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
     for pocname, pocInstance in kb.registeredPocs.items():
         if isinstance(pocInstance, dict):
-            violation = checkJsonInfo(pocname, pocInstance) 
+            violation = checkJsonInfo(pocname, pocInstance)
         else:
             violation = checkPocInfo(pocname, pocInstance)
     #logger.log(CUSTOM_LOGGING.SUCCESS, infoMsg)
