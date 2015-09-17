@@ -23,23 +23,26 @@ def setPocFile():
     """
     @function 重新设置conf.pocFile
     """
-    if os.path.isfile(conf.pocFile):
-        retVal = setTemporaryPoc(conf.pocFile)
-        kb.pocFiles.add(retVal)
-    elif len(conf.pocFile.split(',')) > 1:
-        for pocFile in conf.pocFile.split(','):
-            retVal = setTemporaryPoc(pocFile)
-            kb.pocFiles.add(retVal)
-    elif os.path.isdir(conf.pocFile):
-        pyFiles = glob.glob(os.path.join(conf.pocFile, "*.py"))
-        jsonFiles = glob.glob(os.path.join(conf.pocFile, "*.json"))
-        pocFiles = pyFiles + jsonFiles
-        for pocFile in pocFiles:
+    if len(conf.pocFile.split(",")) > 1:
+        for pocFile in conf.pocFile.split(","):
+            pocFile = os.path.abspath(pocFile)
             retVal = setTemporaryPoc(pocFile)
             kb.pocFiles.add(retVal)
     else:
-        errMsg = "can't find any valid PoCs"
-        logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+        conf.pocFile = os.path.abspath(conf.pocFile)
+        if os.path.isfile(conf.pocFile):
+            retVal = setTemporaryPoc(conf.pocFile)
+            kb.pocFiles.add(retVal)
+        elif os.path.isdir(conf.pocFile):
+            pyFiles = glob.glob(os.path.join(conf.pocFile, "*.py"))
+            jsonFiles = glob.glob(os.path.join(conf.pocFile, "*.json"))
+            pocFiles = pyFiles + jsonFiles
+            for pocFile in pocFiles:
+                retVal = setTemporaryPoc(pocFile)
+                kb.pocFiles.add(retVal)
+        else:
+            errMsg = "can't find any valid PoCs"
+            logger.log(CUSTOM_LOGGING.ERROR, errMsg)
 
 
 def setTemporaryPoc(pocFile):

@@ -21,3 +21,6 @@ phithon <root(at)leavesongs.com>
 
 花开、若相惜 <635484364(at)qq.com>
 * for suggesting a couple of features
+
+GurdZain
+* for contributing a minor patch
