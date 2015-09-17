@@ -6,12 +6,14 @@ Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
 
+import functools
 from lib.core.data import logger
 from lib.core.enums import CUSTOM_LOGGING
 
 
 def require_header(field):
     def _require_header(function):
+        @functools.wraps(function)
         def check_header(self, *args):
             name = getattr(self, "name")
             headers = getattr(self, "headers")
