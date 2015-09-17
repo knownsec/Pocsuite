@@ -15,7 +15,7 @@ def require_header(field):
         def check_header(self, *args):
             name = getattr(self, "name")
             headers = getattr(self, "headers")
-            if field in map(str.lower, headers.keys()):
+            if field.lower() in map(str.lower, headers.keys()):
                 return function(self, *args)
             else:
                 errMsg = "poc: %s need HTTP Header \"%s\"" % (name, field)
