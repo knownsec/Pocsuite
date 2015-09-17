@@ -15,11 +15,12 @@ def require_header(field):
         def check_header(self, *args):
             name = getattr(self, "name")
             headers = getattr(self, "headers")
-            if field.lower() in map(str.lower, headers.keys()):
-                return function(self, *args)
-            else:
+            if field.lower() not in map(str.lower, headers.keys()):
                 errMsg = "poc: %s need HTTP Header \"%s\"" % (name, field)
                 logger.log(CUSTOM_LOGGING.ERROR, errMsg)
-                return
+                Msg = 'Enter HTTP Header "%s" for "%s"' % (field, self.url)
+                logger.log(CUSTOM_LOGGING.SYSINFO, Msg)
+                self.headers[field] = raw_input()
+            return function(self, *args)
         return check_header
     return _require_header
