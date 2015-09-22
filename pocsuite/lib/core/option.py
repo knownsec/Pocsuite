@@ -33,6 +33,7 @@ from lib.core.exception import PocsuiteSyntaxException
 from lib.controller.check import pocViolation
 from lib.controller.check import isOldVersionPoc
 from lib.controller.setpoc import setPocFile
+from lib.controller.setplugin import setPlugin
 from thirdparty.socks import socks
 from thirdparty.oset.pyoset import oset
 from thirdparty.colorama.initialise import init as coloramainit
@@ -59,6 +60,7 @@ def initOptions(inputOptions=AttribDict()):
     conf.timeout = inputOptions.timeout
     conf.params = None
     conf.httpHeaders = HTTP_DEFAULT_HEADER
+    conf.plugin = inputOptions.plugin
 
     initializeKb()
 
@@ -94,6 +96,7 @@ def init():
     _setHTTPCookies()
     _setHTTPTimeout()
     _setHTTPExtraHeaders()
+    setPlugin()
 
     setPocFile()
     registerPocFromFile()

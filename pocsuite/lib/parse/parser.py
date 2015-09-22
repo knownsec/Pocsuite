@@ -78,6 +78,9 @@ def parseCmdOptions():
     optimization.add_argument("--report", dest="report",
                               help="Save a html report to file (e.g. \"./report.html\")")
 
+    optimization.add_argument("--plugin", dest="plugin", action="store_true", default=False,
+                              help="Boot plugin system from plugin folder(pocsuite/plugin)")
+
     args = parser.parse_args()
     return args.__dict__
 
