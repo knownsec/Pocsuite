@@ -47,7 +47,6 @@ def initOptions(inputOptions=AttribDict()):
     conf.url = inputOptions.url
     conf.urlFile = inputOptions.urlFile
     conf.mode = inputOptions.Mode
-    conf.params = ast.literal_eval(inputOptions.extra_params)
     conf.pocFile = inputOptions.pocFile
     conf.randomAgent = inputOptions.randomAgent
     conf.agent = inputOptions.agent
@@ -60,6 +59,7 @@ def initOptions(inputOptions=AttribDict()):
     conf.proxyCred = inputOptions.proxyCred
     conf.timeout = inputOptions.timeout
     conf.httpHeaders = HTTP_DEFAULT_HEADER
+    conf.params = ast.literal_eval(inputOptions.extra_params) if inputOptions.extra_params else None
 
     initializeKb()
 

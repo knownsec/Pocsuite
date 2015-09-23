@@ -49,7 +49,7 @@ def require(type, field):
             require_type = getattr(self, type)
             fields = [field] if isinstance(field, basestring) else field
             for _ in fields:
-                if _.lower() not in map(str.lower, require_type.keys()):
+                if (not require_type) or (_.lower() not in map(str.lower, require_type.keys())):
                     errMsg = "poc: %s need %s \"%s\"" % (poc_name, type, _)
                     logger.log(CUSTOM_LOGGING.ERROR, errMsg)
                     return
