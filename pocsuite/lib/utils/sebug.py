@@ -9,7 +9,7 @@ See the file 'docs/COPYING' for copying permission
 from thirdparty.knowledge.webservice import Clinet
 
 
-class SebugBase():
+class sebugBase():
     def __init__:
         self.token = None
         self.clinet = None

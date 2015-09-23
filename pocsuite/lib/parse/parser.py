@@ -83,6 +83,9 @@ def parseCmdOptions():
     optimization.add_argument("--report", dest="report",
                               help="Save a html report to file (e.g. \"./report.html\")")
 
+    optimization.add_argument("--batch", dest="batch",
+                              help="Automatically choose defaut choice without asking.")
+
     args = parser.parse_args()
     return args.__dict__
 
