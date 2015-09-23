@@ -20,9 +20,22 @@ def require_header(field):
             if field.lower() not in map(str.lower, headers.keys()):
                 errMsg = "poc: %s need HTTP Header \"%s\"" % (name, field)
                 logger.log(CUSTOM_LOGGING.ERROR, errMsg)
-                Msg = 'Enter HTTP Header "%s" for "%s"' % (field, self.url)
-                logger.log(CUSTOM_LOGGING.SYSINFO, Msg)
-                self.headers[field] = raw_input()
+                return
             return function(self, *args)
         return check_header
     return _require_header
+
+
+def require_param(field):
+    def _require_param(function):
+        @functools.wraps(function)
+        def check_param(self, *args):
+            name = getattr(self, "name")
+            params = getattr(self, "params")
+            if field not in params:
+                errMsg = "poc: %s need extra params \"%s\"" % (name, field)
+                logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+                return
+            return function(self, *args)
+        return check_param
+    return _require_param
