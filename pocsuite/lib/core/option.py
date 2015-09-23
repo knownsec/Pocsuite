@@ -8,6 +8,7 @@ See the file 'docs/COPYING' for copying permission
 
 import re
 import os
+import ast
 import copy
 import random
 import Queue
@@ -46,6 +47,7 @@ def initOptions(inputOptions=AttribDict()):
     conf.url = inputOptions.url
     conf.urlFile = inputOptions.urlFile
     conf.mode = inputOptions.Mode
+    conf.params = ast.literal_eval(inputOptions.extra_params)
     conf.pocFile = inputOptions.pocFile
     conf.randomAgent = inputOptions.randomAgent
     conf.agent = inputOptions.agent
@@ -57,7 +59,6 @@ def initOptions(inputOptions=AttribDict()):
     conf.proxy = inputOptions.proxy
     conf.proxyCred = inputOptions.proxyCred
     conf.timeout = inputOptions.timeout
-    conf.params = None
     conf.httpHeaders = HTTP_DEFAULT_HEADER
 
     initializeKb()

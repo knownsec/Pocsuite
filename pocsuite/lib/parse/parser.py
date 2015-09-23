@@ -70,6 +70,11 @@ def parseCmdOptions():
     request.add_argument("--headers", dest="headers",
                          help="Extra headers (e.g. \"Accept-Language: zh-CN,zh;q=0.8\")")
 
+    params = parser.add_argument_group("params")
+
+    params.add_argument("--extra-params", dest="extra_params",
+                        help="Extra params (e.g. \"{username: \'***\', password: \'***\'}\")")
+
     optimization = parser.add_argument_group("optimization")
 
     optimization.add_argument("--threads", dest="threads", type=int, default=1,
