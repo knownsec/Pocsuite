@@ -15,10 +15,10 @@ def require_header(field):
     def _require_header(function):
         @functools.wraps(function)
         def check_header(self, *args):
-            name = getattr(self, "name")
+            poc_name = getattr(self, "name")
             headers = getattr(self, "headers")
             if field.lower() not in map(str.lower, headers.keys()):
-                errMsg = "poc: %s need HTTP Header \"%s\"" % (name, field)
+                errMsg = "poc: %s need headers \"%s\"" % (poc_name, field)
                 logger.log(CUSTOM_LOGGING.ERROR, errMsg)
                 return
             return function(self, *args)
@@ -30,12 +30,29 @@ def require_param(field):
     def _require_param(function):
         @functools.wraps(function)
         def check_param(self, *args):
-            name = getattr(self, "name")
+            poc_name = getattr(self, "name")
             params = getattr(self, "params")
             if field not in params:
-                errMsg = "poc: %s need extra params \"%s\"" % (name, field)
+                errMsg = "poc: %s need params \"%s\"" % (poc_name, field)
                 logger.log(CUSTOM_LOGGING.ERROR, errMsg)
                 return
             return function(self, *args)
         return check_param
     return _require_param
+
+
+def require(type, field):
+    def _require(function):
+        @functools.wraps(function)
+        def check_type(self, *args):
+            poc_name = getattr(self, "name")
+            require_type = getattr(self, type)
+            fields = [field] if isinstance(field, basestring) else field
+            for _ in fields:
+                if _.lower() not in map(str.lower, require_type.keys()):
+                    errMsg = "poc: %s need %s \"%s\"" % (poc_name, type, _)
+                    logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+                    return
+            return function(self, *args)
+        return check_type
+    return _require
