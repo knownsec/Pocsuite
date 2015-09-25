@@ -37,7 +37,7 @@ def checkJsonInfo(pocname, pocInstance):
                 continue
             infos.append(attr)
         if infos:
-            warnMsg = "missing %s in %s" % (infos, pocname)
+            warnMsg = "poc: %s %s is missing" % (pocname, infos)
             logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
             return False
         return True
@@ -52,7 +52,7 @@ def checkPocInfo(pocname, pocInstance):
             continue
         infos.append(attr)
     if infos:
-        warnMsg = "missing %s in %s" % (infos, pocname)
+        warnMsg = "poc: %s %s is missing" % (pocname, infos)
         logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
         return False
     return True

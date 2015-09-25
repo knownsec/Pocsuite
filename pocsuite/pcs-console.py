@@ -19,7 +19,6 @@ from lib.core.option import initializeKb
 if __name__ == "__main__":
     folders, sys.argv = sys.argv[1:], sys.argv[:1]
 
-    
     paths.POCSUITE_ROOT_PATH = modulePath()
     setPaths()
     kb.unloadedList = {}

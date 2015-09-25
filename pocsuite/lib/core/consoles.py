@@ -65,7 +65,7 @@ def avaliable():
     for k, v in kb.unloadedList.iteritems():
         path, name = filepathParser(v)
         graph.add_row([k, name, os.path.relpath(path, paths.POCSUITE_ROOT_PATH)])
-        
+
     print graph
     print
 
@@ -94,7 +94,7 @@ class baseConsole(Cmd):
         conf.threads = 1
         conf.timeout = 5
         conf.httpHeaders = HTTP_DEFAULT_HEADER
-        
+
     def do_verify(self, args):
         conf.mode = 'verify'
         self._execute()
@@ -148,7 +148,7 @@ class baseConsole(Cmd):
 
 
 class configConsole(Cmd):
-    
+
     def __init__(self):
         Cmd.__init__(self)
         self.prompt = "Pcs.config> "
@@ -197,7 +197,7 @@ class configConsole(Cmd):
         graph = PrettyTable(["config", "value"])
         graph.align["config"] = "l"
 
-        for k,v  in conf.iteritems():
+        for k, v in conf.iteritems():
             if v and k != 'httpHeaders':
                 graph.add_row([k, v])
         print graph
@@ -210,7 +210,7 @@ class configConsole(Cmd):
             print "   url          : set target url from stdin. "
             print "   urlFile      : set target url from urlFile. "
             print "   q            : return upper level. "
-            print 
+            print
             print "[Option]"
             print "   header       : set http headers for follow requests."
             print "   proxy        : set proxy. format: '(http|https|socks4|socks5)://address:port'."
@@ -239,13 +239,13 @@ class headerConsole(Cmd):
             print "   q            : return upper level. "
             print
         pass
-    
+
     def do_cookie(self, args):
         if not args:
             conf.cookie = raw_input('Pcs.config.header.cookie> ')
         else:
             conf.cookie = str(args)
-    
+
     def do_referer(self, args):
         if not args:
             conf.referer = raw_input('Pcs.config.header.referer> ')
@@ -280,7 +280,7 @@ class pocConsole(Cmd):
             print "   unload       : list all unload poc files(s)."
             print "   clear        : unload all loaded poc file(s)."
             print "   q            : return upper level. "
-            print 
+            print
 
             pass
         else:
@@ -296,7 +296,7 @@ class pocConsole(Cmd):
             pass
         else:
             conf.pocFile = args
-            
+
         setPocFile()
 
         print '[*] load poc file(s) success!'

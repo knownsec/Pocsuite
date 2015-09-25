@@ -10,6 +10,7 @@ from thirdparty.knowledge.webservice import Clinet
 
 
 class sebugBase():
+
     def __init__:
         self.token = None
         self.clinet = None
