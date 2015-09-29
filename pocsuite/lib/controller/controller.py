@@ -41,10 +41,13 @@ def start():
     if not kb.results:
         return
 
+    kb.results =  sorted(kb.results, key=lambda result : result[5])
+    result_success = 0
     for row in kb.results:
+        result_success += row.count("success")
         resultTable.add_row(list(row)[:-1])
-
     print resultTable
+    print "success : %s" % str(result_success)
 
     _createTargetDirs()
     _setRecordFiles()
