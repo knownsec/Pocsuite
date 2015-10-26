@@ -7,11 +7,11 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import types
-from lib.core.data import logger
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.enums import OUTPUT_STATUS
-from lib.core.common import parseTargetUrl
-from lib.core.data import kb
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.enums import OUTPUT_STATUS
+from pocsuite.lib.core.common import parseTargetUrl
+from pocsuite.lib.core.data import kb
 
 
 class POCBase(object):

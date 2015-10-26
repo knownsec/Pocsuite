@@ -6,7 +6,7 @@ Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
 
-from lib.core.settings import IS_WIN, UNICODE_ENCODING
+from pocsuite.lib.core.settings import IS_WIN, UNICODE_ENCODING
 
 
 def singleTimeWarnMessage(message):  # Cross-linked function

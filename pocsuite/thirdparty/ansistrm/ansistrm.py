@@ -5,7 +5,7 @@ import logging
 import os
 import re
 
-from lib.core.convert import stdoutencode
+from pocsuite.lib.core.convert import stdoutencode
 
 
 class ColorizingStreamHandler(logging.StreamHandler):

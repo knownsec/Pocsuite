@@ -9,11 +9,11 @@ See the file 'docs/COPYING' for copying permission
 import os
 import sys
 import json
-from lib.core.data import kb
-from lib.core.data import logger
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.common import filepathParser
-from lib.core.common import changeToPyImportType
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.common import filepathParser
+from pocsuite.lib.core.common import changeToPyImportType
 
 
 def registerPoc(pocClass):

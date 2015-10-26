@@ -7,28 +7,28 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import os
-from lib.core.data import kb
-from lib.core.data import conf
-from lib.core.data import paths
-from lib.core.common import banner
-from lib.core.settings import IS_WIN
-from lib.core.common import filepathParser
-from lib.core.option import initializeKb
-from lib.core.option import registerPocFromFile
-from lib.core.option import setMultipleTarget
-from lib.core.option import _setHTTPUserAgent
-from lib.core.option import _setHTTPReferer
-from lib.core.option import _setHTTPCookies
-from lib.core.option import _setHTTPProxy
-from lib.core.option import _setHTTPTimeout
-from lib.core.settings import HTTP_DEFAULT_HEADER
-from lib.controller.check import pocViolation
-from lib.controller.setpoc import setPocFile
-from lib.controller.controller import start
-from thirdparty.cmd2.cmd2 import Cmd
-from thirdparty.oset.pyoset import oset
-from thirdparty.prettytable.prettytable import PrettyTable
-from thirdparty.colorama.initialise import init as coloramainit
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.data import paths
+from pocsuite.lib.core.common import banner
+from pocsuite.lib.core.settings import IS_WIN
+from pocsuite.lib.core.common import filepathParser
+from pocsuite.lib.core.option import initializeKb
+from pocsuite.lib.core.option import registerPocFromFile
+from pocsuite.lib.core.option import setMultipleTarget
+from pocsuite.lib.core.option import _setHTTPUserAgent
+from pocsuite.lib.core.option import _setHTTPReferer
+from pocsuite.lib.core.option import _setHTTPCookies
+from pocsuite.lib.core.option import _setHTTPProxy
+from pocsuite.lib.core.option import _setHTTPTimeout
+from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
+from pocsuite.lib.controller.check import pocViolation
+from pocsuite.lib.controller.setpoc import setPocFile
+from pocsuite.lib.controller.controller import start
+from pocsuite.thirdparty.cmd2.cmd2 import Cmd
+from pocsuite.thirdparty.oset.pyoset import oset
+from pocsuite.thirdparty.prettytable.prettytable import PrettyTable
+from pocsuite.thirdparty.colorama.initialise import init as coloramainit
 
 try:
     import readline

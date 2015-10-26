@@ -5,8 +5,6 @@
 Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
-from pocsuite.lib.request.requestspatch import requestsPatch
 
-import pocsuite.thirdparty.requests as req
-
-requestsPatch()
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING

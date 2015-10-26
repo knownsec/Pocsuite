@@ -8,8 +8,8 @@ See the file 'docs/COPYING' for copying permission
 
 import argparse
 import os
-from lib.core.data import defaults
-from lib.core.settings import INDENT, USAGE, VERSION
+from pocsuite.lib.core.data import defaults
+from pocsuite.lib.core.settings import INDENT, USAGE, VERSION
 
 
 def parseCmdOptions():

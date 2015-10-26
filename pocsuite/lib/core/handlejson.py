@@ -10,14 +10,14 @@ import re
 import json
 import time
 from string import atof
-from lib.core.common import parseTargetUrl
-from lib.core.data import logger
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.data import kb
-from lib.core.data import conf
-from lib.core.data import resultJson
-from lib.core.data import savedReq
-from lib.request.basic import req
+from pocsuite.lib.core.common import parseTargetUrl
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.data import resultJson
+from pocsuite.lib.core.data import savedReq
+from pocsuite.lib.request.basic import req
 
 
 def initilizeJson(devilJson):
