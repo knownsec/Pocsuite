@@ -200,7 +200,6 @@ def setPaths():
     paths.POCSUITE_TMP_PATH = os.path.join(_, "tmp")
 
 
-
 def getFileItems(filename, commentPrefix='#', unicode_=True, lowercase=False, unique=False):
     """
     @function returns newline delimited items contained inside file

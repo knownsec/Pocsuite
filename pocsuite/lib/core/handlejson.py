@@ -33,7 +33,7 @@ def showResult(tag):
     for key1, value1 in resultJson[tag].iteritems():
         for key2, value2 in value1.iteritems():
             if key1 != 'verifyInfo':
-                logger.log(CUSTOM_LOGGING.SUCCESS, key2 + " : " + resultJson[tag][key1][key2]) 
+                logger.log(CUSTOM_LOGGING.SUCCESS, key2 + " : " + resultJson[tag][key1][key2])
 
     pass
 
