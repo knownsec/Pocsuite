@@ -6,9 +6,9 @@ Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
 
-from lib.core.datatype import AttribDict
-from lib.core.log import LOGGER
-from lib.core.defaults import defaults
+from pocsuite.lib.core.datatype import AttribDict
+from pocsuite.lib.core.log import LOGGER
+from pocsuite.lib.core.defaults import defaults
 
 # logger
 logger = LOGGER

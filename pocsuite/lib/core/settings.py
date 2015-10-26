@@ -11,7 +11,7 @@ import subprocess
 import time
 import sys
 
-from lib.core.revision import getRevisionNumber
+from pocsuite.lib.core.revision import getRevisionNumber
 
 VERSION = "1.0.0dev"
 REVISION = getRevisionNumber()
@@ -52,15 +52,11 @@ INDENT = " " * 2
 POC_ATTRS = ("vulID", "version", "author", "vulDate", "name", "appVersion", "samples", "desc", "createDate", "updateDate", "references", "appPowerLink", "vulType", "appName")
 
 POC_IMPORTDICT = {
-    "from pocsuite.net import": "from lib.request.basic import",
-    "from pocsuite.poc import": "from lib.core.poc import",
-    "from pocsuite.utils import register": "from lib.core.register import registerPoc as register",
-    "from pocsuite.lib": "from lib"
+    "from pocsuite.net import": "from pocsuite.lib.request.basic import",
+    "from pocsuite.poc import": "from pocsuite.lib.core.poc import",
+    "from pocsuite.utils import register": "from pocsuite.lib.core.register import registerPoc as register",
+    "from pocsuite.lib": "from pocsuite.lib"
 }
-
-POC_REGISTER_STRING = "\nfrom api.poc import register\nregister({})"
-POC_REGISTER_REGEX = "register\(.*\)"
-POC_CLASSNAME_REGEX = "class\s+(.*?)\(POCBase\)"
 
 OLD_VERSION_CHARACTER = ("from comm import cmdline", "from comm import generic")
 

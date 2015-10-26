@@ -7,8 +7,8 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import functools
-from lib.core.data import logger
-from lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
 
 
 def require_header(field):

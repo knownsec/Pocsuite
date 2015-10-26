@@ -11,21 +11,21 @@ import re
 import time
 import tempfile
 from textwrap import dedent
-from lib.core.settings import REPORT_HTMLBASE
-from lib.core.settings import REPORT_TABLEBASE
-from lib.core.data import paths
-from lib.core.exception import PocsuiteSystemException
-from lib.core.exception import PocsuiteMissingPrivileges
-from lib.core.common import getUnicode
-from lib.core.common import reIndent
-from lib.core.common import normalizeUnicode
-from lib.core.data import logger
-from lib.core.data import conf
-from lib.core.data import kb
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.handlejson import execReq
-from lib.core.threads import runThreads
-from thirdparty.prettytable.prettytable import PrettyTable
+from pocsuite.lib.core.settings import REPORT_HTMLBASE
+from pocsuite.lib.core.settings import REPORT_TABLEBASE
+from pocsuite.lib.core.data import paths
+from pocsuite.lib.core.exception import PocsuiteSystemException
+from pocsuite.lib.core.exception import PocsuiteMissingPrivileges
+from pocsuite.lib.core.common import getUnicode
+from pocsuite.lib.core.common import reIndent
+from pocsuite.lib.core.common import normalizeUnicode
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.handlejson import execReq
+from pocsuite.lib.core.threads import runThreads
+from pocsuite.thirdparty.prettytable.prettytable import PrettyTable
 
 
 def start():
@@ -41,13 +41,10 @@ def start():
     if not kb.results:
         return
 
-    kb.results =  sorted(kb.results, key=lambda result : result[5])
-    result_success = 0
     for row in kb.results:
-        result_success += row.count("success")
         resultTable.add_row(list(row)[:-1])
+
     print resultTable
-    print "success : %s" % str(result_success)
 
     _createTargetDirs()
     _setRecordFiles()

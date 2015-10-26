@@ -13,17 +13,16 @@ import ntpath
 import inspect
 import posixpath
 import unicodedata
-from lib.core.data import conf
-from lib.core.convert import stdoutencode
-from lib.core.log import LOGGER_HANDLER
-from lib.core.data import paths
-from lib.core.exception import PocsuiteGenericException
-from thirdparty.odict.odict import OrderedDict
-from lib.core.settings import (BANNER, GIT_PAGE, ISSUES_PAGE, PLATFORM, PYVERSION,
-                               VERSION_STRING)
-from lib.core.settings import UNICODE_ENCODING, INVALID_UNICODE_CHAR_FORMAT
-from lib.core.exception import PocsuiteSystemException
-from thirdparty.termcolor.termcolor import colored
+from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.convert import stdoutencode
+from pocsuite.lib.core.log import LOGGER_HANDLER
+from pocsuite.lib.core.data import paths
+from pocsuite.lib.core.exception import PocsuiteGenericException
+from pocsuite.thirdparty.odict.odict import OrderedDict
+from pocsuite.lib.core.settings import (BANNER, GIT_PAGE, ISSUES_PAGE, PLATFORM, PYVERSION, VERSION_STRING)
+from pocsuite.lib.core.settings import UNICODE_ENCODING, INVALID_UNICODE_CHAR_FORMAT
+from pocsuite.lib.core.exception import PocsuiteSystemException
+from pocsuite.thirdparty.termcolor.termcolor import colored
 
 
 def banner():
@@ -192,13 +191,14 @@ def setPaths():
     paths.POCSUITE_MODULES_PATH = os.path.join(paths.POCSUITE_ROOT_PATH, "modules")
     paths.POCSUITE_DATA_PATH = os.path.join(paths.POCSUITE_ROOT_PATH, "data")
 
-    paths.POCSUITE_TMP_PATH = os.path.join(paths.POCSUITE_MODULES_PATH, "tmp")
     paths.USER_AGENTS = os.path.join(paths.POCSUITE_DATA_PATH, "user-agents.txt")
     paths.WEAK_PASS = os.path.join(paths.POCSUITE_DATA_PATH, "password-top100.txt")
     paths.LARGE_WEAK_PASS = os.path.join(paths.POCSUITE_DATA_PATH, "password-top1000.txt")
 
     _ = os.path.join(os.path.expanduser("~"), ".pocsuite")
     paths.POCSUITE_OUTPUT_PATH = getUnicode(paths.get("POCSUITE_OUTPUT_PATH", os.path.join(_, "output")), encoding=sys.getfilesystemencoding())
+    paths.POCSUITE_TMP_PATH = os.path.join(_, "tmp")
+
 
 
 def getFileItems(filename, commentPrefix='#', unicode_=True, lowercase=False, unique=False):

@@ -6,21 +6,17 @@ Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
 
-import re
 import os
 import glob
 import json
-from lib.core.data import kb
-from lib.core.data import conf
-from lib.core.data import paths
-from lib.core.data import logger
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.common import multipleReplace
-from lib.core.common import readFile, writeFile
-from lib.core.settings import POC_IMPORTDICT
-from lib.core.settings import POC_REGISTER_REGEX
-from lib.core.settings import POC_CLASSNAME_REGEX
-from lib.core.settings import POC_REGISTER_STRING
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.data import paths
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.common import multipleReplace
+from pocsuite.lib.core.common import readFile, writeFile
+from pocsuite.lib.core.settings import POC_IMPORTDICT
 
 
 def setPocFile():
@@ -55,21 +51,7 @@ def setTemporaryPoc(pocFile):
         os.makedirs(paths.POCSUITE_TMP_PATH)
     pocname = os.path.join(paths.POCSUITE_TMP_PATH, pocFilename)
     poc = readFile(pocFile)
-
-    if not re.search(POC_REGISTER_REGEX, poc):
-        warnMsg = "poc: %s register is missing" % pocFilename
-        logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
-        className = getPocClassName(poc)
-        poc += POC_REGISTER_STRING.format(className)
-
     retVal = multipleReplace(poc, POC_IMPORTDICT)
+    # TODO 直接写入tmp文件夹 没有考虑是否存在文件 或者使用后删除文件
     writeFile(pocname, retVal)
     return pocname
-
-
-def getPocClassName(poc):
-    try:
-        className = re.search(POC_CLASSNAME_REGEX, poc).group(1)
-    except:
-        className = ""
-    return className

@@ -14,29 +14,29 @@ import random
 import Queue
 import urlparse
 import socket
-from lib.core.data import logger
-from lib.core.data import conf
-from lib.core.data import kb
-from lib.core.data import paths
-from lib.core.datatype import AttribDict
-from lib.core.settings import IS_WIN
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.enums import PROXY_TYPE
-from lib.core.enums import HTTP_HEADER
-from lib.core.settings import HTTP_DEFAULT_HEADER
-from lib.core.common import getFileItems
-from lib.core.common import safeExpandUser
-from lib.core.common import getPublicTypeMembers
-from lib.core.register import registerJsonPoc
-from lib.core.register import registerPyPoc
-from lib.core.exception import PocsuiteFilePathException
-from lib.core.exception import PocsuiteSyntaxException
-from lib.controller.check import pocViolation
-from lib.controller.check import isOldVersionPoc
-from lib.controller.setpoc import setPocFile
-from thirdparty.socks import socks
-from thirdparty.oset.pyoset import oset
-from thirdparty.colorama.initialise import init as coloramainit
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import paths
+from pocsuite.lib.core.datatype import AttribDict
+from pocsuite.lib.core.settings import IS_WIN
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.enums import PROXY_TYPE
+from pocsuite.lib.core.enums import HTTP_HEADER
+from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
+from pocsuite.lib.core.common import getFileItems
+from pocsuite.lib.core.common import safeExpandUser
+from pocsuite.lib.core.common import getPublicTypeMembers
+from pocsuite.lib.core.register import registerJsonPoc
+from pocsuite.lib.core.register import registerPyPoc
+from pocsuite.lib.core.exception import PocsuiteFilePathException
+from pocsuite.lib.core.exception import PocsuiteSyntaxException
+from pocsuite.lib.controller.check import pocViolation
+from pocsuite.lib.controller.check import isOldVersionPoc
+from pocsuite.lib.controller.setpoc import setPocFile
+from pocsuite.thirdparty.socks import socks
+from pocsuite.thirdparty.oset.pyoset import oset
+from pocsuite.thirdparty.colorama.initialise import init as coloramainit
 
 
 def initOptions(inputOptions=AttribDict()):

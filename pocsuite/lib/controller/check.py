@@ -6,12 +6,12 @@ Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
 
-from lib.core.data import logger
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.settings import POC_ATTRS
-from lib.core.settings import OLD_VERSION_CHARACTER
-from lib.core.common import readFile
-from lib.core.data import kb
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.settings import POC_ATTRS
+from pocsuite.lib.core.settings import OLD_VERSION_CHARACTER
+from pocsuite.lib.core.common import readFile
+from pocsuite.lib.core.data import kb
 
 
 def pocViolation():
@@ -37,7 +37,7 @@ def checkJsonInfo(pocname, pocInstance):
                 continue
             infos.append(attr)
         if infos:
-            warnMsg = "poc: %s %s is missing" % (pocname, infos)
+            warnMsg = "missing %s in %s" % (infos, pocname)
             logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
             return False
         return True
@@ -52,7 +52,7 @@ def checkPocInfo(pocname, pocInstance):
             continue
         infos.append(attr)
     if infos:
-        warnMsg = "poc: %s %s is missing" % (pocname, infos)
+        warnMsg = "missing %s in %s" % (infos, pocname)
         logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
         return False
     return True
