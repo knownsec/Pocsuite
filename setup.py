@@ -13,10 +13,10 @@ setup(
     long_description="""\
 TODO""",
     classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-    keywords='poc, template',
+    keywords='PoC',
     author=author,
     author_email=author_email,
-    url='',
+    url='https://github.com/knownsec/Pocsuite',
     license=license,
     packages=find_packages(),
     include_package_data=True,
