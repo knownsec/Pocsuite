@@ -7,6 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 import re
 import sys
+from pocsuite.lib.utils import versioncheck
 from pocsuite.pocsuite import main
 
 if __name__ == '__main__':

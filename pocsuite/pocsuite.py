@@ -10,6 +10,7 @@ import os
 import sys
 import time
 import traceback
+from lib.utils import versioncheck
 from lib.core.common import unhandledExceptionMessage
 from lib.core.enums import CUSTOM_LOGGING
 from lib.core.common import banner
