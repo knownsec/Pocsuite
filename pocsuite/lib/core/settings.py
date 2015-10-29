@@ -58,6 +58,10 @@ POC_IMPORTDICT = {
     "from pocsuite.lib": "from pocsuite.lib"
 }
 
+POC_REGISTER_STRING = "\nfrom api.poc import register\nregister({})"
+POC_REGISTER_REGEX = "register\(.*\)"
+POC_CLASSNAME_REGEX = "class\s+(.*?)\(POCBase\)"
+
 OLD_VERSION_CHARACTER = ("from comm import cmdline", "from comm import generic")
 
 HTTP_DEFAULT_HEADER = {

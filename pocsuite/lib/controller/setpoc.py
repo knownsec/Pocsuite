@@ -6,6 +6,7 @@ Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
 
+import re
 import os
 import glob
 import json
@@ -17,6 +18,9 @@ from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.common import multipleReplace
 from pocsuite.lib.core.common import readFile, writeFile
 from pocsuite.lib.core.settings import POC_IMPORTDICT
+from pocsuite.lib.core.settings import POC_REGISTER_REGEX
+from pocsuite.lib.core.settings import POC_CLASSNAME_REGEX
+from pocsuite.lib.core.settings import POC_REGISTER_STRING
 
 
 def setPocFile():
@@ -51,7 +55,21 @@ def setTemporaryPoc(pocFile):
         os.makedirs(paths.POCSUITE_TMP_PATH)
     pocname = os.path.join(paths.POCSUITE_TMP_PATH, pocFilename)
     poc = readFile(pocFile)
+
+    if not re.search(POC_REGISTER_REGEX, poc):
+        warnMsg = "poc: %s register is missing" % pocFilename
+        logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
+        className = getPocClassName(poc)
+        poc += POC_REGISTER_STRING.format(className)
+
     retVal = multipleReplace(poc, POC_IMPORTDICT)
-    # TODO 直接写入tmp文件夹 没有考虑是否存在文件 或者使用后删除文件
     writeFile(pocname, retVal)
     return pocname
+
+
+def getPocClassName(poc):
+    try:
+        className = re.search(POC_CLASSNAME_REGEX, poc).group(1)
+    except:
+        className = ""
+    return className
