@@ -9,6 +9,7 @@ See the file 'docs/COPYING' for copying permission
 import os
 import re
 import sys
+import imp
 import ntpath
 import inspect
 import posixpath
@@ -23,6 +24,29 @@ from pocsuite.lib.core.settings import (BANNER, GIT_PAGE, ISSUES_PAGE, PLATFORM,
 from pocsuite.lib.core.settings import UNICODE_ENCODING, INVALID_UNICODE_CHAR_FORMAT
 from pocsuite.lib.core.exception import PocsuiteSystemException
 from pocsuite.thirdparty.termcolor.termcolor import colored
+
+
+class StringImporter(object):
+
+    """
+    Use custom meta hook to import modules available as strings. 
+    Cp. PEP 302 http://www.python.org/dev/peps/pep-0302/#specification-part-2-registering-hooks
+    """
+
+    def __init__(self, modules):
+        self._modules = dict(modules)
+
+    def find_module(self, fullname, path):
+        if fullname in self._modules.keys():
+            return self
+        return None
+
+    def load_module(self, fullname):
+        if not fullname in self._modules.keys():
+            raise ImportError(fullname)
+        new_module = imp.new_module(fullname)
+        exec self._modules[fullname] in new_module.__dict__
+        return new_module
 
 
 def banner():
