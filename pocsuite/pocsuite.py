@@ -10,25 +10,25 @@ import os
 import sys
 import time
 import traceback
-from lib.utils import versioncheck
-from lib.core.common import unhandledExceptionMessage
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.common import banner
-from lib.core.exception import PocsuiteUserQuitException
-from lib.core.common import dataToStdout
-from lib.core.common import setPaths
-from lib.core.settings import LEGAL_DISCLAIMER
-from lib.core.settings import PCS_OPTIONS
-from lib.core.data import kb
-from lib.core.data import conf
-from lib.core.data import paths
-from lib.core.data import logger
-from lib.core.data import cmdLineOptions
-from lib.parse.parser import parseCmdOptions
-from lib.core.option import initOptions
-from lib.controller.controller import start
-from lib.core.option import init
-from lib.core.common import getUnicode
+from .lib.utils import versioncheck
+from .lib.core.common import unhandledExceptionMessage
+from .lib.core.enums import CUSTOM_LOGGING
+from .lib.core.common import banner
+from .lib.core.exception import PocsuiteUserQuitException
+from .lib.core.common import dataToStdout
+from .lib.core.common import setPaths
+from .lib.core.settings import LEGAL_DISCLAIMER
+from .lib.core.settings import PCS_OPTIONS
+from .lib.core.data import kb
+from .lib.core.data import conf
+from .lib.core.data import paths
+from .lib.core.data import logger
+from .lib.core.data import cmdLineOptions
+from .lib.parse.parser import parseCmdOptions
+from .lib.core.option import initOptions
+from .lib.controller.controller import start
+from .lib.core.option import init
+from .lib.core.common import getUnicode
 
 
 def main():
