@@ -15,8 +15,7 @@ from lib.core.common import setPaths
 from lib.core.consoles import initializePoc
 from lib.core.option import initializeKb
 
-
-if __name__ == "__main__":
+def main():
     folders, sys.argv = sys.argv[1:], sys.argv[:1]
 
     paths.POCSUITE_ROOT_PATH = modulePath()
@@ -28,3 +27,6 @@ if __name__ == "__main__":
 
     pcs = baseConsole()
     pcs.cmdloop()
+
+if __name__ == "__main__":
+    main()

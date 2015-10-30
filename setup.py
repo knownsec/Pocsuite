@@ -26,6 +26,9 @@ TODO""",
     entry_points={
         'console_scripts': [
             'pocsuite = pocsuite.pocsuite:main',
+            'pcs-verify = pocsuite.pcsverify:main',
+            'pcs-attack = pocsuite.pcsattack:main',
+            'pcs-console = pocsuite.pcsconsole:main',
         ],
     },
 )

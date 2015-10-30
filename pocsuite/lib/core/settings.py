@@ -45,7 +45,7 @@ UNICODE_ENCODING = "utf-8"
 # Format used for representing invalid unicode characters
 INVALID_UNICODE_CHAR_FORMAT = r"\?%02x"
 
-USAGE = "python pocsuite.py [options]"
+USAGE = "pocsuite [options]"
 
 INDENT = " " * 2
 
