@@ -16,7 +16,7 @@ def main():
     try:
         pocFile, targetUrl = sys.argv[1: 3]
     except ValueError:
-        excMsg = "usage: python pcs-attack [pocfile] [url]\n"
+        excMsg = "usage: pcs-attack [pocfile] [url]\n"
         excMsg += "pocsuite: error: too few arguments"
         dataToStdout(excMsg)
         sys.exit(1)

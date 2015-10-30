@@ -16,7 +16,7 @@ def main():
     try:
         pocFile, targetUrl = sys.argv[1: 3]
     except ValueError:
-        excMsg = "usage: python pcs-verify [pocfile] [url]\n"
+        excMsg = "usage: pcs-verify [pocfile] [url]\n"
         excMsg += "pocsuite: error: too few arguments"
         dataToStdout(excMsg)
         sys.exit(1)
