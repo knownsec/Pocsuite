@@ -37,8 +37,13 @@ def registerJsonPoc(pocDict):
 def registerPyPoc(pocDict):
     pocname = pocDict.keys()[0]
     _, moduleName = filepathParser(pocname)
-    importer = StringImporter(moduleName, pocDict[pocname])
-    importer.load_module(moduleName)
+    try:
+        importer = StringImporter(moduleName, pocDict[pocname])
+        importer.load_module(moduleName)
+    except ImportError, ex:
+        errMsg = "%s register failed \"%s\"" % (moduleName, str(ex))
+        logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+
 
 
 def addSysPath(*paths):
