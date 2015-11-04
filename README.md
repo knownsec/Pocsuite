@@ -38,7 +38,7 @@ Pocsuite 是知道创宇安全研究团队打造的一款基于漏洞与 PoC 的
 你可以通过用 Git 来克隆代码仓库中的最新源代码
 
 ```bash
-    $ git clone git@github.com:knownsec/pocsuite.git
+    $ git clone git@github.com:knownsec/Pocsuite.git
 ```
 或者你可以点击 [这里](https://github.com/knownsec/Pocsuite/archive/master.zip) 下载最新的源代码 zip 包,并解压
 
@@ -47,16 +47,22 @@ Pocsuite 是知道创宇安全研究团队打造的一款基于漏洞与 PoC 的
     $ unzip master.zip
 ```
 
-无需其它安装进入 pocsuite 目录,输入即可使用
+```bash
+    $ cd Pocsuite
+    $ python pocsuite.py --version
+```
+
+或者直接使用
 
 ```bash
-    $ python pocsuite.py --version
+    $ pip install pocsuite
+    $ pocsuite --version
 ```
 
 <h2 id="usage">使用方法</h2>
 
 
-Pocsuite 支持命令行模式(cli)和交互式控制台模式(console)
+Pocsuite 支持命令行模式(cli)和交互式控制台模式(console), 如果使用 pip 安装, 直接使用`pocsuite`代替`python pocsuite.py`
 
 <h3 id="climode">命令行模式</h3>
 
