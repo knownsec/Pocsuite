@@ -7,7 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import sys
-from pocsuite import pcsInit
+from pocsuite_cli import pcsInit
 from .lib.core.common import banner
 from .lib.core.common import dataToStdout
 from .lib.core.settings import PCS_OPTIONS

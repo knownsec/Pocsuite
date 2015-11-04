@@ -7,7 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import sys
-from pocsuite import modulePath
+from pocsuite_cli import modulePath
 from .lib.core.consoles import baseConsole
 from .lib.core.data import kb
 from .lib.core.data import paths

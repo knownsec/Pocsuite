@@ -14,7 +14,7 @@ from pocsuite.lib.core.common import banner
 from pocsuite.lib.core.settings import IS_WIN
 from pocsuite.lib.core.common import filepathParser
 from pocsuite.lib.core.option import initializeKb
-from pocsuite.lib.core.option import registerPocFromFile
+from pocsuite.lib.core.option import registerPocFromDict
 from pocsuite.lib.core.option import setMultipleTarget
 from pocsuite.lib.core.option import _setHTTPUserAgent
 from pocsuite.lib.core.option import _setHTTPReferer
@@ -23,7 +23,7 @@ from pocsuite.lib.core.option import _setHTTPProxy
 from pocsuite.lib.core.option import _setHTTPTimeout
 from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
 from pocsuite.lib.controller.check import pocViolation
-from pocsuite.lib.controller.setpoc import setPocFile
+from pocsuite.lib.controller.setpoc import setPoc
 from pocsuite.lib.controller.controller import start
 from pocsuite.thirdparty.cmd2.cmd2 import Cmd
 from pocsuite.thirdparty.oset.pyoset import oset
@@ -111,7 +111,7 @@ class baseConsole(Cmd):
         _setHTTPCookies()
         _setHTTPTimeout()
 
-        registerPocFromFile()
+        registerPocFromDict()
         pocViolation()
 
         setMultipleTarget()
@@ -297,14 +297,14 @@ class pocConsole(Cmd):
         else:
             conf.pocFile = args
 
-        setPocFile()
+        setPoc()
 
         print '[*] load poc file(s) success!'
         print
         pass
 
     def do_loaded(self, args):
-        registerPocFromFile()
+        registerPocFromDict()
 
         graph = PrettyTable(["pocId", "loadedPocsName"])
         graph.align["LoadedPocsName"] = "m"
