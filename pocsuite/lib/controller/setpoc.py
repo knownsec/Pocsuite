@@ -23,36 +23,36 @@ from pocsuite.lib.core.settings import POC_CLASSNAME_REGEX
 from pocsuite.lib.core.settings import POC_REGISTER_STRING
 
 
-def setPocFile():
+def setPoc():
     """
     @function 重新设置conf.pocFile
     """
     if len(conf.pocFile.split(",")) > 1:
         for pocFile in conf.pocFile.split(","):
             pocFile = os.path.abspath(pocFile)
-            retVal = setTemporaryPoc(pocFile)
-            kb.pocFiles.add(retVal)
+            retVal = loadPoc(pocFile)
+            kb.pocs.update(retVal)
     else:
         conf.pocFile = os.path.abspath(conf.pocFile)
         if os.path.isfile(conf.pocFile):
-            retVal = setTemporaryPoc(conf.pocFile)
-            kb.pocFiles.add(retVal)
+            retVal = loadPoc(conf.pocFile)
+            kb.pocs.update(retVal)
         elif os.path.isdir(conf.pocFile):
             pyFiles = glob.glob(os.path.join(conf.pocFile, "*.py"))
             jsonFiles = glob.glob(os.path.join(conf.pocFile, "*.json"))
             pocFiles = pyFiles + jsonFiles
             for pocFile in pocFiles:
-                retVal = setTemporaryPoc(pocFile)
-                kb.pocFiles.add(retVal)
+                retVal = loadPoc(pocFile)
+                kb.pocs.update(retVal)
         else:
             errMsg = "can't find any valid PoCs"
             logger.log(CUSTOM_LOGGING.ERROR, errMsg)
 
 
-def setTemporaryPoc(pocFile):
+def loadPoc(pocFile):
     pocFilename = "_" + os.path.split(pocFile)[1]
-    if not os.path.isdir(paths.POCSUITE_TMP_PATH):
-        os.makedirs(paths.POCSUITE_TMP_PATH)
+    # if not os.path.isdir(paths.POCSUITE_TMP_PATH):
+        # os.makedirs(paths.POCSUITE_TMP_PATH)
     pocname = os.path.join(paths.POCSUITE_TMP_PATH, pocFilename)
     poc = readFile(pocFile)
 
@@ -63,8 +63,7 @@ def setTemporaryPoc(pocFile):
         poc += POC_REGISTER_STRING.format(className)
 
     retVal = multipleReplace(poc, POC_IMPORTDICT)
-    writeFile(pocname, retVal)
-    return pocname
+    return {pocname: retVal}
 
 
 def getPocClassName(poc):

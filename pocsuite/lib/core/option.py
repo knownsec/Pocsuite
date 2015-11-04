@@ -33,7 +33,7 @@ from pocsuite.lib.core.exception import PocsuiteFilePathException
 from pocsuite.lib.core.exception import PocsuiteSyntaxException
 from pocsuite.lib.controller.check import pocViolation
 from pocsuite.lib.controller.check import isOldVersionPoc
-from pocsuite.lib.controller.setpoc import setPocFile
+from pocsuite.lib.controller.setpoc import setPoc
 from pocsuite.thirdparty.socks import socks
 from pocsuite.thirdparty.oset.pyoset import oset
 from pocsuite.thirdparty.colorama.initialise import init as coloramainit
@@ -66,24 +66,25 @@ def initOptions(inputOptions=AttribDict()):
 
 def initializeKb():
     kb.targets = Queue.Queue()
-    kb.pocFiles = set()
+    kb.pocs = {}
     kb.results = oset()
     kb.registeredPocs = {}
 
 
-def registerPocFromFile():
+def registerPocFromDict():
     """
     @function import方式导入Poc文件, import Poc的时候自动rigister了
     """
-    for path in kb.pocFiles:
-        if path.endswith(".py"):
-            if not isOldVersionPoc(path):
-                registerPyPoc(path)
+    for pocname, poc in kb.pocs.items():
+        pocDict = {pocname: poc}
+        if pocname.endswith(".py"):
+            if not isOldVersionPoc(poc):
+                registerPyPoc(pocDict)
             else:
-                warnMsg = "%s is old version poc" % path
+                warnMsg = "%s is old version poc" % pocname
                 logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
-        elif path.endswith(".json"):
-            registerJsonPoc(path)
+        elif poc.endswith(".json"):
+            registerJsonPoc(pocDict)
         else:
             warnMsg = "invalid PoC file %s" % path
             logger.log(CUSTOM_LOGGING.WARNING, errMsg)
@@ -96,8 +97,8 @@ def init():
     _setHTTPTimeout()
     _setHTTPExtraHeaders()
 
-    setPocFile()
-    registerPocFromFile()
+    setPoc()
+    registerPocFromDict()
     pocViolation()
 
     setMultipleTarget()

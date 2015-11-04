@@ -58,8 +58,7 @@ def checkPocInfo(pocname, pocInstance):
     return True
 
 
-def isOldVersionPoc(filename):
-    poc = readFile(filename)
+def isOldVersionPoc(poc):
     for _ in OLD_VERSION_CHARACTER:
         if _ not in poc:
             return False

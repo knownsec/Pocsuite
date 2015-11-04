@@ -27,27 +27,25 @@ from pocsuite.thirdparty.termcolor.termcolor import colored
 
 
 class StringImporter(object):
-
     """
     Use custom meta hook to import modules available as strings. 
     Cp. PEP 302 http://www.python.org/dev/peps/pep-0302/#specification-part-2-registering-hooks
     """
 
-    def __init__(self, modules):
-        self._modules = dict(modules)
-
-    def find_module(self, fullname, path):
-        if fullname in self._modules.keys():
-            return self
-        return None
+    def __init__(self, fullname, contents):
+        self.fullname = fullname 
+        self.contents = contents
 
     def load_module(self, fullname):
-        if not fullname in self._modules.keys():
-            raise ImportError(fullname)
-        new_module = imp.new_module(fullname)
-        exec self._modules[fullname] in new_module.__dict__
-        return new_module
+        if fullname in sys.modules:
+            return sys.modules[fullname]
 
+        mod = sys.modules.setdefault(fullname, imp.new_module(fullname))
+        mod.__file__ = "<%s>" % fullname
+        mod.__loader__ = self
+        code = compile(self.contents, mod.__file__, "exec") 
+        exec code in mod.__dict__
+        return mod
 
 def banner():
     """
