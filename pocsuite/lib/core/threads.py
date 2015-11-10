@@ -83,7 +83,7 @@ def runThreads(numThreads, threadFunction, forwardException=True, startThreadMsg
         logger.log(CUSTOM_LOGGING.ERROR, "thread %s: %s" % (threading.currentThread().getName(), errMsg))
 
     except:
-        from lib.core.common import unhandledExceptionMessage
+        from pocsuite.lib.core.common import unhandledExceptionMessage
 
         print
         kb.threadException = True
