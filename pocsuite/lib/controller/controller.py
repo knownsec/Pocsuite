@@ -19,6 +19,7 @@ from pocsuite.lib.core.exception import PocsuiteMissingPrivileges
 from pocsuite.lib.core.common import getUnicode
 from pocsuite.lib.core.common import reIndent
 from pocsuite.lib.core.common import normalizeUnicode
+from pocsuite.lib.core.common import delModule
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.data import kb
@@ -74,6 +75,7 @@ def pocThreads():
             result.show_result()
 
         kb.results.add(output)
+        delModule(poc.__module__)
 
 
 def _createTargetDirs():
