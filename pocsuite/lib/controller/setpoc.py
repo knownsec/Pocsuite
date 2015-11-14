@@ -27,7 +27,10 @@ def setPoc():
     """
     @function 重新设置conf.pocFile
     """
-    if len(conf.pocFile.split(",")) > 1:
+    if conf.isPocString:
+        retVal = loadPoc(conf.pocFile)
+        kb.pocs.update(retVal)
+    elif len(conf.pocFile.split(",")) > 1:
         for pocFile in conf.pocFile.split(","):
             pocFile = os.path.abspath(pocFile)
             retVal = loadPoc(pocFile)
@@ -50,14 +53,22 @@ def setPoc():
 
 
 def loadPoc(pocFile):
-    pocFilename = "_" + os.path.split(pocFile)[1]
-    # if not os.path.isdir(paths.POCSUITE_TMP_PATH):
-        # os.makedirs(paths.POCSUITE_TMP_PATH)
-    pocname = os.path.join(paths.POCSUITE_TMP_PATH, pocFilename)
-    poc = readFile(pocFile)
+    if conf.isPocString:
+        poc = conf.pocFile
+        if not conf.pocname:
+            errMsg = "Use pocString must provide pocname"
+            logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+        pocname = conf.pocname
+    else:
+        # pocFilename = "_" + os.path.split(pocFile)[1]
+        # if not os.path.isdir(paths.POCSUITE_TMP_PATH):
+            # os.makedirs(paths.POCSUITE_TMP_PATH)
+        # pocname = os.path.join(paths.POCSUITE_TMP_PATH, pocFilename)
+        pocname = os.path.split(pocFile)[1]
+        poc = readFile(pocFile)
 
     if not re.search(POC_REGISTER_REGEX, poc):
-        warnMsg = "poc: %s register is missing" % pocFilename
+        warnMsg = "poc: %s register is missing" % pocname
         logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
         className = getPocClassName(poc)
         poc += POC_REGISTER_STRING.format(className)

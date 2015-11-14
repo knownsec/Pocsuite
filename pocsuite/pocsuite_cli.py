@@ -56,6 +56,7 @@ def pcsInit(PCS_OPTIONS=None):
         initOptions(cmdLineOptions)
         banner()
         conf.showTime = True
+        dataToStdout
 
         dataToStdout("[!] legal disclaimer: %s\n\n" % LEGAL_DISCLAIMER)
         dataToStdout("[*] starting at %s\n\n" % time.strftime("%X"))
