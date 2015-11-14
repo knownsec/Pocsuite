@@ -48,8 +48,6 @@ def initOptions(inputOptions=AttribDict()):
     conf.urlFile = inputOptions.urlFile
     conf.mode = inputOptions.Mode
     conf.pocFile = inputOptions.pocFile
-    conf.isPocString = inputOptions.isPocString
-    conf.pocname = inputOptions.pocname
     conf.randomAgent = inputOptions.randomAgent
     conf.agent = inputOptions.agent
     conf.cookie = inputOptions.cookie
@@ -62,6 +60,12 @@ def initOptions(inputOptions=AttribDict()):
     conf.timeout = inputOptions.timeout
     conf.httpHeaders = HTTP_DEFAULT_HEADER
     conf.params = ast.literal_eval(inputOptions.extra_params) if inputOptions.extra_params else None
+    try:
+        conf.isPocString = inputOptions.isPocString
+        conf.pocname = inputOptions.pocname
+    except:
+        conf.isPocString = False
+
 
     initializeKb()
 
