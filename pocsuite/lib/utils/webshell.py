@@ -114,7 +114,7 @@ class JspShell(Webshell):
     _keyword = '202cb962ac59075b964b07152d234b70'
 
 
-class JspVeriry(VerifyShell):
+class JspVerify(VerifyShell):
     _content = '<%@ page import="java.util.*,java.io.*" %>\n' \
                '<%@ page import="java.io.*"%>\n' \
                '<%@ page import="java.util.*"%>\n' \
