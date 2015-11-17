@@ -60,6 +60,8 @@ def initOptions(inputOptions=AttribDict()):
     conf.timeout = inputOptions.timeout
     conf.httpHeaders = HTTP_DEFAULT_HEADER
     conf.params = ast.literal_eval(inputOptions.extra_params) if inputOptions.extra_params else None
+    if inputOptions.host:
+        conf.httpHeaders.update({'Host': inputOptions.host})
     try:
         conf.isPocString = inputOptions.isPocString
         conf.pocname = inputOptions.pocname

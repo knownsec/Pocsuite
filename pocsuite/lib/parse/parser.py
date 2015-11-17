@@ -69,6 +69,9 @@ def parseCmdOptions():
     request.add_argument("--headers", dest="headers",
                          help="Extra headers (e.g. \"Accept-Language: zh-CN,zh;q=0.8\")")
 
+    request.add_argument("--host", dest="host",
+                         help="Host in HTTP headers.")
+
     params = parser.add_argument_group("params")
 
     params.add_argument("--extra-params", dest="extra_params",
