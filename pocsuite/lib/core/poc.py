@@ -7,6 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import types
+from pocsuite.thirdparty.requests.exceptions import ConnectTimeout
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.enums import OUTPUT_STATUS
@@ -50,6 +51,17 @@ class POCBase(object):
         except NotImplementedError:
             logger.log(CUSTOM_LOGGING.ERROR, 'POC: %s not defined ' '%s mode' % (self.name, self.mode))
             output = Output(self)
+
+        except ConnectTimeout:
+            logger.log(CUSTOM_LOGGING.WARNING, 'POC: %s timeout, start it over.' % self.name)
+            try:
+                if self.mode == 'attack':
+                    output = self._attack()
+                else:
+                    output = self._verify()
+            except ConnectTimeout:
+                logger.log(CUSTOM_LOGGING.ERROR, 'POC: %s time-out retry failed!' % self.name)
+                output = Output(self)
 
         except Exception, e:
             logger.log(CUSTOM_LOGGING.ERROR, str(e))
