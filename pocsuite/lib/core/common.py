@@ -13,6 +13,7 @@ import imp
 import ntpath
 import inspect
 import posixpath
+import marshal
 import unicodedata
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.convert import stdoutencode
@@ -43,7 +44,10 @@ class StringImporter(object):
         mod = sys.modules.setdefault(fullname, imp.new_module(fullname))
         mod.__file__ = "<%s>" % fullname
         mod.__loader__ = self
-        code = compile(self.contents, mod.__file__, "exec") 
+        if conf.isPycFile:
+            code = marshal.loads(self.contents[8:])
+        else:
+            code = compile(self.contents, mod.__file__, "exec")
         exec code in mod.__dict__
         return mod
 

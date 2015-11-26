@@ -53,6 +53,9 @@ def setPoc():
 
 
 def loadPoc(pocFile):
+    if pocFile.endswith(".pyc"):
+        conf.isPycFile = True
+
     if conf.isPocString:
         poc = conf.pocFile
         if not conf.pocname:
@@ -67,13 +70,16 @@ def loadPoc(pocFile):
         pocname = os.path.split(pocFile)[1]
         poc = readFile(pocFile)
 
-    if not re.search(POC_REGISTER_REGEX, poc):
-        warnMsg = "poc: %s register is missing" % pocname
-        logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
-        className = getPocClassName(poc)
-        poc += POC_REGISTER_STRING.format(className)
+    if not conf.isPycFile:
+        if not re.search(POC_REGISTER_REGEX, poc):
+            warnMsg = "poc: %s register is missing" % pocname
+            logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
+            className = getPocClassName(poc)
+            poc += POC_REGISTER_STRING.format(className)
 
-    retVal = multipleReplace(poc, POC_IMPORTDICT)
+        retVal = multipleReplace(poc, POC_IMPORTDICT)
+    else:
+        retVal = poc
     return {pocname: retVal}
 
 

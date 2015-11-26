@@ -67,6 +67,7 @@ def initOptions(inputOptions=AttribDict()):
         conf.pocname = inputOptions.pocname
     except:
         conf.isPocString = False
+    conf.isPycFile = False
 
 
     initializeKb()
@@ -94,8 +95,11 @@ def registerPocFromDict():
         elif poc.endswith(".json"):
             registerJsonPoc(pocDict)
         else:
-            warnMsg = "invalid PoC file %s" % path
-            logger.log(CUSTOM_LOGGING.WARNING, errMsg)
+            if conf.isPycFile:
+                registerPyPoc(pocDict)
+            else:
+                warnMsg = "invalid PoC %s" % pocDict["pocname"]
+                logger.log(CUSTOM_LOGGING.WARNING, errMsg)
 
 
 def init():
