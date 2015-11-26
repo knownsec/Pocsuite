@@ -67,7 +67,7 @@ def parseCmdOptions():
                          help="Seconds to wait before timeout connection (default 30)")
 
     request.add_argument("--headers", dest="headers",
-                         help="Extra headers (e.g. \"Accept-Language: zh-CN,zh;q=0.8\")")
+            help="Extra headers (e.g. \"key1: value1\\nkey2: value2\")")
 
     request.add_argument("--host", dest="host",
                          help="Host in HTTP headers.")
