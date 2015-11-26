@@ -58,6 +58,8 @@ def pocThreads():
     """
     @function multiThread executing
     """
+    pCollect = set()
+
     while not kb.targets.empty() and kb.threadContinue:
         target, poc, pocname = kb.targets.get()
         infoMsg = "poc:'%s' target:'%s'" % (pocname, target)
@@ -68,6 +70,7 @@ def pocThreads():
             result = execReq(poc, conf.mode, target)
             output = (target, pocname, pocInfo["vulID"], pocInfo["appName"], pocInfo["appVersion"], "success" if result else "failed", time.strftime("%Y-%m-%d %X", time.localtime()))
         else:
+            pCollect.add(poc)
             result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=True)
             if not result:
                 continue
@@ -75,7 +78,9 @@ def pocThreads():
             result.show_result()
 
         kb.results.add(output)
-        delModule(poc.__module__)
+
+    for p in pCollect:
+        delModule(p.__module__)
 
 
 def _createTargetDirs():
