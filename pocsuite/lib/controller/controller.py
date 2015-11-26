@@ -42,10 +42,18 @@ def start():
     if not kb.results:
         return
 
+    toNum, sucNum = 0, 0
     for row in kb.results:
         resultTable.add_row(list(row)[:-1])
+        toNum += 1
+        if row[5] == 'success':
+            sucNum += 1
+        break
 
     print resultTable
+    # infoMsg = "{} of {} success !".format(sucNum, toNum)
+    # logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
+    print "success : {} / {}".format(sucNum, toNum)
 
     _createTargetDirs()
     _setRecordFiles()
