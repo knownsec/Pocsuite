@@ -61,6 +61,7 @@ class POCBase(object):
                         output = self._attack()
                     else:
                         output = self._verify()
+                    break
                 except ConnectTimeout:
                     logger.log(CUSTOM_LOGGING.ERROR, 'POC: %s time-out retry failed!' % self.name)
                     output = Output(self)
