@@ -18,7 +18,6 @@ from pocsuite.lib.core.exception import PocsuiteMissingPrivileges
 from pocsuite.lib.core.common import getUnicode
 from pocsuite.lib.core.common import reIndent
 from pocsuite.lib.core.common import normalizeUnicode
-from pocsuite.lib.core.common import delModule
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.data import kb
@@ -64,7 +63,7 @@ def pocThreads():
     """
     @function multiThread executing
     """
-    pCollect = set()
+    kb.pCollect = set()
 
     while not kb.targets.empty() and kb.threadContinue:
         target, poc, pocname = kb.targets.get()
@@ -76,7 +75,7 @@ def pocThreads():
             result = execReq(poc, conf.mode, target)
             output = (target, pocname, pocInfo["vulID"], pocInfo["appName"], pocInfo["appVersion"], "success" if result else "failed", time.strftime("%Y-%m-%d %X", time.localtime()))
         else:
-            pCollect.add(poc)
+            kb.pCollect.add(poc.__module__)
             result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=True)
             if not result:
                 continue
@@ -84,9 +83,6 @@ def pocThreads():
             result.show_result()
 
         kb.results.add(output)
-
-    for p in pCollect:
-        delModule(p.__module__)
 
 
 def _createTargetDirs():
