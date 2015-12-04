@@ -14,10 +14,9 @@ from pocsuite.lib.utils.password import getWeakPassword
 from pocsuite.lib.utils.password import genPassword
 
 from pocsuite.lib.utils.funs import url2ip
-
-from pocsuite.lic.utils.funs import writeText
-from pocsuite.lic.utils.funs import writeBinary
-
-from pocsuite.lic.utils.funs import loadText
-
 from pocsuite.lib.utils.funs import getExtPar
+from pocsuite.lib.utils.funs import convExtPar
+
+from pocsuite.lib.utils.funs import writeText
+from pocsuite.lib.utils.funs import writeBinary
+from pocsuite.lib.utils.funs import loadText

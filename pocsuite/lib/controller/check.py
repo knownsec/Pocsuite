@@ -10,20 +10,16 @@ from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.settings import POC_ATTRS
 from pocsuite.lib.core.settings import OLD_VERSION_CHARACTER
-from pocsuite.lib.core.common import readFile
 from pocsuite.lib.core.data import kb
 
 
 def pocViolation():
     violation = False
-    #infoMsg = "checking PoCs.."
-    #logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
     for pocname, pocInstance in kb.registeredPocs.items():
         if isinstance(pocInstance, dict):
             violation = checkJsonInfo(pocname, pocInstance)
         else:
             violation = checkPocInfo(pocname, pocInstance)
-    #logger.log(CUSTOM_LOGGING.SUCCESS, infoMsg)
     return violation
 
 
@@ -31,9 +27,9 @@ def checkJsonInfo(pocname, pocInstance):
     infos = []
     infoMsg = "checking %s" % pocname
     logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
-    if pocInstance.has_key('pocInfo'):
+    if 'pocInfo' in pocInstance:
         for attr in POC_ATTRS:
-            if pocInstance['pocInfo'].has_key(attr) and pocInstance['pocInfo'].get(attr):
+            if attr in pocInstance['pocInfo'] and pocInstance['pocInfo'].get(attr):
                 continue
             infos.append(attr)
         if infos:

@@ -9,14 +9,12 @@ See the file 'docs/COPYING' for copying permission
 import re
 import os
 import glob
-import json
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
-from pocsuite.lib.core.data import paths
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.common import multipleReplace
-from pocsuite.lib.core.common import readFile, writeFile
+from pocsuite.lib.core.common import readFile
 from pocsuite.lib.core.settings import POC_IMPORTDICT
 from pocsuite.lib.core.settings import POC_REGISTER_REGEX
 from pocsuite.lib.core.settings import POC_CLASSNAME_REGEX

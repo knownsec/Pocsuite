@@ -6,11 +6,13 @@ Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
 
+import ast
 import codecs
 from socket import gethostbyname
 from urlparse import urlsplit
 
 from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
 
 
@@ -62,3 +64,14 @@ def writeBinary(fileName, content, encoding='utf8'):
         logger.log(CUSTOM_LOGGING.SYSINFO, '"%s" write to Text file "%s"' % (content, fileName))
     except Exception as e:
         logger.log(CUSTOM_LOGGING.WARNING, e)
+
+
+def getExtPar():
+    return conf.params
+
+def convExtPar():
+    try:
+        return ast.literal_eval(conf.params)
+    except ValueError as e:
+        logger.log(CUSTOM_LOGGING.ERROR, "conv extra-params failed : %s" % e)
+        logger.log(CUSTOM_LOGGING.ERROR, "try to use getExtPar instead.")
