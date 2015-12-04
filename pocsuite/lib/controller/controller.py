@@ -48,7 +48,7 @@ def start():
         toNum += 1
         if row[5] == 'success':
             sucNum += 1
-        break
+
 
     print resultTable
     # infoMsg = "{} of {} success !".format(sucNum, toNum)
