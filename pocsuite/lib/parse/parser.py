@@ -11,6 +11,7 @@ from pocsuite.lib.core.data import defaults
 from pocsuite.lib.core.settings import INDENT, USAGE, VERSION
 from pocsuite.thirdparty.argparse import argparse
 
+
 def parseCmdOptions():
     """
     @function parses the command line parameters and arguments
@@ -65,6 +66,9 @@ def parseCmdOptions():
 
     request.add_argument("--timeout", dest="timeout",
                          help="Seconds to wait before timeout connection (default 30)")
+
+    request.add_argument("--retry", dest="retry",
+                         help="Time out retrials times.")
 
     request.add_argument("--headers", dest="headers",
             help="Extra headers (e.g. \"key1: value1\\nkey2: value2\")")

@@ -7,7 +7,6 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import os
-import re
 import time
 import tempfile
 from textwrap import dedent
@@ -49,7 +48,6 @@ def start():
         if row[5] == 'success':
             sucNum += 1
 
-
     print resultTable
     # infoMsg = "{} of {} success !".format(sucNum, toNum)
     # logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
@@ -74,7 +72,7 @@ def pocThreads():
         logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
         # TODO json
         if isinstance(poc, dict):
-            pocInfo, pocDevil = poc['pocInfo'], poc["pocExecute"]
+            pocInfo = poc['pocInfo']
             result = execReq(poc, conf.mode, target)
             output = (target, pocname, pocInfo["vulID"], pocInfo["appName"], pocInfo["appVersion"], "success" if result else "failed", time.strftime("%Y-%m-%d %X", time.localtime()))
         else:
@@ -120,7 +118,7 @@ def _createTargetDirs():
 
 
 def _setRecordFiles():
-    for (target, pocname, pocid, component, version, status, time) in kb.results:
+    for (target, pocname, pocid, component, version, status, r_time) in kb.results:
         outputPath = os.path.join(getUnicode(paths.POCSUITE_OUTPUT_PATH), normalizeUnicode(getUnicode(target)))
 
         if not os.path.isdir(outputPath):
@@ -160,7 +158,7 @@ def _setRecordFiles():
 
         try:
             with open(recordFile, "a+") as f:
-                f.write("\n" + ",".join([pocname, pocid, component, version, status, time]))
+                f.write("\n" + ",".join([pocname, pocid, component, version, status, r_time]))
         except IOError, ex:
             if "denied" in getUnicode(ex):
                 errMsg = "you don't have enough permissions "

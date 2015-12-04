@@ -59,7 +59,8 @@ def initOptions(inputOptions=AttribDict()):
     conf.proxyCred = inputOptions.proxyCred
     conf.timeout = inputOptions.timeout
     conf.httpHeaders = HTTP_DEFAULT_HEADER
-    conf.params = ast.literal_eval(inputOptions.extra_params) if inputOptions.extra_params else None
+    conf.params = inputOptions.extra_params if inputOptions.extra_params else None
+    conf.retry = int(inputOptions.retry) if inputOptions.retry else None
     if inputOptions.host:
         conf.httpHeaders.update({'Host': inputOptions.host})
     try:
