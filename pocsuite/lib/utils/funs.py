@@ -69,6 +69,7 @@ def writeBinary(fileName, content, encoding='utf8'):
 def getExtPar():
     return conf.params
 
+
 def convExtPar():
     try:
         return ast.literal_eval(conf.params)

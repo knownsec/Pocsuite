@@ -11,6 +11,7 @@ from pocsuite.lib.core.data import defaults
 from pocsuite.lib.core.settings import INDENT, USAGE, VERSION
 from pocsuite.thirdparty.argparse import argparse
 
+
 def parseCmdOptions():
     """
     @function parses the command line parameters and arguments
