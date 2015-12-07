@@ -83,6 +83,8 @@ def pocThreads():
             result.show_result()
 
         kb.results.add(output)
+        if isinstance(conf.delay, (int, float)) and conf.delay > 0:
+            time.sleep(conf.delay / 1000)
 
 
 def _createTargetDirs():
