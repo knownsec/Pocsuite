@@ -211,9 +211,11 @@ def setMultipleTarget():
                     logger.log(CUSTOM_LOGGING.ERROR, errMsg)
             else:
                 conf.url = conf.url.split(',')
-        for url in conf.url:
-            if url:
-                kb.targets.put((url, pocInstance, pocname))
+
+            print conf.url
+            for url in conf.url:
+                if url:
+                    kb.targets.put((url, pocInstance, pocname))
 
         return
 
