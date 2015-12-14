@@ -212,7 +212,6 @@ def setMultipleTarget():
             else:
                 conf.url = conf.url.split(',')
 
-            print conf.url
             for url in conf.url:
                 if url:
                     kb.targets.put((url, pocInstance, pocname))
