@@ -106,8 +106,22 @@ REPORT_HTMLBASE = """\
             <meta charset="utf-8">
             <title></title>
             <style type="text/css">
-            caption{padding-top:8px;padding-bottom:8px;color:#777;text-align:left}th{text-align:left}.table{width:100%%;max-width:100%%;margin-bottom:20px}.table>thead>tr>th,.table>tbody>tr>th,.table>tfoot>tr>th,.table>thead>tr>td,.table>tbody>tr>td,.table>tfoot>tr>td{padding:8px;line-height:1.42857143;vertical-align:top;border-top:1px solid #ddd}.table>thead>tr>th{vertical-align:bottom;border-bottom:2px solid #ddd}
+            caption{padding-top:8px;padding-bottom:8px;color:#777;text-align:left}th{text-align:left}.table{width:100%%;max-width:100%%;margin-bottom:20px}.table>thead>tr>th,.table>tbody>tr>th,.table>tfoot>tr>th,.table>thead>tr>td,.table>tbody>tr>td,.table>tfoot>tr>td{padding:8px;line-height:1.42857143;vertical-align:top;border-top:1px solid #ddd}.table>thead>tr>th{vertical-align:bottom;border-bottom:2px solid #ddd}.result0{display:none}.result1{}.status{cursor: pointer;}
             </style>
+            <script>
+                function showDetail(dom){
+                    parent = dom.parentElement;
+                    detail = parent.children[1];
+                    if (detail == "undefined"){
+                        return False
+                    };
+                    if (detail.className == 'result0'){
+                        detail.className = 'result1';
+                    }else{
+                        detail.className = 'result0';
+                    };
+                }
+            </script>
         </head>
         <body>
             <div class="container">
