@@ -112,8 +112,8 @@ REPORT_HTMLBASE = """\
                 function showDetail(dom){
                     parent = dom.parentElement;
                     detail = parent.children[1];
-                    if (detail == "undefined"){
-                        return False
+                    if (detail == undefined){
+                        return;
                     };
                     if (detail.className == 'result0'){
                         detail.className = 'result1';
