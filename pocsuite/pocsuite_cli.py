@@ -93,7 +93,7 @@ def pcsInit(PCS_OPTIONS=None):
         excMsg = traceback.format_exc()
         dataToStdout(excMsg)
 
-    finally:
+    if 'pCollect' in kb:
         for p in kb.pCollect:
             delModule(p) 
 
