@@ -13,3 +13,5 @@
 #####7. 完善入口参数 url 格式, 支持多个 url 用逗号分隔, 和 c 段的 /24 形式
 
 #####8. 增加从 urllib2 - opener 获取 headers 的 api
+
+#####9. 增加 report 的显示条目, 对于 verify 也增加 report 的 detail 内容
