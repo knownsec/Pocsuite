@@ -8,35 +8,35 @@ See the file 'docs/COPYING' for copying permission
 
 import re
 import os
+import ast
 import copy
 import random
 import Queue
 import urlparse
 import socket
-from lib.core.data import logger
-from lib.core.data import conf
-from lib.core.data import kb
-from lib.core.data import paths
-from lib.core.datatype import AttribDict
-from lib.core.settings import IS_WIN
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.enums import PROXY_TYPE
-from lib.core.enums import HTTP_HEADER
-from lib.core.settings import HTTP_DEFAULT_HEADER
-from lib.core.common import getFileItems
-from lib.core.common import safeExpandUser
-from lib.core.common import getPublicTypeMembers
-from lib.core.register import registerJsonPoc
-from lib.core.register import registerPyPoc
-from lib.core.exception import PocsuiteFilePathException
-from lib.core.exception import PocsuiteSyntaxException
-from lib.controller.check import pocViolation
-from lib.controller.check import isOldVersionPoc
-from lib.controller.setpoc import setPocFile
-from thirdparty.socks import socks
-from thirdparty.oset.pyoset import oset
-from thirdparty.colorama.initialise import init as coloramainit
-
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import paths
+from pocsuite.lib.core.datatype import AttribDict
+from pocsuite.lib.core.settings import IS_WIN
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.enums import PROXY_TYPE
+from pocsuite.lib.core.enums import HTTP_HEADER
+from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
+from pocsuite.lib.core.common import getFileItems
+from pocsuite.lib.core.common import safeExpandUser
+from pocsuite.lib.core.common import getPublicTypeMembers
+from pocsuite.lib.core.register import registerJsonPoc
+from pocsuite.lib.core.register import registerPyPoc
+from pocsuite.lib.core.exception import PocsuiteFilePathException
+from pocsuite.lib.core.exception import PocsuiteSyntaxException
+from pocsuite.lib.controller.check import pocViolation
+from pocsuite.lib.controller.check import isOldVersionPoc
+from pocsuite.lib.controller.setpoc import setPoc
+from pocsuite.thirdparty.socks import socks
+from pocsuite.thirdparty.oset.pyoset import oset
+from pocsuite.thirdparty.colorama.initialise import init as coloramainit
 
 
 def initOptions(inputOptions=AttribDict()):
@@ -58,35 +58,50 @@ def initOptions(inputOptions=AttribDict()):
     conf.proxy = inputOptions.proxy
     conf.proxyCred = inputOptions.proxyCred
     conf.timeout = inputOptions.timeout
-    conf.params = None
     conf.httpHeaders = HTTP_DEFAULT_HEADER
+    conf.params = inputOptions.extra_params if inputOptions.extra_params else None
+    conf.retry = int(inputOptions.retry) if inputOptions.retry else None
+    conf.delay = float(inputOptions.delay) if inputOptions.delay else None
+    if inputOptions.host:
+        conf.httpHeaders.update({'Host': inputOptions.host})
+    try:
+        conf.isPocString = inputOptions.isPocString
+        conf.pocname = inputOptions.pocname
+    except:
+        conf.isPocString = False
+    conf.isPycFile = False
+
 
     initializeKb()
 
 
 def initializeKb():
     kb.targets = Queue.Queue()
-    kb.pocFiles = set()
+    kb.pocs = {}
     kb.results = oset()
     kb.registeredPocs = {}
 
 
-def registerPocFromFile():
+def registerPocFromDict():
     """
     @function import方式导入Poc文件, import Poc的时候自动rigister了
     """
-    for path in kb.pocFiles:
-        if path.endswith(".py"):
-            if not isOldVersionPoc(path):
-                registerPyPoc(path)
+    for pocname, poc in kb.pocs.items():
+        pocDict = {pocname: poc}
+        if pocname.endswith(".py"):
+            if not isOldVersionPoc(poc):
+                registerPyPoc(pocDict)
             else:
-                warnMsg = "%s is old version poc" % path
+                warnMsg = "%s is old version poc" % pocname
                 logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
-        elif path.endswith(".json"):
-            registerJsonPoc(path)
+        elif poc.endswith(".json"):
+            registerJsonPoc(pocDict)
         else:
-            warnMsg = "invalid PoC file %s" % path
-            logger.log(CUSTOM_LOGGING.WARNING, errMsg)
+            if conf.isPycFile:
+                registerPyPoc(pocDict)
+            else:
+                warnMsg = "invalid PoC %s" % pocDict["pocname"]
+                logger.log(CUSTOM_LOGGING.WARNING, errMsg)
 
 
 def init():
@@ -96,14 +111,16 @@ def init():
     _setHTTPTimeout()
     _setHTTPExtraHeaders()
 
-    setPocFile()
-    registerPocFromFile()
+    setPoc()
+    registerPocFromDict()
     pocViolation()
 
     setMultipleTarget()
     _setHTTPProxy()
 
 # TODO
+
+
 def _setHTTPUserAgent():
     """
     @function Set the HTTP User-Agent header.
@@ -178,11 +195,27 @@ def _setHTTPExtraHeaders():
                 errMsg = "invalid header value: %s. Valid header format is 'name:value'" % repr(headerValue).lstrip('u')
                 raise PocsuiteSyntaxException(errMsg)
 
+
 def setMultipleTarget():
 
     if not conf.urlFile:
         for pocname, pocInstance in kb.registeredPocs.items():
-            kb.targets.put((conf.url, pocInstance, pocname))
+            if conf.url.endswith('/24'):
+                try:
+                    socket.inet_aton(conf.url.split('/')[0])
+                    base_addr = conf.url[:conf.url.rfind('.') + 1]
+                    conf.url = ['{}{}'.format(base_addr, i) \
+                                        for i in xrange(1, 255 + 1)]
+                except socket.error:
+                    errMsg = 'only id address acceptable'
+                    logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+            else:
+                conf.url = conf.url.split(',')
+
+            for url in conf.url:
+                if url:
+                    kb.targets.put((url, pocInstance, pocname))
+
         return
 
     conf.urlFile = safeExpandUser(conf.urlFile)

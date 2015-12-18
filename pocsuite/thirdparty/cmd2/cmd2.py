@@ -40,7 +40,7 @@ import platform
 import copy
 from code import InteractiveConsole, InteractiveInterpreter
 from optparse import make_option
-from thirdparty.pyparsing import pyparsing
+from pocsuite.thirdparty.pyparsing import pyparsing
 
 __version__ = '0.6.8'
 

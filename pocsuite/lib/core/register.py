@@ -9,11 +9,12 @@ See the file 'docs/COPYING' for copying permission
 import os
 import sys
 import json
-from lib.core.data import kb
-from lib.core.data import logger
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.common import filepathParser
-from lib.core.common import changeToPyImportType
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.common import filepathParser
+from pocsuite.lib.core.common import changeToPyImportType
+from pocsuite.lib.core.common import StringImporter
 
 
 def registerPoc(pocClass):
@@ -24,29 +25,25 @@ def registerPoc(pocClass):
     kb.registeredPocs[module] = pocClass()
 
 
-def registerJsonPoc(path):
-    _, pocname = filepathParser(path)
+def registerJsonPoc(pocDict):
+    pocname = pocDict.keys()[0]
     if pocname in kb.registeredPocs:
         return
 
-    with open(path) as f:
-        jsonPoc = json.load(f)
-        kb.registeredPocs[pocname] = jsonPoc
+    jsonPoc = json.load(pocDict[pocname])
+    kb.registeredPocs[pocname] = jsonPoc
 
 
-def registerPyPoc(path):
-    _, moduleName = filepathParser(path)
-    module = changeToPyImportType(path)
+def registerPyPoc(pocDict):
+    pocname = pocDict.keys()[0]
+    _, moduleName = filepathParser(pocname)
     try:
-        __import__(module, fromlist=["*"])
-    except ImportError:
-        # TODO 需要再搞一下
-        addSysPath(_)
-        try:
-            __import__(moduleName, fromlist=["*"])
-        except ImportError, ex:
-            errMsg = "%s register failed \"%s\"" % (path, str(ex))
-            logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+        importer = StringImporter(moduleName, pocDict[pocname])
+        importer.load_module(moduleName)
+    except ImportError, ex:
+        errMsg = "%s register failed \"%s\"" % (moduleName, str(ex))
+        logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+
 
 
 def addSysPath(*paths):

@@ -9,22 +9,76 @@ See the file 'docs/COPYING' for copying permission
 import os
 import re
 import sys
+import imp
 import ntpath
 import inspect
 import posixpath
+import marshal
 import unicodedata
-from lib.core.data import conf
-from lib.core.convert import stdoutencode
-from lib.core.log import LOGGER_HANDLER
-from lib.core.data import paths
-from lib.core.exception import PocsuiteGenericException
-from thirdparty.odict.odict import OrderedDict
-from lib.core.settings import (BANNER, GIT_PAGE, ISSUES_PAGE, PLATFORM, PYVERSION,
-                               VERSION_STRING)
-from lib.core.settings import UNICODE_ENCODING, INVALID_UNICODE_CHAR_FORMAT
-from lib.core.exception import PocsuiteSystemException
-from thirdparty.termcolor.termcolor import colored
+from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.convert import stdoutencode
+from pocsuite.lib.core.log import LOGGER_HANDLER
+from pocsuite.lib.core.data import paths
+from pocsuite.lib.core.exception import PocsuiteGenericException
+from pocsuite.thirdparty.odict.odict import OrderedDict
+from pocsuite.lib.core.settings import (BANNER, GIT_PAGE, ISSUES_PAGE, PLATFORM, PYVERSION, VERSION_STRING)
+from pocsuite.lib.core.settings import UNICODE_ENCODING, INVALID_UNICODE_CHAR_FORMAT
+from pocsuite.lib.core.exception import PocsuiteSystemException
+from pocsuite.thirdparty.termcolor.termcolor import colored
 
+
+class StringImporter(object):
+    """
+    Use custom meta hook to import modules available as strings. 
+    Cp. PEP 302 http://www.python.org/dev/peps/pep-0302/#specification-part-2-registering-hooks
+    """
+
+    def __init__(self, fullname, contents):
+        self.fullname = fullname 
+        self.contents = contents
+
+    def load_module(self, fullname):
+        if fullname in sys.modules:
+            return sys.modules[fullname]
+
+        mod = sys.modules.setdefault(fullname, imp.new_module(fullname))
+        mod.__file__ = "<%s>" % fullname
+        mod.__loader__ = self
+        if conf.isPycFile:
+            code = marshal.loads(self.contents[8:])
+        else:
+            code = compile(self.contents, mod.__file__, "exec")
+        exec code in mod.__dict__
+        return mod
+
+def delModule(modname, paranoid=None):
+    from sys import modules
+    try:
+        thismod = modules[modname]
+    except KeyError:
+        raise ValueError(modname)
+    these_symbols = dir(thismod)
+    if paranoid:
+        try:
+            paranoid[:]  # sequence support
+        except:
+            raise ValueError('must supply a finite list for paranoid')
+        else:
+            these_symbols = paranoid[:]
+    del modules[modname]
+    for mod in modules.values():
+        try:
+            delattr(mod, modname)
+        except AttributeError:
+            pass
+        if paranoid:
+            for symbol in these_symbols:
+                if symbol[:2] == '__':  # ignore special symbols
+                    continue
+                try:
+                    delattr(mod, symbol)
+                except AttributeError:
+                    pass
 
 def banner():
     """

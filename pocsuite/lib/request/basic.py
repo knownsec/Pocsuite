@@ -5,8 +5,8 @@
 Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
-from lib.request.requestspatch import requestsPatch
+from pocsuite.lib.request.requestspatch import requestsPatch
 
-import thirdparty.requests as req
+import pocsuite.thirdparty.requests as req
 
 requestsPatch()

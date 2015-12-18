@@ -7,11 +7,13 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import types
-from lib.core.data import logger
-from lib.core.enums import CUSTOM_LOGGING
-from lib.core.enums import OUTPUT_STATUS
-from lib.core.common import parseTargetUrl
-from lib.core.data import kb
+from pocsuite.thirdparty.requests.exceptions import ConnectTimeout
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.enums import OUTPUT_STATUS
+from pocsuite.lib.core.common import parseTargetUrl
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import conf
 
 
 class POCBase(object):
@@ -50,6 +52,23 @@ class POCBase(object):
         except NotImplementedError:
             logger.log(CUSTOM_LOGGING.ERROR, 'POC: %s not defined ' '%s mode' % (self.name, self.mode))
             output = Output(self)
+
+        except ConnectTimeout, e:
+            while conf.retry > 0:
+                logger.log(CUSTOM_LOGGING.WARNING, 'POC: %s timeout, start it over.' % self.name)
+                try:
+                    if self.mode == 'attack':
+                        output = self._attack()
+                    else:
+                        output = self._verify()
+                    break
+                except ConnectTimeout:
+                    logger.log(CUSTOM_LOGGING.ERROR, 'POC: %s time-out retry failed!' % self.name)
+                    output = Output(self)
+                conf.retry -= 1
+            else:
+                logger.log(CUSTOM_LOGGING.ERROR, str(e))
+                output = Output(self)
 
         except Exception, e:
             logger.log(CUSTOM_LOGGING.ERROR, str(e))

@@ -6,10 +6,10 @@ Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
 See the file 'docs/COPYING' for copying permission
 """
 
-import argparse
 import os
-from lib.core.data import defaults
-from lib.core.settings import INDENT, USAGE, VERSION
+from pocsuite.lib.core.data import defaults
+from pocsuite.lib.core.settings import INDENT, USAGE, VERSION
+from pocsuite.thirdparty.argparse import argparse
 
 
 def parseCmdOptions():
@@ -67,8 +67,22 @@ def parseCmdOptions():
     request.add_argument("--timeout", dest="timeout",
                          help="Seconds to wait before timeout connection (default 30)")
 
+    request.add_argument("--retry", dest="retry",
+                         help="Time out retrials times.")
+
+    request.add_argument("--delay", dest="delay",
+                         help="Delay between two request of one thread")
+
     request.add_argument("--headers", dest="headers",
-                         help="Extra headers (e.g. \"Accept-Language: zh-CN,zh;q=0.8\")")
+            help="Extra headers (e.g. \"key1: value1\\nkey2: value2\")")
+
+    request.add_argument("--host", dest="host",
+                         help="Host in HTTP headers.")
+
+    params = parser.add_argument_group("params")
+
+    params.add_argument("--extra-params", dest="extra_params",
+                        help="Extra params (e.g. \"{username: \'***\', password: \'***\'}\")")
 
     optimization = parser.add_argument_group("optimization")
 
@@ -78,6 +92,8 @@ def parseCmdOptions():
     optimization.add_argument("--report", dest="report",
                               help="Save a html report to file (e.g. \"./report.html\")")
 
+    optimization.add_argument("--batch", dest="batch",
+                              help="Automatically choose defaut choice without asking.")
 
     args = parser.parse_args()
     return args.__dict__

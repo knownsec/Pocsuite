@@ -9,7 +9,7 @@ See the file 'docs/COPYING' for copying permission
 import copy
 import types
 
-from exception import PocsuiteDataException
+from pocsuite.lib.core.exception import PocsuiteDataException
 
 
 class AttribDict(dict):
