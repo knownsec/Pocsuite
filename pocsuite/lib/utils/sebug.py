@@ -10,22 +10,4 @@ from pocsuite.thirdparty.knowledge.webservice import Clinet
 
 
 class sebugBase():
-
-    def __init__:
-        self.token = None
-        self.clinet = None
-
-    def show_static(self):
-        pass
-
-    def retrieve_poc(self):
-        pass
-
-    def self_profile(self):
-        pass
-
-    def purchased_poc(self):
-        pass
-
-    def show_rank(self):
-        pass
+    pass
