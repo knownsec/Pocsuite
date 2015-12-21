@@ -18,7 +18,6 @@ from pocsuite.lib.core.exception import PocsuiteMissingPrivileges
 from pocsuite.lib.core.common import getUnicode
 from pocsuite.lib.core.common import reIndent
 from pocsuite.lib.core.common import normalizeUnicode
-from pocsuite.lib.core.common import delModule
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.data import kb
@@ -43,7 +42,7 @@ def start():
 
     toNum, sucNum = 0, 0
     for row in kb.results:
-        resultTable.add_row(list(row)[:-1])
+        resultTable.add_row(list(row)[:-2])
         toNum += 1
         if row[5] == 'success':
             sucNum += 1
@@ -64,7 +63,7 @@ def pocThreads():
     """
     @function multiThread executing
     """
-    pCollect = set()
+    kb.pCollect = set()
 
     while not kb.targets.empty() and kb.threadContinue:
         target, poc, pocname = kb.targets.get()
@@ -74,19 +73,18 @@ def pocThreads():
         if isinstance(poc, dict):
             pocInfo = poc['pocInfo']
             result = execReq(poc, conf.mode, target)
-            output = (target, pocname, pocInfo["vulID"], pocInfo["appName"], pocInfo["appVersion"], "success" if result else "failed", time.strftime("%Y-%m-%d %X", time.localtime()))
+            output = (target, pocname, pocInfo["vulID"], pocInfo["appName"], pocInfo["appVersion"], "success" if result else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
         else:
-            pCollect.add(poc)
+            kb.pCollect.add(poc.__module__)
             result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=True)
             if not result:
                 continue
-            output = (target, pocname, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()))
+            output = (target, pocname, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
             result.show_result()
 
         kb.results.add(output)
-
-    for p in pCollect:
-        delModule(p.__module__)
+        if isinstance(conf.delay, (int, float)) and conf.delay > 0:
+            time.sleep(conf.delay / 1000)
 
 
 def _createTargetDirs():
@@ -118,7 +116,7 @@ def _createTargetDirs():
 
 
 def _setRecordFiles():
-    for (target, pocname, pocid, component, version, status, r_time) in kb.results:
+    for (target, pocname, pocid, component, version, status, r_time, result) in kb.results:
         outputPath = os.path.join(getUnicode(paths.POCSUITE_OUTPUT_PATH), normalizeUnicode(getUnicode(target)))
 
         if not os.path.isdir(outputPath):
@@ -146,7 +144,7 @@ def _setRecordFiles():
         if not os.path.isfile(recordFile):
             try:
                 with open(recordFile, "w") as f:
-                    f.write("poc-name,poc-id,component,version,status,time")
+                    f.write("poc-name,poc-id,component,version,status,time,result")
             except IOError, ex:
                 if "denied" in getUnicode(ex):
                     errMsg = "you don't have enough permissions "
@@ -158,7 +156,7 @@ def _setRecordFiles():
 
         try:
             with open(recordFile, "a+") as f:
-                f.write("\n" + ",".join([pocname, pocid, component, version, status, r_time]))
+                f.write("\n" + ",".join([pocname, pocid, component, version, status, r_time, result]))
         except IOError, ex:
             if "denied" in getUnicode(ex):
                 errMsg = "you don't have enough permissions "
@@ -174,12 +172,27 @@ def _setReport():
     for _ in ("target-url", "poc-name", "poc-id", "component", "version", "status"):
         tdPiece += " <td>%s</td> "
         thStr += " <th>%s</td> " % _
-    td = "<tr>%s</tr>" % tdPiece
+    td = "<tr class='status' onclick='showDetail(this)'>%s</tr>" % tdPiece
+    detail = "<tr class=\"result0\"><td colspan=\"6\">%s</td></tr>"
     tables = ""
     reportTable = dedent(REPORT_TABLEBASE)
     reportHtml = dedent(REPORT_HTMLBASE)
     for _ in kb.results:
-        tdStr = td % _[:-1]
+        tdStr = td % _[:-2]
+        detailStr = ""
+        if _[-1]:
+            result_obj = eval(_[-1])
+            if result_obj:
+                detailStr = "<dl>"
+                for outkey in result_obj.keys():
+                    items = "<dt>%s</dt>" % (outkey)
+                    vals = result_obj.get(outkey)
+                    for innerkey in vals.keys():
+                        items += "<dd>%s: %s</dd>" % (innerkey, vals.get(innerkey))
+                    detailStr += items
+                detailStr += "</dl>"
+        if detailStr:
+            tdStr += detail % detailStr
         tables += reportTable % reIndent(tdStr, 4)
     html = reportHtml % (reIndent(thStr, 19), reIndent(tables, 16))
 

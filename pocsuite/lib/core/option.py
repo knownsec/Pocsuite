@@ -61,6 +61,7 @@ def initOptions(inputOptions=AttribDict()):
     conf.httpHeaders = HTTP_DEFAULT_HEADER
     conf.params = inputOptions.extra_params if inputOptions.extra_params else None
     conf.retry = int(inputOptions.retry) if inputOptions.retry else None
+    conf.delay = float(inputOptions.delay) if inputOptions.delay else None
     if inputOptions.host:
         conf.httpHeaders.update({'Host': inputOptions.host})
     try:
@@ -199,7 +200,22 @@ def setMultipleTarget():
 
     if not conf.urlFile:
         for pocname, pocInstance in kb.registeredPocs.items():
-            kb.targets.put((conf.url, pocInstance, pocname))
+            if conf.url.endswith('/24'):
+                try:
+                    socket.inet_aton(conf.url.split('/')[0])
+                    base_addr = conf.url[:conf.url.rfind('.') + 1]
+                    conf.url = ['{}{}'.format(base_addr, i) \
+                                        for i in xrange(1, 255 + 1)]
+                except socket.error:
+                    errMsg = 'only id address acceptable'
+                    logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+            else:
+                conf.url = conf.url.split(',')
+
+            for url in conf.url:
+                if url:
+                    kb.targets.put((url, pocInstance, pocname))
+
         return
 
     conf.urlFile = safeExpandUser(conf.urlFile)

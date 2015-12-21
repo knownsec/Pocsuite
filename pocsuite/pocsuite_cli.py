@@ -28,6 +28,7 @@ from .lib.parse.parser import parseCmdOptions
 from .lib.core.option import initOptions
 from .lib.controller.controller import start
 from .lib.core.option import init
+from .lib.core.common import delModule
 from .lib.core.common import getUnicode
 
 
@@ -92,7 +93,10 @@ def pcsInit(PCS_OPTIONS=None):
         excMsg = traceback.format_exc()
         dataToStdout(excMsg)
 
-    finally:
+    if 'pCollect' in kb:
+        for p in kb.pCollect:
+            delModule(p) 
+
         if conf.get("showTime"):
             dataToStdout("\n[*] shutting down at %s\n\n" % time.strftime("%X"))
 

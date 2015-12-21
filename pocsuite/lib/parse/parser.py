@@ -70,6 +70,9 @@ def parseCmdOptions():
     request.add_argument("--retry", dest="retry",
                          help="Time out retrials times.")
 
+    request.add_argument("--delay", dest="delay",
+                         help="Delay between two request of one thread")
+
     request.add_argument("--headers", dest="headers",
             help="Extra headers (e.g. \"key1: value1\\nkey2: value2\")")
 
