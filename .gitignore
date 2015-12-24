@@ -18,4 +18,4 @@ man
 node_modules
 sdist
 venv
-pocsuite/modules/tmp/
+pocsuite/modules/tmp/*.py
