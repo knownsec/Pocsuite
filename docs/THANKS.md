@@ -19,5 +19,5 @@ phithon <root(at)leavesongs.com>
 GurdZain
 * for contributing a minor patch
 
-1ookup <377101099(at)qq.com>
+1ookup < 377101099(at)qq.com>
 * for contributing a minor patch
