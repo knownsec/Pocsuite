@@ -10,7 +10,6 @@ from pocsuite.lib.core.data import kb
 from pocsuite.pocsuite_cli import pcsInit
 from pocsuite.lib.core.common import banner
 from pocsuite.lib.core.settings import PCS_OPTIONS
-from pocsuite.lib.settings import HTTP_DEFAULT_HEADER
 
 
 class Missile():
