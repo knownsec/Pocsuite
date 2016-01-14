@@ -49,7 +49,7 @@ USAGE = "pocsuite [options]"
 
 INDENT = " " * 2
 
-POC_ATTRS = ("vulID", "version", "author", "vulDate", "name", "appVersion", "samples", "desc", "createDate", "updateDate", "references", "appPowerLink", "vulType", "appName")
+POC_ATTRS = ("vulID", "version", "author", "vulDate", "name", "appVersion", "desc", "createDate", "updateDate", "references", "appPowerLink", "vulType", "appName")
 
 POC_IMPORTDICT = {
     "from pocsuite.net import": "from pocsuite.lib.request.basic import",
