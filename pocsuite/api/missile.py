@@ -18,12 +18,15 @@ class Missile():
             missile_info["pocname"] += ".py"
         PCS_OPTIONS.update({
             "url": target,
+            "host": "",
             "pocFile": missile_info["pocstring"],
             "isPocString": True,
             "pocname": missile_info["pocname"],
             "headers": "",
             "extra_params": "",
             "mode": missile_info["mode"],
+            "retry": False,
+            "delay": 0
         })
 
     def run(self):
