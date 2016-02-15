@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -95,7 +95,7 @@ def pcsInit(PCS_OPTIONS=None):
 
     if 'pCollect' in kb:
         for p in kb.pCollect:
-            delModule(p) 
+            delModule(p)
 
         if conf.get("showTime"):
             dataToStdout("\n[*] shutting down at %s\n\n" % time.strftime("%X"))

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -11,6 +11,7 @@ from pocsuite_cli import pcsInit
 from .lib.core.common import banner
 from .lib.core.common import dataToStdout
 from .lib.core.settings import PCS_OPTIONS
+
 
 def main():
     try:

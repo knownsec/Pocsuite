@@ -4,7 +4,7 @@
 | .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. :
 | '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --.
 |  |-' `---' `---`----' `----'`--' `--'  `----'
-`--'                                   sebug.net
+`--'                                   seebug.org
 
 ```
 Pocsuite 使用帮助文档
@@ -260,5 +260,5 @@ PoC 支持 Python 和 JSON 两种格式，详情参见[PoC 编写规范](./docs/
 
 <h2 id="links">相关链接</h2>
 
-* Sebug [http://sebug.net](http://sebug.net)
-* 知道创宇 [http://www.knownsec.com](http://sebug.net)
+* Sebug [http://seebug.org](http://seebug.org)
+* 知道创宇 [http://www.knownsec.com](http://seebug.org)

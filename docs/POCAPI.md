@@ -4,7 +4,7 @@
 | .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. : 
 | '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --. 
 |  |-' `---' `---`----' `----'`--' `--'  `----'  
-`--'                                   sebug.net
+`--'                                   seebug.org
 
 ```
 PoC 编写说明文档
@@ -279,7 +279,7 @@ json 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
 
 <h3 id="pyexample">PoC py代码示例</h3>
 
-[Drupal 7.x /includes/database/database.inc SQL注入漏洞](http://www.sebug.net/vuldb/ssvid-88927) PoC:
+[Drupal 7.x /includes/database/database.inc SQL注入漏洞](http://www.seebug.org/vuldb/ssvid-88927) PoC:
 ```
 #!/usr/bin/env python
 # coding: utf-8
@@ -373,7 +373,7 @@ register(TestPOC)
 ```
 
 <h3 id="jsonexample">PoC json代码示例</h3>
-[phpcms_2008_/ads/include/ads_place.class.php_sql注入漏洞](http://www.sebug.net/vuldb/ssvid-62274) PoC:
+[phpcms_2008_/ads/include/ads_place.class.php_sql注入漏洞](http://www.seebug.org/vuldb/ssvid-62274) PoC:
 
 由于json不支持注释,所以具体字段意义请参考上文，涉及到的靶场请自行根据Sebug漏洞详情搭建。
 
@@ -389,7 +389,7 @@ register(TestPOC)
         "protocol": "http",
         "vulType": "SQL Injection",
         "author": "Medici.Yan",
-        "references": ["http://www.sebug.net/vuldb/ssvid-62274"],
+        "references": ["http://www.seebug.org/vuldb/ssvid-62274"],
         "appName": "phpcms",
         "appVersion" : "2008",
         "appPowerLink":"http://www.phpcms.cn",
@@ -576,7 +576,7 @@ result：[
     
 </table>
 
-也可以参见[漏洞类型规范](http://sebug.net/category)
+也可以参见[漏洞类型规范](http://seebug.org/category)
 
 
 <h3 id="webshell">WebShell类</h3>

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -74,7 +74,7 @@ def parseCmdOptions():
                          help="Delay between two request of one thread")
 
     request.add_argument("--headers", dest="headers",
-            help="Extra headers (e.g. \"key1: value1\\nkey2: value2\")")
+                         help="Extra headers (e.g. \"key1: value1\\nkey2: value2\")")
 
     request.add_argument("--host", dest="host",
                          help="Host in HTTP headers.")

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -70,7 +70,6 @@ def initOptions(inputOptions=AttribDict()):
     except:
         conf.isPocString = False
     conf.isPycFile = False
-
 
     initializeKb()
 
@@ -205,8 +204,8 @@ def setMultipleTarget():
                 try:
                     socket.inet_aton(conf.url.split('/')[0])
                     base_addr = conf.url[:conf.url.rfind('.') + 1]
-                    target_urls = ['{}{}'.format(base_addr, i) \
-                                        for i in xrange(1, 255 + 1)]
+                    target_urls = ['{}{}'.format(base_addr, i)
+                                   for i in xrange(1, 255 + 1)]
                 except socket.error:
                     errMsg = 'only id address acceptable'
                     logger.log(CUSTOM_LOGGING.ERROR, errMsg)

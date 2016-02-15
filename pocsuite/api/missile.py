@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -13,6 +13,7 @@ from pocsuite.lib.core.settings import PCS_OPTIONS
 
 
 class Missile():
+
     def __init__(self, target, missile_info={}):
         if not missile_info["pocname"].endswith(".py"):
             missile_info["pocname"] += ".py"
