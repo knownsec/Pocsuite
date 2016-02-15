@@ -16,7 +16,15 @@ class Missile():
     def __init__(self, target, missile_info={}):
         if not missile_info["pocname"].endswith(".py"):
             missile_info["pocname"] += ".py"
-        PCS_OPTIONS.update(missile_info)
+        PCS_OPTIONS.update({
+            "url": target,
+            "pocFile": missile_info["pocstring"],
+            "isPocString": True,
+            "pocname": missile_info["pocname"],
+            "headers": "",
+            "extra_params": "",
+            "mode": missile_info["mode"],
+        })
 
     def run(self):
         pcsInit(PCS_OPTIONS)

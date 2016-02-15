@@ -45,7 +45,6 @@ def registerPyPoc(pocDict):
         logger.log(CUSTOM_LOGGING.ERROR, errMsg)
 
 
-
 def addSysPath(*paths):
     for path in paths:
         if not path.startswith('/'):
