@@ -375,7 +375,7 @@ register(TestPOC)
 <h3 id="jsonexample">PoC json代码示例</h3>
 [phpcms_2008_/ads/include/ads_place.class.php_sql注入漏洞](http://www.seebug.org/vuldb/ssvid-62274) PoC:
 
-由于json不支持注释,所以具体字段意义请参考上文，涉及到的靶场请自行根据Sebug漏洞详情搭建。
+由于json不支持注释,所以具体字段意义请参考上文，涉及到的靶场请自行根据Seebug漏洞详情搭建。
 
 ```
 {
