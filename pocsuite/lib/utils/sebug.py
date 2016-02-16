@@ -9,5 +9,5 @@ See the file 'docs/COPYING' for copying permission
 from pocsuite.thirdparty.knowledge.webservice import Clinet
 
 
-class sebugBase():
+class seebugBase():
     pass
