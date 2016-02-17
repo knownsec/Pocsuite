@@ -6,26 +6,37 @@ Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.settings import POC_ATTRS
 from pocsuite.lib.core.settings import OLD_VERSION_CHARACTER
-from pocsuite.lib.core.data import kb
 
 
 def pocViolation():
     violation = False
-    for pocname, pocInstance in kb.registeredPocs.items():
+    if conf.requires:
+        requires = []
+        for pocName, pocInstance in kb.registeredPocs.items():
+            if isinstance(pocInstance, dict):
+                continue
+            requires += list(getRequires(pocName, pocInstance))
+        infoMsg = "install_requires:\n" + "\n".join(requires)
+        logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
+        return
+
+    for pocName, pocInstance in kb.registeredPocs.items():
         if isinstance(pocInstance, dict):
-            violation = checkJsonInfo(pocname, pocInstance)
+            violation = checkJsonInfo(pocName, pocInstance)
         else:
-            violation = checkPocInfo(pocname, pocInstance)
+            violation = checkPocInfo(pocName, pocInstance)
     return violation
 
 
-def checkJsonInfo(pocname, pocInstance):
+def checkJsonInfo(pocName, pocInstance):
     infos = []
-    infoMsg = "checking %s" % pocname
+    infoMsg = "checking %s" % pocName
     logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
     if 'pocInfo' in pocInstance:
         for attr in POC_ATTRS:
@@ -33,22 +44,22 @@ def checkJsonInfo(pocname, pocInstance):
                 continue
             infos.append(attr)
         if infos:
-            warnMsg = "missing %s in %s" % (infos, pocname)
+            warnMsg = "missing %s in %s" % (infos, pocName)
             logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
             return False
         return True
 
 
-def checkPocInfo(pocname, pocInstance):
+def checkPocInfo(pocName, pocInstance):
     infos = []
-    infoMsg = "checking %s" % pocname
+    infoMsg = "checking %s" % pocName
     logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
     for attr in POC_ATTRS:
         if hasattr(pocInstance, attr) and getattr(pocInstance, attr):
             continue
         infos.append(attr)
     if infos:
-        warnMsg = "missing %s in %s" % (infos, pocname)
+        warnMsg = "missing %s in %s" % (infos, pocName)
         logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
         return False
     return True
@@ -59,3 +70,8 @@ def isOldVersionPoc(poc):
         if _ not in poc:
             return False
     return True
+
+
+def getRequires(pocName, pocInstance):
+    if hasattr(pocInstance, "install_requires"):
+        return getattr(pocInstance, "install_requires")

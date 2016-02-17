@@ -57,6 +57,7 @@ def initOptions(inputOptions=AttribDict()):
     conf.report = inputOptions.report
     conf.proxy = inputOptions.proxy
     conf.proxyCred = inputOptions.proxyCred
+    conf.requires = inputOptions.requires
     conf.timeout = inputOptions.timeout
     conf.httpHeaders = HTTP_DEFAULT_HEADER
     conf.params = inputOptions.extra_params if inputOptions.extra_params else None
@@ -196,6 +197,8 @@ def _setHTTPExtraHeaders():
 
 
 def setMultipleTarget():
+    if conf.requires:
+        return
 
     if not conf.urlFile:
         for pocname, pocInstance in kb.registeredPocs.items():

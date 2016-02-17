@@ -95,19 +95,8 @@ def parseCmdOptions():
     optimization.add_argument("--batch", dest="batch",
                               help="Automatically choose defaut choice without asking.")
 
+    optimization.add_argument("--requires", dest="requires", action="store_true", default=False,
+                              help="Check install_requires")
+
     args = parser.parse_args()
     return args.__dict__
-
-
-# def _format_help(help_info, choices=None):
-    # if isinstance(help_info, list):
-    #help_str_list = help_info[:]
-    # else:
-    #help_str_list = [help_info]
-
-    # if choices:
-    #help_str_list.extend(['%s%s - %s' % (INDENT, k, v) for k, v in choices.items()])
-
-    #help_str_list.append(INDENT + '(DEFAULT: %(default)s)')
-
-    # return os.linesep.join(help_str_list)
