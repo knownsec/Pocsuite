@@ -4,7 +4,7 @@
 | .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. :
 | '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --.
 |  |-' `---' `---`----' `----'`--' `--'  `----'
-`--'                                   sebug.net
+`--'                                   seebug.org
 
 ```
 Pocsuite 使用帮助文档
@@ -30,7 +30,7 @@ Pocsuite 是知道创宇安全研究团队打造的一款基于漏洞与 PoC 的
 
 在获取到相关漏洞详情后，任何有一定 Python 开发基础的人都可以基于 Pocsuite 开发出对应漏洞的 PoC 或者 Exp ，轻而易举的就可以直接使用 Pocsuite 进行相关的验证和调用，而无需考虑底层代码架构等。
 
-在 Sebug 重新改版上线之际，知道创宇安全研究团队正式对外开放 Pocsuite 框架，任何安全研究人员都可以基于 Pocsuite 进行 PoC 或者 Exp 的开发，同时也可以加入 Sebug 漏洞社区，为 Pocsuite 提供贡献或者贡献相关的 PoC。
+在 Seebug 重新改版上线之际，知道创宇安全研究团队正式对外开放 Pocsuite 框架，任何安全研究人员都可以基于 Pocsuite 进行 PoC 或者 Exp 的开发，同时也可以加入 Seebug 漏洞社区，为 Pocsuite 提供贡献或者贡献相关的 PoC。
 
 
 <h2 id="install">安装</h2>
@@ -260,5 +260,5 @@ PoC 支持 Python 和 JSON 两种格式，详情参见[PoC 编写规范](./docs/
 
 <h2 id="links">相关链接</h2>
 
-* Sebug [http://sebug.net](http://sebug.net)
-* 知道创宇 [http://www.knownsec.com](http://sebug.net)
+* Seebug [http://seebug.org](http://seebug.org)
+* 知道创宇 [http://www.knownsec.com](http://seebug.org)

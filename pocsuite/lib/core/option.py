@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -32,6 +32,7 @@ from pocsuite.lib.core.register import registerPyPoc
 from pocsuite.lib.core.exception import PocsuiteFilePathException
 from pocsuite.lib.core.exception import PocsuiteSyntaxException
 from pocsuite.lib.controller.check import pocViolation
+from pocsuite.lib.controller.check import requiresCheck
 from pocsuite.lib.controller.check import isOldVersionPoc
 from pocsuite.lib.controller.setpoc import setPoc
 from pocsuite.thirdparty.socks import socks
@@ -57,6 +58,8 @@ def initOptions(inputOptions=AttribDict()):
     conf.report = inputOptions.report
     conf.proxy = inputOptions.proxy
     conf.proxyCred = inputOptions.proxyCred
+    conf.requires = inputOptions.requires
+    conf.requiresFreeze = inputOptions.requiresFreeze
     conf.timeout = inputOptions.timeout
     conf.httpHeaders = HTTP_DEFAULT_HEADER
     conf.params = inputOptions.extra_params if inputOptions.extra_params else None
@@ -70,7 +73,6 @@ def initOptions(inputOptions=AttribDict()):
     except:
         conf.isPocString = False
     conf.isPycFile = False
-
 
     initializeKb()
 
@@ -86,6 +88,9 @@ def registerPocFromDict():
     """
     @function import方式导入Poc文件, import Poc的时候自动rigister了
     """
+    if conf.requires:
+        return
+
     for pocname, poc in kb.pocs.items():
         pocDict = {pocname: poc}
         if pocname.endswith(".py"):
@@ -112,6 +117,7 @@ def init():
     _setHTTPExtraHeaders()
 
     setPoc()
+    requiresCheck()
     registerPocFromDict()
     pocViolation()
 
@@ -197,6 +203,8 @@ def _setHTTPExtraHeaders():
 
 
 def setMultipleTarget():
+    if conf.requires or conf.requiresFreeze:
+        return
 
     if not conf.urlFile:
         for pocname, pocInstance in kb.registeredPocs.items():
@@ -205,8 +213,8 @@ def setMultipleTarget():
                 try:
                     socket.inet_aton(conf.url.split('/')[0])
                     base_addr = conf.url[:conf.url.rfind('.') + 1]
-                    target_urls = ['{}{}'.format(base_addr, i) \
-                                        for i in xrange(1, 255 + 1)]
+                    target_urls = ['{}{}'.format(base_addr, i)
+                                   for i in xrange(1, 255 + 1)]
                 except socket.error:
                     errMsg = 'only id address acceptable'
                     logger.log(CUSTOM_LOGGING.ERROR, errMsg)

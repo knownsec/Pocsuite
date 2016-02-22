@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -14,6 +14,7 @@ from .lib.core.data import paths
 from .lib.core.common import setPaths
 from .lib.core.consoles import initializePoc
 from .lib.core.option import initializeKb
+
 
 def main():
     folders, sys.argv = sys.argv[1:], sys.argv[:1]

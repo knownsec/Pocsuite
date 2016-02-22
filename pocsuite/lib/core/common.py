@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -28,13 +28,14 @@ from pocsuite.thirdparty.termcolor.termcolor import colored
 
 
 class StringImporter(object):
+
     """
     Use custom meta hook to import modules available as strings. 
     Cp. PEP 302 http://www.python.org/dev/peps/pep-0302/#specification-part-2-registering-hooks
     """
 
     def __init__(self, fullname, contents):
-        self.fullname = fullname 
+        self.fullname = fullname
         self.contents = contents
 
     def load_module(self, fullname):
@@ -50,6 +51,7 @@ class StringImporter(object):
             code = compile(self.contents, mod.__file__, "exec")
         exec code in mod.__dict__
         return mod
+
 
 def delModule(modname, paranoid=None):
     from sys import modules
@@ -79,6 +81,7 @@ def delModule(modname, paranoid=None):
                     delattr(mod, symbol)
                 except AttributeError:
                     pass
+
 
 def banner():
     """

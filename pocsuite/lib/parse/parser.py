@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -74,7 +74,7 @@ def parseCmdOptions():
                          help="Delay between two request of one thread")
 
     request.add_argument("--headers", dest="headers",
-            help="Extra headers (e.g. \"key1: value1\\nkey2: value2\")")
+                         help="Extra headers (e.g. \"key1: value1\\nkey2: value2\")")
 
     request.add_argument("--host", dest="host",
                          help="Host in HTTP headers.")
@@ -95,19 +95,11 @@ def parseCmdOptions():
     optimization.add_argument("--batch", dest="batch",
                               help="Automatically choose defaut choice without asking.")
 
+    optimization.add_argument("--requires", dest="requires", action="store_true", default=False,
+                              help="Check install_requires")
+
+    optimization.add_argument("--requires-freeze", dest="requiresFreeze", action="store_true", default=False,
+                              help="Check install_requires after register")
+
     args = parser.parse_args()
     return args.__dict__
-
-
-# def _format_help(help_info, choices=None):
-    # if isinstance(help_info, list):
-    #help_str_list = help_info[:]
-    # else:
-    #help_str_list = [help_info]
-
-    # if choices:
-    #help_str_list.extend(['%s%s - %s' % (INDENT, k, v) for k, v in choices.items()])
-
-    #help_str_list.append(INDENT + '(DEFAULT: %(default)s)')
-
-    # return os.linesep.join(help_str_list)

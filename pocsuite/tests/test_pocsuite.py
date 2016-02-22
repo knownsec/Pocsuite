@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -17,8 +17,9 @@ from pocsuite.lib.core.data import paths
 
 from nose.tools import assert_true
 
+
 class TestPocsuiteBase(object):
-    
+
     def test_pocsuite_setpath(self):
         paths.POCSUITE_ROOT_PATH = modulePath()
         setPaths()

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://sebug.net)
+Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -52,12 +52,14 @@ def pcsInit(PCS_OPTIONS=None):
         setPaths()
 
         argsDict = PCS_OPTIONS or parseCmdOptions()
-        if not (argsDict['url'] or argsDict['urlFile']):
-            errMsg = 'No "url" or "urlFile" assigned.'
-            sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 
         cmdLineOptions.update(argsDict)
         initOptions(cmdLineOptions)
+
+        if not any((argsDict['url'] or argsDict['urlFile'], conf.requires, conf.requiresFreeze)):
+            errMsg = 'No "url" or "urlFile" assigned.'
+            sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
+
         banner()
         conf.showTime = True
         dataToStdout
@@ -95,7 +97,7 @@ def pcsInit(PCS_OPTIONS=None):
 
     if 'pCollect' in kb:
         for p in kb.pCollect:
-            delModule(p) 
+            delModule(p)
 
         if conf.get("showTime"):
             dataToStdout("\n[*] shutting down at %s\n\n" % time.strftime("%X"))
