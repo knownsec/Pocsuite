@@ -56,7 +56,7 @@ def pcsInit(PCS_OPTIONS=None):
         cmdLineOptions.update(argsDict)
         initOptions(cmdLineOptions)
 
-        if not any((argsDict['url'] or argsDict['urlFile'], conf.requires)):
+        if not any((argsDict['url'] or argsDict['urlFile'], conf.requires, conf.requiresFreeze)):
             errMsg = 'No "url" or "urlFile" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 

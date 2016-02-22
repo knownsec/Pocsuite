@@ -32,6 +32,7 @@ from pocsuite.lib.core.register import registerPyPoc
 from pocsuite.lib.core.exception import PocsuiteFilePathException
 from pocsuite.lib.core.exception import PocsuiteSyntaxException
 from pocsuite.lib.controller.check import pocViolation
+from pocsuite.lib.controller.check import requiresCheck
 from pocsuite.lib.controller.check import isOldVersionPoc
 from pocsuite.lib.controller.setpoc import setPoc
 from pocsuite.thirdparty.socks import socks
@@ -58,6 +59,7 @@ def initOptions(inputOptions=AttribDict()):
     conf.proxy = inputOptions.proxy
     conf.proxyCred = inputOptions.proxyCred
     conf.requires = inputOptions.requires
+    conf.requiresFreeze = inputOptions.requiresFreeze
     conf.timeout = inputOptions.timeout
     conf.httpHeaders = HTTP_DEFAULT_HEADER
     conf.params = inputOptions.extra_params if inputOptions.extra_params else None
@@ -86,6 +88,9 @@ def registerPocFromDict():
     """
     @function import方式导入Poc文件, import Poc的时候自动rigister了
     """
+    if conf.requires:
+        return
+
     for pocname, poc in kb.pocs.items():
         pocDict = {pocname: poc}
         if pocname.endswith(".py"):
@@ -112,6 +117,7 @@ def init():
     _setHTTPExtraHeaders()
 
     setPoc()
+    requiresCheck()
     registerPocFromDict()
     pocViolation()
 
@@ -197,7 +203,7 @@ def _setHTTPExtraHeaders():
 
 
 def setMultipleTarget():
-    if conf.requires:
+    if conf.requires or conf.requiresFreeze:
         return
 
     if not conf.urlFile:

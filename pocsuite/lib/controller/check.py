@@ -6,23 +6,45 @@ Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
+import re
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.settings import POC_ATTRS
+from pocsuite.lib.core.settings import POC_REQUIRES_REGEX
 from pocsuite.lib.core.settings import OLD_VERSION_CHARACTER
+
+
+def requiresCheck():
+    if not conf.requires:
+        return
+    
+    requires_regex = re.compile(POC_REQUIRES_REGEX)
+    install_requires = []
+    for _, poc in kb.pocs.items():
+        try:
+            requires = requires_regex.search(poc).group(1)
+            install_requires += [require[1:-1] for require in requires.split(",")]
+        except Exception, ex:
+            pass
+
+    infoMsg = "install_requires:\n" + "\n".join(install_requires)
+    logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
 
 
 def pocViolation():
     violation = False
-    if conf.requires:
-        requires = []
+    if conf.requiresFreeze:
+        install_requires = []
         for pocName, pocInstance in kb.registeredPocs.items():
             if isinstance(pocInstance, dict):
                 continue
-            requires += list(getRequires(pocName, pocInstance))
-        infoMsg = "install_requires:\n" + "\n".join(requires)
+            requires = getRequires(pocName, pocInstance)
+            if not requires:
+                continue
+            install_requires += list(requires)
+        infoMsg = "install_requires:\n" + "\n".join(install_requires)
         logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
         return
 

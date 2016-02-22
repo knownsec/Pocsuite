@@ -61,10 +61,6 @@ def loadPoc(pocFile):
             logger.log(CUSTOM_LOGGING.ERROR, errMsg)
         pocname = conf.pocname
     else:
-        # pocFilename = "_" + os.path.split(pocFile)[1]
-        # if not os.path.isdir(paths.POCSUITE_TMP_PATH):
-            # os.makedirs(paths.POCSUITE_TMP_PATH)
-        # pocname = os.path.join(paths.POCSUITE_TMP_PATH, pocFilename)
         pocname = os.path.split(pocFile)[1]
         poc = readFile(pocFile)
 
