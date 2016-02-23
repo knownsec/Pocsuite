@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Pocsuite by knownsec</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Pocsuite</h1>
+        <h2>Pocsuite 是知道创宇安全研究团队打造的一款基于漏洞与 PoC 的远程漏洞验证框架，Pocsuite is A remote vulnerability test framework developed by Knownsec Security Team.</h2>
+        <a href="https://github.com/knownsec/Pocsuite" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <pre><code>                              ,--. ,--.
+ ,---. ,---. ,---.,---.,--.,--`--,-'  '-.,---.
+| .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. :
+| '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --.
+|  |-' `---' `---`----' `----'`--' `--'  `----'
+`--'                                   seebug.org
+
+</code></pre>
+
+<h1>
+<a id="pocsuite-使用帮助文档" class="anchor" href="#pocsuite-%E4%BD%BF%E7%94%A8%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pocsuite 使用帮助文档</h1>
+
+<ul>
+<li>  <a href="#pocsuite">Pocsuite 简介</a>
+</li>
+<li>  <a href="#install">安装</a>
+</li>
+<li>  <a href="#usage">使用方法</a>
+
+<ul>
+<li>  <a href="#climode">命令行模式</a>
+</li>
+<li>  <a href="#consolemode">控制台交互式视图模式</a>
+</li>
+<li>  <a href="#report">Pocsuite 报告自动生成</a>
+</li>
+</ul>
+</li>
+<li>  <a href="#pocnote">PoC 编写规范及注意事项</a>
+</li>
+<li>  <a href="#helpchinese">Pocsuite 中文帮助</a>
+</li>
+<li>  <a href="#thanks">感谢</a>
+</li>
+<li>  <a href="#links">相关链接</a>
+</li>
+</ul>
+
+<hr>
+
+<h2 id="pocsuite">
+<a id="pocsuite-简介" class="anchor" href="#pocsuite-%E7%AE%80%E4%BB%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pocsuite 简介</h2>
+
+<p>Pocsuite 是知道创宇安全研究团队打造的一款基于漏洞与 PoC 的漏洞验证框架。Pocsuite 是知道创宇安全研究团队发展的基石，是团队发展至今一直维护的一个项目，保障了我们的 Web 安全研究能力的领先。</p>
+
+<p>在获取到相关漏洞详情后，任何有一定 Python 开发基础的人都可以基于 Pocsuite 开发出对应漏洞的 PoC 或者 Exp ，轻而易举的就可以直接使用 Pocsuite 进行相关的验证和调用，而无需考虑底层代码架构等。</p>
+
+<p>在 Seebug 重新改版上线之际，知道创宇安全研究团队正式对外开放 Pocsuite 框架，任何安全研究人员都可以基于 Pocsuite 进行 PoC 或者 Exp 的开发，同时也可以加入 Seebug 漏洞社区，为 Pocsuite 提供贡献或者贡献相关的 PoC。</p>
+
+<h2 id="install">
+<a id="安装" class="anchor" href="#%E5%AE%89%E8%A3%85" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>安装</h2>
+
+<p>你可以通过用 Git 来克隆代码仓库中的最新源代码</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ git clone git@github.com:knownsec/Pocsuite.git</pre></div>
+
+<p>或者你可以点击 <a href="https://github.com/knownsec/Pocsuite/archive/master.zip">这里</a> 下载最新的源代码 zip 包,并解压</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ wget https://github.com/knownsec/Pocsuite/archive/master.zip
+    $ unzip master.zip</pre></div>
+
+<div class="highlight highlight-source-shell"><pre>    $ <span class="pl-c1">cd</span> Pocsuite
+    $ python pocsuite.py --version</pre></div>
+
+<p>或者直接使用</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ pip install pocsuite
+    $ pocsuite --version</pre></div>
+
+<h2 id="usage">
+<a id="使用方法" class="anchor" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用方法</h2>
+
+<p>Pocsuite 支持命令行模式(cli)和交互式控制台模式(console), 如果使用 pip 安装, 直接使用<code>pocsuite</code>代替<code>python pocsuite.py</code></p>
+
+<h3 id="climode">
+<a id="命令行模式" class="anchor" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%A8%A1%E5%BC%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>命令行模式</h3>
+
+<p>命令行模式可以对目标发起 Verify 和 Attack 模式的测试,</p>
+
+<p>进入 pocsuite 目录,执行 pocsuite.py</p>
+
+<p>获取命令帮助列表</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ python pocsuite.py -h</pre></div>
+
+<p>假定你已经有一个 PoC(poc_example.py),并且将其保存在 tests 目录(*<em>任意目录, 以下如无说明默认为 ./tests *</em>)下面:</p>
+
+<p>PoC 目前支持.py 文件和 .json 文件两种，两者用法一样,具体参考下方说明</p>
+
+<p>Verify 模式，验证目标是否存在漏洞:</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ python pocsuite.py -r tests/poc_example.py -u http://www.example.com/ --verify</pre></div>
+
+<p>Attack 模式:</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ python pocsuite.py -r tests/poc_example.py -u http://www.example.com/ --attack
+</pre></div>
+
+<p>如果你有一个 URL 文件(url.txt),要批量验证,你可以:</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ python pocsuite.py -r tests/poc_example.py -f url.txt --verify</pre></div>
+
+<blockquote>
+<p>Attack 模式的批量处理，只需要替换 <code>--verify</code> 参数为 <code>--attack</code> 即可.</p>
+</blockquote>
+
+<p>加载 任意目录(如: tests)下的所有 PoC 对目标测试:</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ python pocsuite.py -r tests/ -u http://www.example.com --verify</pre></div>
+
+<p>使用多线程,默认线程数为 1:</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ python pocsuite.py -r tests/ -f url.txt --verify --threads 10</pre></div>
+
+<h3 id="consolemode">
+<a id="控制台交互式视图模式" class="anchor" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0%E4%BA%A4%E4%BA%92%E5%BC%8F%E8%A7%86%E5%9B%BE%E6%A8%A1%E5%BC%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>控制台交互式视图模式</h3>
+
+<p>进入控制台交互式视图:</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ python pcs-console.py</pre></div>
+
+<p>通用命令：</p>
+
+<pre><code>    ls, help        展示出当前可用的命令
+    q, exit         退出/返回父视图
+</code></pre>
+
+<p>在 <strong>Pcs 视图</strong>(Pcs&gt;)下,常用的命令:</p>
+
+<pre><code>    config          进入目标配置子视图
+    poc             进入 PoC 配置子视图
+    verify          开始验证
+    attack          开始
+    shell [command] 执行系统shell命令
+    hi, history     历史命令
+    show            显示当前系统设置
+    set             修改系统设置
+    shortcuts       查看短命令
+</code></pre>
+
+<p>在 <strong>Config 视图</strong>(Pcs.Config&gt;)下,常用的命令:</p>
+
+<pre><code>[Command]
+   thread       : 设置最大线程数(默认为1)
+   url          : 设置目标 URL
+   urlFile      : 载入文件中的 URL
+</code></pre>
+
+<p>在 <strong>Poc 视图</strong>(Pcs.poc&gt;)下,常用的命令:</p>
+
+<pre><code>    avaliable   查看所有可用的 PoC
+    search      从可用的 PoC 列表中检索
+    load &lt;Id&gt;   加载指定 Id 的 PoC
+    loaded      查看已经加载的 PoC
+    unload      查看未加载的 PoC
+    clear       移出所有已加载的 PoC
+</code></pre>
+
+<p><strong>注意：控制台视图下只能加载 pocsuite/modules/ 目录下的 PoC</strong></p>
+
+<h4>
+<a id="使用-pcs-console-测试步骤" class="anchor" href="#%E4%BD%BF%E7%94%A8-pcs-console-%E6%B5%8B%E8%AF%95%E6%AD%A5%E9%AA%A4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用 pcs-console 测试步骤:</h4>
+
+<ol>
+<li>
+<p>进入 Config 子视图,设置目标</p>
+
+<pre><code>Pcs.Config&gt;url
+Pcs.config.url&gt;www.example.com
+Pcs.Config&gt;show
++---------+-----------------+
+|  config |      value      |
++---------+-----------------+
+|   url   | www.example.com |
+| threads |        1        |
++---------+-----------------+
+或
+Pcs.Config&gt;url example.com
+Pcs.Config&gt;show
++---------+-------------+
+|  config |    value    |
++---------+-------------+
+|   url   | example.com |
+| threads |      1      |
++---------+-------------+
+</code></pre>
+</li>
+<li>
+<p>进入 PoC 子视图，加载指定 PoC</p>
+
+<pre><code>Pcs&gt;poc
+Pcs.poc&gt;avaliable
++-------+------------------+
+| pocId | avaliablePocName |
++-------+------------------+
+|   1   | _poc_example1.py |
+|   2   | poc_example1.py  |
++-------+------------------+
+
+Pcs.poc&gt;load 1
+[*] load poc file(s) success!
+
+Pcs.poc&gt;q
+</code></pre>
+</li>
+<li>
+<p>Verify/Attack</p>
+
+<pre><code>Pcs&gt;verify
+[15:13:26] [*] starting 1 threads
+[15:13:26] [*] poc:'_poc_example1' target:'www.example.com'
+</code></pre>
+</li>
+</ol>
+
+<h3 id="report">
+<a id="pocsuite-报告自动生成" class="anchor" href="#pocsuite-%E6%8A%A5%E5%91%8A%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pocsuite 报告自动生成</h3>
+
+<p>Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果自动生成报告并保存，在扫描参数后加 <code>--report [report_file]</code> 即可生成 HTML 格式报告。</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ python pocsuite.py -r tests/poc_example2.py -u example.com --verify --report /tmp/report.html</pre></div>
+
+<p>上述命令执行后，会调用 poc_example2.py 并将结果保存到 /tmp/report.html中。</p>
+
+<h2 id="pocnote">
+<a id="poc-编写规范及注意事项" class="anchor" href="#poc-%E7%BC%96%E5%86%99%E8%A7%84%E8%8C%83%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PoC 编写规范及注意事项</h2>
+
+<p>PoC 支持 Python 和 JSON 两种格式，详情参见<a href="./docs/POCAPI.md">PoC 编写规范</a></p>
+
+<h2 id="helpchinese">
+<a id="pocsuite-中文帮助" class="anchor" href="#pocsuite-%E4%B8%AD%E6%96%87%E5%B8%AE%E5%8A%A9" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pocsuite 中文帮助</h2>
+
+<pre><code>使用方法: python pocsuite.py [选项]
+
+基础帮助:
+  -h, --help            显示帮助信息
+  --version             显示当前程序版本号
+
+目标设置:
+  -u URL, --url URL     目标 URL (如："http://www.targetsite.com/")
+  -f URLFILE, --file URLFILE
+                        加载一个文档中的所有 URL，一行一个
+  -r POCFILE            加载一个 PoC 或者一个目录下的所有 PoC(如： "_0001_cms_sql_inj.py" 或者 "modules/")
+
+模式设置:
+  --verify              Verify 模式
+  --attack              Attack 模式
+
+请求设置:
+  --cookie COOKIE       自定义 HTTP 请求头中 Cookie 信息
+  --referer REFERER     自定义 HTTP 请求头中 Referer 信息
+  --user-agent AGENT    自定义 HTTP 请求头中 User-Agent 信息
+  --random-agent        使用随机 User-Agent
+  --proxy PROXY         使用代理来连接目标
+  --proxy-cred PROXYCRED
+                        设置代理用户名和密码 (如 name:password)
+  --timeout TIMEOUT     设置超时时间(默认30秒)
+
+其他设置:
+  --threads THREADS     最大线程数(默认为1)
+  --report REPORT       生成 HTML 格式报告(如："./report.html")
+
+</code></pre>
+
+<h2 id="thanks">
+<a id="感谢" class="anchor" href="#%E6%84%9F%E8%B0%A2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>感谢</h2>
+
+<ul>
+<li>感谢来自不同同学的建议和帮助</li>
+<li>也欢迎更多同学参与 Pocsuite 的贡献</li>
+<li><a href="./docs/THANKS.md">感谢列表</a></li>
+</ul>
+
+<h2 id="links">
+<a id="相关链接" class="anchor" href="#%E7%9B%B8%E5%85%B3%E9%93%BE%E6%8E%A5" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>相关链接</h2>
+
+<ul>
+<li>Seebug <a href="http://seebug.org">http://seebug.org</a>
+</li>
+<li>知道创宇 <a href="http://seebug.org">http://www.knownsec.com</a>
+</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/knownsec/Pocsuite/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/knownsec/Pocsuite/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/knownsec/Pocsuite"></a> is maintained by <a href="https://github.com/knownsec">knownsec</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
