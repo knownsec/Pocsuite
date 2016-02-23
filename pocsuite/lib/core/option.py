@@ -149,7 +149,7 @@ def _setHTTPUserAgent():
             logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
             return
 
-        userAgent = random.sample(userAgents, 1)
+        userAgent = random.sample(userAgents, 1)[0]
         infoMsg = "fetched random HTTP User-Agent header from "
         infoMsg += "file '%s': '%s'" % (paths.USER_AGENTS, userAgent)
         logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
