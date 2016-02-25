@@ -35,5 +35,4 @@ class Missile():
 
     def run(self):
         pcsInit(PCS_OPTIONS)
-
         return kb.results
