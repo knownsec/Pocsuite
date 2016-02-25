@@ -65,6 +65,7 @@ def initOptions(inputOptions=AttribDict()):
     conf.params = inputOptions.extra_params if inputOptions.extra_params else None
     conf.retry = int(inputOptions.retry) if inputOptions.retry else None
     conf.delay = float(inputOptions.delay) if inputOptions.delay else None
+    conf.quiet = inputOptions.quiet
     if inputOptions.host:
         conf.httpHeaders.update({'Host': inputOptions.host})
     try:

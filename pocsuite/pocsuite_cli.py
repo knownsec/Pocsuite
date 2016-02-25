@@ -60,6 +60,12 @@ def pcsInit(PCS_OPTIONS=None):
             errMsg = 'No "url" or "urlFile" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 
+        def doNothin(*args, **kw):
+            return
+
+        if conf.quiet:
+            logger.log = doNothin
+
         banner()
         conf.showTime = True
         dataToStdout

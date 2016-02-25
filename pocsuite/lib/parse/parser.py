@@ -97,6 +97,8 @@ def parseCmdOptions():
 
     optimization.add_argument("--requires", dest="requires", action="store_true", default=False,
                               help="Check install_requires")
+    optimization.add_argument("--quiet", dest="quiet", action="store_true", default=False,
+                              help="Activate quiet mode, working without logger.")
 
     optimization.add_argument("--requires-freeze", dest="requiresFreeze", action="store_true", default=False,
                               help="Check install_requires after register")
