@@ -27,7 +27,9 @@ class Missile():
             "extra_params": "",
             "mode": missile_info["mode"],
             "retry": False,
-            "delay": 0
+            "delay": 0,
+            "requires": False,
+            "requiresFreeze": False
         })
 
     def run(self):
