@@ -138,13 +138,8 @@ class Output(object):
 
     def success(self, result):
         assert isinstance(result, types.DictType)
-        if conf.mode == 'verify' and 'Extra' in result and 'EVIDENCE' in result['Extra']:
-            self.status = OUTPUT_STATUS.SUCCESS
-            self.result = result
-        else:
-            logger.log(CUSTOM_LOGGING.ERROR, "No result['Extra']['EVIDENCE'] given.")
-            self.status = OUTPUT_STATUS.FAILED
-            self.error = "No result['Extra']['EVIDENCE'] given."
+        self.status = OUTPUT_STATUS.SUCCESS
+        self.result = result
 
     def fail(self, error):
         self.status = OUTPUT_STATUS.FAILED
