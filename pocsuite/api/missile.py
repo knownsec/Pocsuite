@@ -8,8 +8,8 @@ See the file 'docs/COPYING' for copying permission
 
 from pocsuite.lib.core.data import kb
 from pocsuite.pocsuite_cli import pcsInit
-from pocsuite.lib.core.common import banner
 from pocsuite.lib.core.settings import PCS_OPTIONS
+
 
 
 class Missile():
@@ -27,7 +27,10 @@ class Missile():
             "extra_params": "",
             "mode": missile_info["mode"],
             "retry": False,
-            "delay": 0
+            "delay": 0,
+            "requires": False,
+            "requiresFreeze": False
+            "quiet": True
         })
 
     def run(self):

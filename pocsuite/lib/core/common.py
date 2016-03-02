@@ -97,20 +97,21 @@ def dataToStdout(data, bold=False):
     """
     Writes text to the stdout (console) stream
     """
+    if not conf.quiet:
+        message = ""
 
-    message = ""
+        if isinstance(data, unicode):
+            message = stdoutencode(data)
+        else:
+            message = data
 
-    if isinstance(data, unicode):
-        message = stdoutencode(data)
-    else:
-        message = data
+        sys.stdout.write(setColor(message, bold))
 
-    sys.stdout.write(setColor(message, bold))
-
-    try:
-        sys.stdout.flush()
-    except IOError:
-        pass
+        try:
+            sys.stdout.flush()
+        except IOError:
+            pass
+    return
 
 
 def setColor(message, bold=False):

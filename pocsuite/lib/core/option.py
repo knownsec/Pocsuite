@@ -65,6 +65,7 @@ def initOptions(inputOptions=AttribDict()):
     conf.params = inputOptions.extra_params if inputOptions.extra_params else None
     conf.retry = int(inputOptions.retry) if inputOptions.retry else None
     conf.delay = float(inputOptions.delay) if inputOptions.delay else None
+    conf.quiet = inputOptions.quiet
     if inputOptions.host:
         conf.httpHeaders.update({'Host': inputOptions.host})
     try:
@@ -149,7 +150,7 @@ def _setHTTPUserAgent():
             logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
             return
 
-        userAgent = random.sample(userAgents, 1)
+        userAgent = random.sample(userAgents, 1)[0]
         infoMsg = "fetched random HTTP User-Agent header from "
         infoMsg += "file '%s': '%s'" % (paths.USER_AGENTS, userAgent)
         logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
