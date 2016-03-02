@@ -29,7 +29,7 @@ class Missile():
             "retry": False,
             "delay": 0,
             "requires": False,
-            "requiresFreeze": False
+            "requiresFreeze": False,
             "quiet": True
         })
 

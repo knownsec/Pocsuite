@@ -13,7 +13,7 @@ import sys
 
 from pocsuite.lib.core.revision import getRevisionNumber
 
-VERSION = "1.0.0dev"
+VERSION = "1.2.1"
 REVISION = getRevisionNumber()
 SITE = "http://seebug.org"
 VERSION_STRING = "pocsuite/%s%s" % (VERSION, "-%s" % REVISION if REVISION else "-nongit-%s" % time.strftime("%Y%m%d", time.gmtime(os.path.getctime(__file__))))
