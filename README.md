@@ -5,24 +5,24 @@
 | '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --.
 |  |-' `---' `---`----' `----'`--' `--'  `----'
 `--'                                   seebug.org
-
 ```
 
 # Pocsuite 使用帮助文档
 
-* [Pocsuite 简介](#pocsuite)
-* [安装](#install)
-* [使用方法](#usage)
-  * [命令行模式](#climode)
-  * [控制台交互式视图模式](#consolemode)
-  * [Pocsuite 报告自动生成](#report)
-* [Pocsuite API](#api)
-* [PoC 编写规范及注意事项](#pocnote)
-* [Pocsuite 中文帮助](#helpchinese)
-* [感谢](#thanks)
-* [相关链接](#links)
+- [Pocsuite 简介](#pocsuite)
+- [安装](#install)
+- [使用方法](#usage)
+  - [命令行模式](#climode)
+  - [控制台交互式视图模式](#consolemode)
+  - [Pocsuite 报告自动生成](#report)
+- [Pocsuite API](#api)
+- [在其他程序中调用 Pocsuite](#invoke)
+- [PoC 编写规范及注意事项](#pocnote)
+- [Pocsuite 中文帮助](#helpchinese)
+- [感谢](#thanks)
+- [相关链接](#links)
 
-* * *
+------
 
 <h2 id="pocsuite">Pocsuite 简介</h2>
 
@@ -95,7 +95,6 @@ Attack 模式:
 
 ``` bash
     $ python pocsuite.py -r tests/poc_example.py -u http://www.example.com/ --attack
-
 ```
 
 如果你有一个 URL 文件(url.txt),要批量验证,你可以:
@@ -254,6 +253,25 @@ Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果�
   - PhpShell._keyword    该 php 后门的特征字符串, 如果该字符串被发现则可以确定上传成功并解析.
 - packet.py    便捷地操作 socket, 方便地自定义 TCP 和 UDP 发送和接受等.
 
+<h2 id="invoke">在其他程序中调用 Pocsuite</h2>
+
+利用上面说到 api 的 missile.py 中的 Missile 类来调用 Pocsuite, 具体代码如下:
+
+``` python
+from pocsuite.api.missile import Missile
+
+info = {"pocname": "PoC的名字",
+        "pocstring": "PoC的字符串",
+        "mode": "verify( or attack)"
+        }
+
+target = "test.site"
+invoker = Missile(target, info) # 生成用来引用 Pocsuite 的实例
+result = invoker.run()			# 调用 Pocsuite, result 保存了 Pocsuite 执行的返回结果
+```
+
+
+
 <h2 id="pocnote">PoC 编写规范及注意事项</h2>
 
 PoC 支持 Python 和 JSON 两种格式，详情参见[PoC 编写规范](./docs/POCAPI.md)
@@ -290,7 +308,7 @@ PoC 支持 Python 和 JSON 两种格式，详情参见[PoC 编写规范](./docs/
   --delay DELAY			设置超时重试之间的时间间隔
   --headers HEADERS		设置额外的 HTTP 请求头
   --host HOST			设置 HTTP 请求时的 HOST 字段
-  
+
 参数设置:
   --extra-params		用来自定义额外的参数, 传入类似字典的字符串"{username: '***', password: '***'}", 调用 Pocsuite 来取它时会自动转化成字典格式.
 
@@ -305,11 +323,14 @@ PoC 支持 Python 和 JSON 两种格式，详情参见[PoC 编写规范](./docs/
 
 <h2 id="thanks">感谢</h2>
 
-* 感谢来自不同同学的建议和帮助
-* 也欢迎更多同学参与 Pocsuite 的贡献
-* [感谢列表](./docs/THANKS.md)
+- 感谢来自不同同学的建议和帮助
+- 也欢迎更多同学参与 Pocsuite 的贡献
+- [感谢列表](./docs/THANKS.md)
 
 <h2 id="links">相关链接</h2>
 
-* Seebug [http://seebug.org](http://seebug.org)
-* 知道创宇 [http://www.knownsec.com](http://seebug.org)
+- Seebug [http://seebug.org](http://seebug.org)
+- 知道创宇 [http://www.knownsec.com](http://seebug.org)
+
+
+
