@@ -8,16 +8,13 @@ See the file 'docs/COPYING' for copying permission
 
 from pocsuite.lib.core.data import kb
 from pocsuite.pocsuite_cli import pcsInit
-from pocsuite.lib.core.settings import PCS_OPTIONS
-
-
 
 class Missile():
 
     def __init__(self, target, missile_info={}):
         if not missile_info["pocname"].endswith(".py"):
             missile_info["pocname"] += ".py"
-        PCS_OPTIONS.update({
+        self.PCS_OPTIONS = {
             "url": target,
             "host": "",
             "pocFile": missile_info["pocstring"],
@@ -25,14 +22,24 @@ class Missile():
             "pocname": missile_info["pocname"],
             "headers": "",
             "extra_params": "",
-            "mode": missile_info["mode"],
+            "Mode": missile_info["mode"],
             "retry": False,
             "delay": 0,
             "requires": False,
             "requiresFreeze": False,
-            "quiet": True
-        })
+            "quiet": True,
+            'threads': 1,
+            'urlFile': None,
+            'agent': None,
+            'referer': None,
+            'cookie': None,
+            'randomAgent': False,
+            'report': None,
+            'proxy': None,
+            'proxyCred': None,
+            'timeout': 5
+        }
 
     def run(self):
-        pcsInit(PCS_OPTIONS)
+        pcsInit(self.PCS_OPTIONS)
         return kb.results
