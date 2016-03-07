@@ -77,6 +77,7 @@ class baseConsole(Cmd):
             coloramainit()
         Cmd.__init__(self)
         os.system("clear")
+        conf.quiet = False
         banner()
         self.case_insensitive = False
         self.prompt = "Pcs> "
