@@ -310,7 +310,7 @@ PoC 支持 Python 和 JSON 两种格式，详情参见[PoC 编写规范](./docs/
   --host HOST			设置 HTTP 请求时的 HOST 字段
 
 参数设置:
-  --extra-params		用来自定义额外的参数, 传入类似字典的字符串"{username: '***', password: '***'}", 调用 Pocsuite 来取它时会自动转化成字典格式.
+  --extra-params		用来自定义额外的参数, 传入类似字典的字符串"{'username': '***', 'password': '***'}", 调用 Pocsuite 来取它时会自动转化成字典格式.
 
 其他设置:
   --threads THREADS     最大线程数(默认为1)
@@ -331,6 +331,4 @@ PoC 支持 Python 和 JSON 两种格式，详情参见[PoC 编写规范](./docs/
 
 - Seebug [http://seebug.org](http://seebug.org)
 - 知道创宇 [http://www.knownsec.com](http://seebug.org)
-
-
 
