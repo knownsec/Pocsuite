@@ -235,7 +235,6 @@ Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果�
 
 为了方便 Poc 的编写和对 Pocsuite 内的一些内部变量进行操作, Pocsuite 提供了一些方便使用者编写 Poc 的 API, 所有的 API 函数都可以通过 pocsuite/api 目录下找到, 主要文件有如下几个:
 
-- cannon.py	定义了 Cannon 类, 可以通过传递一个包含「待检测目标」,「 PoC 字符串」, 「检测模式」等内容的字典来获得 Cannon 类实例取名为 cannon, 之后通过 cannon.run 可以启动 Pocsuite 来进行检测, 此时 Pocsuite 将切换到静默模式不输出任何内容, 结束时返回一个记录此次运行结果的字典.
 - utils.py    很多实用 API 的集合, 下面针对各个函数逐一解释
   - logger	Pocsuite 运行时的系统 logger, 可以通过 logger.log 来输出自定义日志内容
   - CUSTOM_LOGGING    系统 logger 的等级, 有 WARNING, ERROR, SUCCESS, INFO等级别.
@@ -243,8 +242,7 @@ Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果�
   - getLargeWeakPassword    返回一个包含弱密码的列表, 包含了 1000 个弱密码.
   - genPasswrod    接受两个参数 a 和 b, 随机返回由 b 中字符构成的长度为 a 的字符串.
   - url2ip    用来将 self.url 转换成 ip.
-  - getExtPar    获得系统全局变量 conf.params 对应着命令行中的 --extra-params.
-  - strToDict     将字符串 string 转化成字典的函数.
+  - strToDict     把形如 "{'test': '1'}" 的字符串转化成字典的函数.
   - writeText / writeBinary    以文本 / 二进制模式写入文件.
 - webshell.py    集合了一些简单的 php / jsp / asp / aspx 的一句话, 用于检测是否上传成功, 带有特征字符串, 以 「PhpShell」 作为例子来进行说明.
   - PhpShell._password	该 php 后门一句话的密码
@@ -259,7 +257,7 @@ Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果�
 
 <h2 id="invoke">在其他程序中调用 Pocsuite</h2>
 
-利用上面说到 api 的 cannon.py 中的 Cannon 类来调用 Pocsuite, 具体代码如下:
+pocsuite/api/cannon.py 定义了 Cannon 类, 可以通过传递一个包含「待检测目标」,「 PoC 字符串」, 「检测模式」等内容的字典来获得 Cannon 类实例取名为 cannon, 之后通过 cannon.run 可以启动 Pocsuite 来进行检测, 此时 Pocsuite 将切换到静默模式不输出任何内容, 结束时返回一个记录此次运行结果的字典, 具体代码如下:
 
 ``` python
 from pocsuite.api.cannon import Cannon
