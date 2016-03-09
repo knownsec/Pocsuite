@@ -70,9 +70,9 @@ def getExtPar():
     return conf.params
 
 
-def convExtPar():
+def strToDict(string):
     try:
-        return ast.literal_eval(conf.params)
+        return ast.literal_eval(string)
     except ValueError as e:
-        logger.log(CUSTOM_LOGGING.ERROR, "conv extra-params failed : %s" % e)
-        logger.log(CUSTOM_LOGGING.ERROR, "try to use getExtPar instead.")
+        logger.log(CUSTOM_LOGGING.ERROR, "conv string failed : %s" % e)
+        # logger.log(CUSTOM_LOGGING.ERROR, "try to use getExtPar instead.")

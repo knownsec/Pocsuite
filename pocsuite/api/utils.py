@@ -15,7 +15,7 @@ from pocsuite.lib.utils.password import genPassword
 
 from pocsuite.lib.utils.funs import url2ip
 from pocsuite.lib.utils.funs import getExtPar
-from pocsuite.lib.utils.funs import convExtPar
+from pocsuite.lib.utils.funs import strToDict
 
 from pocsuite.lib.utils.funs import writeText
 from pocsuite.lib.utils.funs import writeBinary

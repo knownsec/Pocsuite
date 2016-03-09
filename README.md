@@ -244,7 +244,7 @@ Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果�
   - genPasswrod    接受两个参数 a 和 b, 随机返回由 b 中字符构成的长度为 a 的字符串.
   - url2ip    用来将 self.url 转换成 ip.
   - getExtPar    获得系统全局变量 conf.params 对应着命令行中的 --extra-params.
-  - convExtPar    将 conf.params 由字符串转换成字典的结构.
+  - strToDict     将字符串 string 转化成字典的函数.
   - writeText / writeBinary    以文本 / 二进制模式写入文件.
 - webshell.py    集合了一些简单的 php / jsp / asp / aspx 的一句话, 用于检测是否上传成功, 带有特征字符串, 以 「PhpShell」 作为例子来进行说明.
   - PhpShell._password	该 php 后门一句话的密码
@@ -252,13 +252,17 @@ Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果�
   - PhpShell._check_statement    该 php 后门执行的用来观察的指令
   - PhpShell._keyword    该 php 后门的特征字符串, 如果该字符串被发现则可以确定上传成功并解析.
 - packet.py    便捷地操作 socket, 方便地自定义 TCP 和 UDP 发送和接受等.
+- 另外在编写 PoC 时不能引用 Pocsuite 的全局变量 conf, kb 等, POCBase 类里的变量有:
+  - self.headers		用来获取 http 请求头
+  - self.params           用来获取 --extra-params 赋值的变量, Pocsuite 会自动转化成字典格式, 未赋值时为空字典
+  - self.url                    用来获取 -u / --url 赋值的 URL
 
 <h2 id="invoke">在其他程序中调用 Pocsuite</h2>
 
 利用上面说到 api 的 cannon.py 中的 Cannon 类来调用 Pocsuite, 具体代码如下:
 
 ``` python
-from pocsuite.api.missile import Missile
+from pocsuite.api.cannon import Cannon
 
 info = {"pocname": "PoC的名字",
         "pocstring": "PoC的字符串",
@@ -266,7 +270,7 @@ info = {"pocname": "PoC的名字",
         }
 
 target = "test.site"
-invoker = Missile(target, info) # 生成用来引用 Pocsuite 的实例
+invoker = Cannon(target, info) # 生成用来引用 Pocsuite 的实例
 result = invoker.run()			# 调用 Pocsuite, result 保存了 Pocsuite 执行的返回结果
 ```
 
