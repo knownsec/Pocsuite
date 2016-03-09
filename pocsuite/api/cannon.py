@@ -16,12 +16,12 @@ from pocsuite.lib.core.settings import POC_IMPORTDICT
 from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
 
 
-class Missile():
+class Cannon():
 
-    def __init__(self, target, missile_info={}):
+    def __init__(self, target, info={}):
         self.target = target
-        self.pocString = missile_info["pocstring"]
-        self.pocName = missile_info["pocname"]
+        self.pocString = info["pocstring"]
+        self.pocName = info["pocname"]
         self.mode = "verify"
         self.params = {}
         conf.isPycFile = False

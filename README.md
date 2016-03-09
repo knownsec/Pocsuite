@@ -235,7 +235,7 @@ Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果�
 
 为了方便 Poc 的编写和对 Pocsuite 内的一些内部变量进行操作, Pocsuite 提供了一些方便使用者编写 Poc 的 API, 所有的 API 函数都可以通过 pocsuite/api 目录下找到, 主要文件有如下几个:
 
-- missile.py	定义了 Missile 类, 可以通过传递一个包含「待检测目标」,「 PoC 字符串」, 「检测模式」等内容的字典来获得 Missile 类实例取名为 missile, 之后通过 missile.run 可以启动 Pocsuite 来进行检测, 此时 Pocsuite 将切换到静默模式不输出任何内容, 结束时返回一个记录此次运行结果的字典.
+- cannon.py	定义了 Cannon 类, 可以通过传递一个包含「待检测目标」,「 PoC 字符串」, 「检测模式」等内容的字典来获得 Cannon 类实例取名为 cannon, 之后通过 cannon.run 可以启动 Pocsuite 来进行检测, 此时 Pocsuite 将切换到静默模式不输出任何内容, 结束时返回一个记录此次运行结果的字典.
 - utils.py    很多实用 API 的集合, 下面针对各个函数逐一解释
   - logger	Pocsuite 运行时的系统 logger, 可以通过 logger.log 来输出自定义日志内容
   - CUSTOM_LOGGING    系统 logger 的等级, 有 WARNING, ERROR, SUCCESS, INFO等级别.
@@ -255,7 +255,7 @@ Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果�
 
 <h2 id="invoke">在其他程序中调用 Pocsuite</h2>
 
-利用上面说到 api 的 missile.py 中的 Missile 类来调用 Pocsuite, 具体代码如下:
+利用上面说到 api 的 cannon.py 中的 Cannon 类来调用 Pocsuite, 具体代码如下:
 
 ``` python
 from pocsuite.api.missile import Missile
@@ -331,4 +331,3 @@ PoC 支持 Python 和 JSON 两种格式，详情参见[PoC 编写规范](./docs/
 
 - Seebug [http://seebug.org](http://seebug.org)
 - 知道创宇 [http://www.knownsec.com](http://seebug.org)
-
