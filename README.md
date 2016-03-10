@@ -240,9 +240,9 @@ Pocsuite 默认只会将执行结果输出显示在屏幕上，如需将结果�
   - CUSTOM_LOGGING    系统 logger 的等级, 有 WARNING, ERROR, SUCCESS, INFO等级别.
   - getWeakPassword    返回一个包含弱密码列表, 包含了 100 个弱密码.
   - getLargeWeakPassword    返回一个包含弱密码的列表, 包含了 1000 个弱密码.
-  - genPasswrod    接受两个参数 a 和 b, 随机返回由 b 中字符构成的长度为 a 的字符串.
+  - random_str    接受两个参数 a(int) 和 b(str), 随机返回由 b 中字符构成的长度为 a 的字符串.
   - url2ip    用来将 self.url 转换成 ip.
-  - strToDict     把形如 "{'test': '1'}" 的字符串转化成字典的函数.
+  - strToDict     把形如 "{'test': '1'}" 的字符串转化成字典的函数.
   - writeText / writeBinary    以文本 / 二进制模式写入文件.
 - webshell.py    集合了一些简单的 php / jsp / asp / aspx 的一句话, 用于检测是否上传成功, 带有特征字符串, 以 「PhpShell」 作为例子来进行说明.
   - PhpShell._password	该 php 后门一句话的密码
