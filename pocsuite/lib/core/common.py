@@ -97,7 +97,7 @@ def dataToStdout(data, bold=False):
     """
     Writes text to the stdout (console) stream
     """
-    if not conf.quiet:
+    if 'quiet' not in conf or not conf.quiet:
         message = ""
 
         if isinstance(data, unicode):

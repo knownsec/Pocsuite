@@ -93,7 +93,7 @@ PCS_OPTIONS = {
     'proxy': None,
     'proxyCred': None,
     'timeout': 5,
-    'quite': False
+    'quiet': False
 }
 
 REPORT_TABLEBASE = """\
