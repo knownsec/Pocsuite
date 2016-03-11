@@ -14,6 +14,7 @@ from pocsuite.lib.core.enums import OUTPUT_STATUS
 from pocsuite.lib.core.common import parseTargetUrl
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
+from pocsuite.api.utils import strToDict
 
 
 class POCBase(object):
@@ -37,7 +38,7 @@ class POCBase(object):
         self.target = target
         self.url = parseTargetUrl(target)
         self.headers = headers
-        self.params = params
+        self.params = strToDict(params) if params else {}
         self.mode = mode
         self.verbose = verbose
         # TODO

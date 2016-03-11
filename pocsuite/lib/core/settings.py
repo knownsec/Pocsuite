@@ -12,8 +12,9 @@ import time
 import sys
 
 from pocsuite.lib.core.revision import getRevisionNumber
+from pocsuite import __version__
 
-VERSION = "1.0.0dev"
+VERSION = __version__
 REVISION = getRevisionNumber()
 SITE = "http://seebug.org"
 VERSION_STRING = "pocsuite/%s%s" % (VERSION, "-%s" % REVISION if REVISION else "-nongit-%s" % time.strftime("%Y%m%d", time.gmtime(os.path.getctime(__file__))))
@@ -91,7 +92,8 @@ PCS_OPTIONS = {
     'report': None,
     'proxy': None,
     'proxyCred': None,
-    'timeout': 5
+    'timeout': 5,
+    'quiet': False
 }
 
 REPORT_TABLEBASE = """\
