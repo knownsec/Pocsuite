@@ -631,7 +631,7 @@ getWeakPassword()
 #默认返回top前1000弱口令
 getLargeWeakPassword()
 #生成密码字典
-genPassword(length=8, chars=string.letters+string.digits)
+randomStr(length=8, chars=string.letters+string.digits)
 
 ```
 相关的密码文件在 pocsuite/data 目录下，如果需要修改字典位置，可以修改paths.WEAK_PASS属性和paths.LARGE_WEAK_PASS 属性值。
