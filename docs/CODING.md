@@ -297,11 +297,11 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
 4.	要求每个PoC在编写的时候，尽可能的不要要求输入参数，这样定制化过高，不利于PoC的批量化调度执行，尽可能的PoC内部实现参数的构造，至少应该设置默认值，如某个PoC需要指定用户id，那么应该允许使用extar_param传入id，也应该没有传入该参数的时候自动设置默认值，不应该影响PoC的正常运行与验证。
 5.	要求每个PoC在输出结果的时候，尽可能的在不破坏的同时输出取证信息，如输出进程列表，具体参考[《PoC 结果返回规范》](#resultstandard)。
 6.	要求认真填写PoC信息字段，其中vulID请填写Seebug上的漏洞ID（不包含SSV-）。
-7.	为了防止误报产生以及避免被关键词被WAF等作为检测特征,要求验证结果判断的时候输出随机的字符串（可以调用API中的random_str方法），而不用采用固定字符串。
+7.	为了防止误报产生以及避免被关键词被WAF等作为检测特征,要求验证结果判断的时候输出随机的字符串（可以调用API中的randoStr方法），而不用采用固定字符串。
   比如：
   ```
         检测 SQL 注入时,
-            token = random_str()
+            token = randomStr()
             payload = 'select md5(%s)' % token
             ...
 
@@ -309,7 +309,7 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
                 result['VerifyInfo'] = {}
                 result['VerifyInfo']['URL'] = self.url+payload
         检测 XSS 漏洞时,
-            token = random_str()
+            token = randomStr()
             payload = 'alert("%s")' % token
             ...
 
@@ -318,7 +318,7 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
                 result['VerifyInfo']['URL'] = self.url+payload
         检测 PHP 文件上传是否成功,
 
-            token = random_str()
+            token = randomStr()
             payload = '<?php echo md5(%s);unlink(__FILE__);?>' % token
             ...
 
@@ -357,7 +357,7 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
 |from pocsuite.net import req|请求类，用法同 requests|
 |from api.utils import getWeakPassword|返回一个包含弱密码列表, 包含了 100 个弱密码|
 |from api.utils import getLargeWeakPassword|返回一个包含弱密码的列表, 包含了 1000 个弱密码|
-|from api.utils import random_str|接受两个可选参数 a(int) 和 b(str), 随机返回由 b 中字符构成的长度为 a 的字符串|
+|from api.utils import randomStr|接受两个可选参数 a(int) 和 b(str), 随机返回由 b 中字符构成的长度为 a 的字符串|
 |from api.utils import url2ip|将传入的url（str）转换为ip|
 |from api.utils import strToDict|把形如 "{'test': '1'}" 的字符串转化成字典的函数|
 |from api.utils import writeText|/ writeBinary 以文本 / 二进制模式写入文件|

