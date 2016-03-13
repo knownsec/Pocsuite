@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Pocsuite：an open-sourced remote vulnerability testing framework</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Pocsuite</h1>
+        <h2>An open-sourced remote vulnerability testing framework</h2>
+        <a href="https://github.com/knownsec/Pocsuite" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <pre><code>                              ,--. ,--.
+ ,---. ,---. ,---.,---.,--.,--`--,-'  '-.,---.
+| .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. :
+| '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --.
+|  |-' `---' `---`----' `----'`--' `--'  `----'
+`--'                        http://pocsuite.org
+
+</code></pre>
+
+<h2 id="introduction">
+<a id="Introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
+
+<p>Pocsuite is an open-sourced remote vulnerability testing framework developed by Knownsec Security Team.It is the cornerstone of the Knownsec Security Team. </p>
+
+<p>You can use Pocsuite to verify and exploit vulnerabilities;You also can write PoC/Exp based on Pocsuite, because it is also a PoC development framework;You can also integrate Pocsuite in your vulnerability testing tool, which also provides a standard calling class.</p>
+
+
+
+<h2 id="functions">
+<a id="Functions" class="anchor" href="#functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Functions</h2>
+
+<h3 id="vul_test" style="margin-left: 35px;">
+<a id="Vulnerability Testing Framework" class="anchor" href="#vul_test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vulnerability Testing Frameworkul_test</h3>
+
+<p>Pocsuite is written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets-imported against multiple exploit-plugins in advance.（View the documents<a href="https://github.com/knownsec/Pocsuite/blob/master/docs/USAGE.md">《Pocsuite usage》</a>）</p>
+
+<h3 id="develop_kit" style="margin-left: 35px;">
+<a id="PoC/Exp Development Kit" class="anchor" href="#develop_kit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PoC/Exp Development Kit</h3>
+
+<p>Like Metasploit, it is a development kit for pentesters to develope their own exploits. Develope PoC/Exp based on Pocsuite , you can just write the most core code of PoC/Exp, and do not care about the results output or others.There are at least several hundred people write PoC/Exp based on Pocsuite.</p>
+
+<h3 id="develop_module" style="margin-left: 35px;">
+<a id="Can Be Integrated Module" class="anchor" href="#develop_module" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Can Be Integrated Module</h3>
+
+<p>PUsers could utilze some auxiliary modules packaged in pocsuite to extend their exploit functions or integrate pocsuite to develop other vulnerability assesment tools.</p>
+
+<h3 id="integrated_api" style="margin-left: 35px;">
+<a id="Integrated ZoomEye And Seebug API" class="anchor" href="#integrated_api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Integrated ZoomEye And Seebug API</h3>
+
+<p>Pocsuite is also an extremely useful tool to integrate Seebug and ZoomEye APIs in a collaborative way. Vulnerablity assessment can be done automately and effectively by searching targets through ZoomEye and acquiring PoC scripts from Seebug or locally.</p>
+
+
+<h2 id="install">
+<a id="Installation" class="anchor" href="#%E5%AE%89%E8%A3%85" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Pocsuite works out of the box with Python version 2.6.x and 2.7.x on any platform.</p>
+
+<p>ou can use Git to clone the latest source code repository</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ git clone git@github.com:knownsec/Pocsuite.git</pre></div>
+
+<p>Or you can click <a href="https://github.com/knownsec/Pocsuite/archive/master.zip">here</a> download the latest source zip package, and extract</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ wget https://github.com/knownsec/Pocsuite/archive/master.zip
+    $ unzip master.zip</pre></div>
+
+<div class="highlight highlight-source-shell"><pre>    $ <span class="pl-c1">cd</span> Pocsuite
+    $ python pocsuite.py --version</pre></div>
+
+<p>Or use pip</p>
+
+<div class="highlight highlight-source-shell"><pre>    $ pip install pocsuite
+    $ pocsuite --version</pre></div>
+
+<h2 id="usage">
+<a id="Usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+<ul>
+<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/USAGE.md">How to use the Pocsuite test vulnerability</a>
+</li>
+<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/CODING.md">How to develop PoC/Exp based on Pocsuite</a>
+</li>
+<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/INTEGRATE.md">How to integrate Pocsuite in applications</a>
+</li>
+</ul>
+
+<h2 id="demo">
+<a id="Demo" class="anchor" href="#Demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo</h2>
+<p><video width="550" height="400" controls="controls" style="margin-top:-30px;">
+   <source src="https://www.seebug.org/static/images/pocsuite_demo.mp4" type="video/mp4">pocsuite_demo.mp4
+          您的浏览器不支持 video 标签
+</video></p>
+
+<h2 id="links">
+<a id="Links" class="anchor" href="#%E7%9B%B8%E5%85%B3%E9%93%BE%E6%8E%A5" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Links</h2>
+
+<ul>
+<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/THANKS.md">Thanks List</a></li>
+<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/CHANGLOG.md">Change Log</a></li>
+<li><a href="https://github.com/knownsec/Pocsuite/issues">BUG Feedback</a></li>
+<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/COPYING">Copying</a></li>
+<li><a href="http://pocsuite.org">Pocsuite Website: http://pocsuite.org</a></li>
+<li><a href="https://www.seebug.org">Seebug Website: https://www.seebug.org</a></li>
+<li><a href="https://www.zoomeye.org">ZoomEye Website: https://www.zoomeye.org</a></li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+
+          <a href="https://github.com/knownsec/Pocsuite/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/knownsec/Pocsuite/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/knownsec/Pocsuite"></a> is maintained by <a href="https://github.com/knownsec">knownsec</a>.</p>
+
+
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+
+          <hr>
+          <p class="repo-owner">访问 <a href="index.html">中文页面</a> </p>
+        </aside>
+      </div>
+    </div>
+
+
+  </body>
+</html>
