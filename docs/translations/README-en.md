@@ -19,7 +19,7 @@ You can use Pocsuite to verify and exploit vulnerabilities;You also can write Po
 Functions
 ---------
 * ```Vulnerability Testing Framework```
-Pocsuite is written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets-imported against multiple exploit-plugins in advance.（[View the documents《Pocsuite usage》](./docs/USAGE.md)）
+Pocsuite is written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets-imported against multiple exploit-plugins in advance.（[View the documents《Pocsuite usage》](../USAGE.md)）
 
 * ```PoC/Exp Development Kit```
 Like Metasploit, it is a development kit for pentesters to develope their own exploits. Develope PoC/Exp based on Pocsuite , you can just write the most core code of PoC/Exp, and do not care about the results output or others.There are at least several hundred people  write PoC/Exp based on Pocsuite.
