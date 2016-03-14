@@ -19,16 +19,16 @@ PoC 编写规范及要求说明
   * [PoC 命名规范](#namedstandard)
   * [PoC 第三方模块依赖说明](#requires)
   * [PoC 结果返回规范](#resultstandard)
-    * [extra 字段说明](#result_extar)
+    * [extra 字段说明](#result_extara)
     * [通用字段说明](#result_common)
   * [漏洞类型规范](#vulcategory)
 
 
-### [概述](#overview)
- 本文档为 Pocsuite PoC 编写规范及要求说明，Pocsuite 支持 python 和 JSON 两种格式的 PoC，本文档包含了两种格式的 PoC 编写的步骤以及相关 API 的一些说明。一个优秀的 PoC 离不开反复的调试、测试，在阅读本文档前，请先阅读 [《Pocsuite 使用文档》](../USAGE.md)。
+### 概述<div id="overview"></div>
+ 本文档为 Pocsuite PoC 编写规范及要求说明，Pocsuite 支持 python 和 JSON 两种格式的 PoC，本文档包含了两种格式的 PoC 编写的步骤以及相关 API 的一些说明。一个优秀的 PoC 离不开反复的调试、测试，在阅读本文档前，请先阅读 [《Pocsuite 使用文档》](./USAGE.md)。
 
-### [PoC 编写规范](#write_poc)
-#### [PoC python脚本编写步骤](#pocpy)
+### PoC 编写规范<div id="write_poc"></div>
+#### PoC python脚本编写步骤<div id="pocpy"></div>
 
 本小节介绍 PoC python脚本编写
 
@@ -140,7 +140,7 @@ Pocsuite 支持 Python 2.7，如若编写 Python 格式的 PoC，需要开发者
     register(TestPOC)
     ```
 
-#### [PoC JSON 脚本编写步骤](#pocjson)
+#### PoC JSON 脚本编写步骤<div id="pocjson"></div>
 
 JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即可。**目前 JSON支持的漏洞类型比较局限，如果想实现理复杂的业务逻辑，建议使用 Python**
 
@@ -290,7 +290,7 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
 
 
 
-#### [PoC 编写注意事项](#attention)
+#### PoC 编写注意事项<div id="attention"></div>
 1. 要求在编写PoC的时候，尽量的不要使用第三方模块，如果在无法避免的情况下，请认真填写install_requires 字段，填写格式参考《PoC第三方模块依赖说明》。
 2.	要求编写PoC的时候，尽量的使用Pocsuite 已经封装的API提供的方法，避免自己重复造轮子，对于一些通用方法可以加入到API，具体参考《通用API列表》。
 3.	如果PoC需要包含远程文件等，统一使用Pocsuite 远程调用文件，具体可以参考[《Pocsuite 远程调用文件列表》](#inclue_files)，不要引入第三方文件，如果缺少对应文件，联系管理员添加。
@@ -331,7 +331,7 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
 10.	程序可以通过某些方法获取表前缀，just do it；若不行，保持默认表前缀。
 11.	PoC 编写好后，务必进行测试，测试规则为：5个不受漏洞的网站，确保 PoC 攻击不成功；5个受漏洞影响的网站，确保 PoC 攻击成功
 
-#### [Pocsuite 远程调用文件列表](#inclue_files)
+#### Pocsuite 远程调用文件列表<div id="inclue_files"></div>
 部分 PoC 需要采用包含远程文件的形式，要求基于 Pocsuite 的 PoC 统一调用统一文件(如需引用未在以下文件列表内文件，请联系s1@seebug.org或者直接提交 issue)。
 统一URL调用路径：http://pocsuite.org/include_files/，如http://pocsuite.org/include_files/xxe_verify.xml
 
@@ -346,10 +346,10 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
 |xxe_verify.xml|XXE 验证文件|
 
 
-#### [通用API列表](#common_api)
+#### 通用API列表<div id="common_api"></div>
 在编写 PoC 的时候，相关方法请尽量调用通用的已封装的 API
 
-[**通用方法**](#api_common)
+**通用方法**<div id="api_common"></div>
 
 |方法|说明|
 |---|----|
@@ -362,7 +362,7 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
 |from api.utils import strToDict|把形如 "{'test': '1'}" 的字符串转化成字典的函数|
 |from api.utils import writeText|/ writeBinary 以文本 / 二进制模式写入文件|
 
-[**Shell 类**](#api_shell)
+**Shell 类**<div id="api_shell"></div>
 
 Pocsuite 提供两个类来快速生成WebShell。具体代码见：lib/utils/webshell.py
 
@@ -403,11 +403,11 @@ from lib.utils.webshell import PhpShell
 如果需要自定义VerifyShell,可以继承VerifyShell类。
 
 
-[**packet**](#api_packet)
+**packet**<div id="api_packet"></div>
 
 提供IP, TCP, UDP, send, recv几个方法，方便对socket进行操作，可以自定义IP、TCP、UDP三种类型数据包，以及进行发送和接收操作等。
 
-[**参数调用**](#api_params)
+**参数调用**<div id="api_params"></div>
 
 * self.headers 用来获取 http 请求头, 可以通过 --cookie, --referer, --user-agent, --headers 来修改和增加需要的部分
 * self.params 用来获取 --extra-params 赋值的变量, Pocsuite 会自动转化成字典格式, 未赋值时为空字典
@@ -415,9 +415,9 @@ from lib.utils.webshell import PhpShell
 
 
 
-#### [PoC 代码示例](#PoCexample)
+#### PoC 代码示例<div id="PoCexample"></div>
 
-##### [PoC Python 代码示例](#pyexample)
+##### PoC Python 代码示例<div id="pyexample"></div>
 
 [Drupal 7.x /includes/database/database.inc SQL注入漏洞](http://www.seebug.org/vuldb/ssvid-88927) PoC:
 ```
@@ -512,7 +512,7 @@ register(TestPOC)
 
 ```
 
-##### [PoC JSON 代码示例](#jsonexample)
+##### PoC JSON 代码示例<div id="jsonexample"></div>
 [phpcms_2008_/ads/include/ads_place.class.php_sql注入漏洞](http://www.seebug.org/vuldb/ssvid-62274) PoC:
 
 由于 JSON 不支持注释,所以具体字段意义请参考上文，涉及到的靶场请自行根据 Seebug 漏洞详情搭建。
@@ -587,15 +587,15 @@ register(TestPOC)
 ![attack](./images/PoC_JSON_attack.png)
 
 
-### [PoC 规范说明](#PoCstandard)
+### PoC 规范说明<div id="PoCstandard"></div>
 
-#### [PoC 编号说明](#idstandard)
+#### PoC 编号说明<div id="idstandard"></div>
 PoC 编号ID 与漏洞 ID 一致.
 
 示例, 漏洞库中的漏洞统一采用“SSV-xxx”编号的方式, 则 PoC 编号为 xxx
 
 
-#### [PoC 命名规范](#namedstandard)
+#### PoC 命名规范<div id="namedstandard"></div>
 
 PoC 命名分成3个部分组成漏洞应用名_版本号_漏洞类型名称 然后把文件名种的所有字母改成成小写,所有的符号改成_.
 文件名不能有特殊字符和大写字母 最后出来的文件名应该像这样
@@ -603,7 +603,7 @@ PoC 命名分成3个部分组成漏洞应用名_版本号_漏洞类型名称 然
 ```
     _1847_seeyon_3_1_login_info_disclosure.py
 ```
-#### [PoC 第三方模块依赖说明](#requires)
+#### PoC 第三方模块依赖说明<div id="requires"></div>
 PoC 编写的时候要求尽量不要使用第三方模块，如果必要使用，请在 PoC 的基础信息部分，增加 install_requires 字段，按照以下格式填写依赖的模块名。
 ```
 install requires =[str_item_,str_item,…] # 整个字段的值为list，每个项为一个依赖模块
@@ -612,7 +612,7 @@ install requires =[str_item_,str_item,…] # 整个字段的值为list，每个�
 str_item 格式：模块名==版本号，模块名为pip install 安装时的模块名（请不要填写 import 的模块名）
 
 
-#### [PoC 结果返回规范](#resultstandard)
+#### PoC 结果返回规范<div id="resultstandard"></div>
 
 result 为PoC返回的结果数据类型, result返回值要求返回完整的一项, 暂不符合result字段的情况, 放入extra字段中, 此步骤必须尽可能的保证运行者能够根据信息 复现/理解 漏洞, 若果步骤复杂, 在取证信息中说明. 例如:
 
@@ -625,7 +625,7 @@ result 为PoC返回的结果数据类型, result返回值要求返回完整的�
   result['AdminInfo']['Username']='xxxxx'
 ```
 
-[**extra 字段说明**](#result_extar)
+**extra 字段说明**<div id="result_extara"></div>
 extra字段为通用结果字段的补充字段，如果需要返回的内容中不属于通用结果字段，那么可以使用extra字段进行赋值。extra字段为dict格式，可自定义key进行赋值，如
 ```
 result['extra' ]['field'] = 'aa'
@@ -636,7 +636,7 @@ result['extra' ]['field'] = 'aa'
 result['extra' ]['evidence'] = 'aa'
 ```
 
-[**通用字段说明**](#result_common)
+**通用字段说明**<div id="result_common"></div>
 ```
 result：[
     {  name: 'DBInfo'，        value：'数据库内容' }，
@@ -682,7 +682,7 @@ result：[
 ```
 
 
-#### [漏洞类型规范](#vulcategory)
+#### 漏洞类型规范<div id="vulcategory"></div>
 
 <table border=1>
     <tr><td>英文名称</td><td>中文名称</td><td>缩写</td></tr>
@@ -740,69 +740,7 @@ result：[
     <tr><td>Black Link </td><td> 暗链 </td><td> black-link</td></tr>
     <tr><td>Backdoor </td><td> 后门 </td><td> backdoor</td></tr>
 <<<<<<< 9ee383755ef3980cf5e9245bcded89ac660776a9:docs/POCAPI.md
-    
+
 </table>
 
 也可以参见[漏洞类型规范](http://seebug.org/category)
-
-
-<h3 id="webshell">WebShell类</h3>
-Pocsuite提供两个类来快速生成WebShell。具体代码见：lib/utils/webshell.py
-
-WebShell类：
-
-```
-class Webshell:
-    #基础Webshell类
-    # @pwd :    Webshell密码 
-    # @content: Webshell代码
-    # @check:   检验代码
-    # @keyword: 检验特征关键字
-    __init__(self, pwd='', content='', check='', keyword='')
-    
-    set_pwd(self, pwd)#设置webshell密码
-    get_pwd(self)     #获取webshell密码
-    get_content(self) #获取webshell代码
-    check(self, url)  #校验执行结果
-        
-```
-
-VerifyShell类：
-
-```
-class VerifyShell(Webshell):
-
-    def __init__(self, content='', keyword=''):
-        Webshell.__init__(self, content=content, keyword=keyword)
-        self._check_data = {}
-```
-
-pocsuite中封装了常用的一句话WebShell，默认密码均为cmd。如果需要在页面中直接调用webshell，需要引入webshell类。
-如：使用PhpShell类
-```
-from lib.utils.webshell import PhpShell
-```
-如果需要自定义WebShell，可以继承WebShell类。
-如果需要自定义VerifyShell,可以继承VerifyShell类。
-
-<h3 id="weakpass">弱口令相关</h3>
-
-引入API:
-```
-from lib.utils.password import *
-```
-相关API:
-```
-#默认返回top前100弱口令
-getWeakPassword()
-#默认返回top前1000弱口令
-getLargeWeakPassword()
-#生成密码字典
-randomStr(length=8, chars=string.letters+string.digits)
-
-```
-相关的密码文件在 pocsuite/data 目录下，如果需要修改字典位置，可以修改paths.WEAK_PASS属性和paths.LARGE_WEAK_PASS 属性值。
-
-</table>
-
-也可以参见[漏洞类型规范](https://www.seebug.org/category)
