@@ -57,8 +57,11 @@ def loadPoc(pocFile):
     if conf.isPocString:
         poc = conf.pocFile
         if not conf.pocname:
-            errMsg = "Use pocString must provide pocname"
-            logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+            if conf.pocFile:
+                conf.pocname = os.path.split(conf.pocFile)[1]
+            else:
+                errMsg = "Use pocString must provide pocname"
+                logger.log(CUSTOM_LOGGING.ERROR, errMsg)
         pocname = conf.pocname
     else:
         pocname = os.path.split(pocFile)[1]
