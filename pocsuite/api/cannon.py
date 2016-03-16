@@ -7,6 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import time
+import requests
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.common import filepathParser
@@ -15,6 +16,8 @@ from pocsuite.lib.core.common import StringImporter
 from pocsuite.lib.core.common import delModule
 from pocsuite.lib.core.settings import POC_IMPORTDICT
 from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
+from pocsuite.api.utils import logger
+from pocsuite.api.utils import CUSTOM_LOGGING
 
 
 class Cannon():
@@ -34,7 +37,6 @@ class Cannon():
         except Exception:
             kb.registeredPocs = {}
 
-        self.registerPoc()
 
     def registerPoc(self):
         pocString = multipleReplace(self.pocString, POC_IMPORTDICT)
@@ -46,9 +48,13 @@ class Cannon():
             pass  # TODO
 
     def run(self):
-        poc = kb.registeredPocs[self.moduleName]
-        result = poc.execute(self.target, mode=self.mode)
-        output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), result.result)
-        if self.delmodule:
-            delModule(self.moduleName)
-        return output
+        try:
+            self.registerPoc()
+            poc = kb.registeredPocs[self.moduleName]
+            result = poc.execute(self.target, mode=self.mode)
+            output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), result.result)
+            if self.delmodule:
+                delModule(self.moduleName)
+            return output
+        except Exception as errMsg:
+            logger.log(CUSTOM_LOGGING.ERROR, errMsg)
