@@ -40,10 +40,8 @@
 <h2 id="introduction">
 <a id="Introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p>Pocsuite is an open-sourced remote vulnerability testing framework developed by Knownsec Security Team.It is the cornerstone of the Knownsec Security Team. </p>
-
-<p>You can use Pocsuite to verify and exploit vulnerabilities;You also can write PoC/Exp based on Pocsuite, because it is also a PoC development framework;You can also integrate Pocsuite in your vulnerability testing tool, which also provides a standard calling class.</p>
-
+<p>Pocsuite is an open-sourced remote vulnerability testing and PoC development framework developed by the Knownsec Security Team. It serves as the cornerstone of the team.</p>
+<p>You can use Pocsuite to verify and exploit vulnerabilities or write PoC/Exp based on it. You can also integrate Pocsuite in your vulnerability testing tool, which provides a standard calling class.</p>
 
 
 <h2 id="functions">
@@ -52,21 +50,20 @@
 <h3 id="vul_test" style="margin-left: 35px;">
 <a id="Vulnerability Testing Framework" class="anchor" href="#vul_test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vulnerability Testing Frameworkul_test</h3>
 
-<p>Pocsuite is written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets-imported against multiple exploit-plugins in advance.（View the documents<a href="https://github.com/knownsec/Pocsuite/blob/master/docs/USAGE.md">《Pocsuite usage》</a>）</p>
+<p>Written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets-imported against multiple exploit-plugins in advance.（See<a href="https://github.com/knownsec/Pocsuite/blob/master/docs/USAGE.md"> "Pocsuite usage"</a>）</p>
 
 <h3 id="develop_kit" style="margin-left: 35px;">
 <a id="PoC/Exp Development Kit" class="anchor" href="#develop_kit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PoC/Exp Development Kit</h3>
 
-<p>Like Metasploit, it is a development kit for pentesters to develope their own exploits. Develope PoC/Exp based on Pocsuite , you can just write the most core code of PoC/Exp, and do not care about the results output or others.There are at least several hundred people write PoC/Exp based on Pocsuite.</p>
+<p>Like Metasploit, it is a development kit for pentesters to develope their own exploits. Based on Pocsuite, you can write the most core code of PoC/Exp without caring about the resulting output etc. There are at least several hundred people writing PoC/Exp based on Pocsuite up to date.</p>
 
 <h3 id="develop_module" style="margin-left: 35px;">
-<a id="Can Be Integrated Module" class="anchor" href="#develop_module" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Can Be Integrated Module</h3>
+<a id="Integratable Module" class="anchor" href="#develop_module" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Integratable Module</h3>
 
-<p>PUsers could utilze some auxiliary modules packaged in pocsuite to extend their exploit functions or integrate pocsuite to develop other vulnerability assesment tools.</p>
+<p>Users could utilze some auxiliary modules packaged in Pocsuite to extend their exploit functions or integrate Pocsuite to develop other vulnerability assesment tools.</p>
 
 <h3 id="integrated_api" style="margin-left: 35px;">
-<a id="Integrated ZoomEye And Seebug API" class="anchor" href="#integrated_api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Integrated ZoomEye And Seebug API</h3>
-
+<a id="Integrated ZoomEye & Seebug APIs" class="anchor" href="#integrated_api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Integrated ZoomEye And Seebug APIs</h3>
 <p>Pocsuite is also an extremely useful tool to integrate Seebug and ZoomEye APIs in a collaborative way. Vulnerablity assessment can be done automately and effectively by searching targets through ZoomEye and acquiring PoC scripts from Seebug or locally.</p>
 
 
@@ -75,11 +72,11 @@
 
 <p>Pocsuite works out of the box with Python version 2.6.x and 2.7.x on any platform.</p>
 
-<p>ou can use Git to clone the latest source code repository</p>
+<p>You can use Git to clone the latest source code repository</p>
 
 <div class="highlight highlight-source-shell"><pre>    $ git clone git@github.com:knownsec/Pocsuite.git</pre></div>
 
-<p>Or you can click <a href="https://github.com/knownsec/Pocsuite/archive/master.zip">here</a> download the latest source zip package, and extract</p>
+<p>Or click <a href="https://github.com/knownsec/Pocsuite/archive/master.zip">here</a> to download the latest source zip package, and extract</p>
 
 <div class="highlight highlight-source-shell"><pre>    $ wget https://github.com/knownsec/Pocsuite/archive/master.zip
     $ unzip master.zip</pre></div>
@@ -95,7 +92,7 @@
 <h2 id="usage">
 <a id="Usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 <ul>
-<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/USAGE.md">How to use the Pocsuite test vulnerability</a>
+<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/USAGE.md">How to use Pocsuite test vulnerability</a>
 </li>
 <li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/CODING.md">How to develop PoC/Exp based on Pocsuite</a>
 </li>
@@ -116,7 +113,7 @@
 <ul>
 <li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/THANKS.md">Thanks List</a></li>
 <li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/CHANGLOG.md">Change Log</a></li>
-<li><a href="https://github.com/knownsec/Pocsuite/issues">BUG Feedback</a></li>
+<li><a href="https://github.com/knownsec/Pocsuite/issues">Bug Feedback</a></li>
 <li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/COPYING">Copying</a></li>
 <li><a href="http://pocsuite.org">Pocsuite Website: http://pocsuite.org</a></li>
 <li><a href="https://www.seebug.org">Seebug Website: https://www.seebug.org</a></li>
@@ -135,7 +132,7 @@
             .tar.gz file
           </a>
 
-          <p class="repo-owner"><a href="https://github.com/knownsec/Pocsuite"></a> is maintained by <a href="https://github.com/knownsec">knownsec</a>.</p>
+          <p class="repo-owner"><a href="https://github.com/knownsec/Pocsuite"></a> Developed by <a href="https://github.com/knownsec">knownsec</a>.</p>
 
 
 
