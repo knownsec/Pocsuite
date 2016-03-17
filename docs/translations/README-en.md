@@ -12,22 +12,22 @@
 
 Introduction
 ----
-Pocsuite is an open-sourced remote vulnerability testing framework developed by Knownsec Security Team.It is the cornerstone of the Knownsec Security Team.
-You can use Pocsuite to verify and exploit vulnerabilities;You also can write PoC/Exp based on Pocsuite, because it is also a PoC development framework;You can also integrate Pocsuite in your vulnerability testing tool, which also provides a standard calling class.
+Pocsuite is an open-sourced remote vulnerability testing and PoC development framework developed by the Knownsec Security Team. It serves as the cornerstone of the team.
+You can use Pocsuite to verify and exploit vulnerabilities or write PoC/Exp based on it. You can also integrate Pocsuite in your vulnerability testing tool, which provides a standard calling class.
 
 
 Functions
 ---------
-* ```Vulnerability Testing Framework```
-Pocsuite is written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets-imported against multiple exploit-plugins in advance.（[View the documents《Pocsuite usage》](../USAGE.md)）
+#### Vulnerability Testing Framework
+Written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets-imported against multiple exploit-plugins in advance.（See ["Pocsuite usage"](../USAGE.md)）
 
-* ```PoC/Exp Development Kit```
-Like Metasploit, it is a development kit for pentesters to develope their own exploits. Develope PoC/Exp based on Pocsuite , you can just write the most core code of PoC/Exp, and do not care about the results output or others.There are at least several hundred people  write PoC/Exp based on Pocsuite.
+#### PoC/Exp Development Kit
+Like Metasploit, it is a development kit for pentesters to develope their own exploits. Based on Pocsuite, you can write the most core code of PoC/Exp without caring about the resulting output etc. There are at least several hundred people writing PoC/Exp based on Pocsuite up to date.
 
-* ```Can Be Integrated Module```
-Users could utilze some auxiliary modules packaged in pocsuite to extend their exploit functions or integrate pocsuite to develop other vulnerability assesment tools.
+#### Integratable Module
+Users could utilze some auxiliary modules packaged in Pocsuite to extend their exploit functions or integrate Pocsuite to develop other vulnerability assesment tools.
 
-* ```Integrated ZoomEye And Seebug API```
+#### Integrated ZoomEye & Seebug APIs
 Pocsuite is also an extremely useful tool to integrate Seebug and ZoomEye APIs in a collaborative way. Vulnerablity assessment can be done automately and effectively by searching targets through ZoomEye and acquiring PoC scripts from Seebug or locally.
 
 
@@ -40,7 +40,7 @@ You can use Git to clone the latest source code repository
 ``` bash
 $ git clone git@github.com:knownsec/Pocsuite.git
 ```
-Or you can click [here](https://github.com/knownsec/Pocsuite/archive/master.zip) Download the latest source zip package, and extract
+Or click [here](https://github.com/knownsec/Pocsuite/archive/master.zip) to Download the latest source zip package and extract
 
 ``` bash
 $ wget https://github.com/knownsec/Pocsuite/archive/master.zip
@@ -61,7 +61,7 @@ $ pocsuite --version
 
 Usage
 ------
-* [How to use the Pocsuite test vulnerability](./docs/USAGE.md)
+* [How to use Pocsuite to test vulnerability](./docs/USAGE.md)
 * [How to develop PoC/Exp based on Pocsuite](./docs/CODING.md)
 * [How to integrate Pocsuite in applications](./docs/INTEGRATE.md)
 
@@ -69,7 +69,7 @@ Links
 ---------
 * [Thanks List](./docs/THANKS.md)
 * [Change Log](./docs/CHANGELOG.md)
-* [BUG Feedback](https://github.com/knownsec/Pocsuite/issues)
+* [Bug feedback](https://github.com/knownsec/Pocsuite/issues)
 * [Copying](./docs/COPYING)
 * [Pocsuite Website: http://pocsuite.org](http://pocsuite.org)
 * [Seebug Website: https://www.seebug.org](https://www.seebug.org)
