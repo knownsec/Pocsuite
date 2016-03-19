@@ -77,10 +77,15 @@ class baseConsole(Cmd):
             coloramainit()
         Cmd.__init__(self)
         os.system("clear")
+
+        conf.report = False
+        conf.retry = False
+        conf.delay = 0
         conf.quiet = False
-        banner()
-        self.case_insensitive = False
-        self.prompt = "Pcs> "
+        conf.isPocString = False
+        conf.isPycFile = False
+        conf.requires = False
+        conf.requiresFreeze = False
 
         conf.url = None
         conf.proxy = None
@@ -95,6 +100,10 @@ class baseConsole(Cmd):
         conf.threads = 1
         conf.timeout = 5
         conf.httpHeaders = HTTP_DEFAULT_HEADER
+
+        self.prompt = "Pcs> "
+        banner()
+        self.case_insensitive = False
 
     def do_verify(self, args):
         conf.mode = 'verify'
@@ -298,6 +307,7 @@ class pocConsole(Cmd):
         else:
             conf.pocFile = args
 
+        conf.pocname = os.path.split(conf.pocFile)[1]
         setPoc()
 
         print '[*] load poc file(s) success!'

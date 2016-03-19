@@ -12,6 +12,7 @@ from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.common import filepathParser
 from pocsuite.lib.core.common import multipleReplace
 from pocsuite.lib.core.common import StringImporter
+from pocsuite.lib.core.common import delModule
 from pocsuite.lib.core.settings import POC_IMPORTDICT
 from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
 
@@ -23,6 +24,7 @@ class Cannon():
         self.pocString = info["pocstring"]
         self.pocName = info["pocname"]
         self.mode = "verify"
+        self.delmodule = False
         self.params = {}
         conf.isPycFile = False
         conf.httpHeaders = {}
@@ -47,5 +49,6 @@ class Cannon():
         poc = kb.registeredPocs[self.moduleName]
         result = poc.execute(self.target, mode=self.mode)
         output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), result.result)
-
+        if self.delmodule:
+            delModule(self.moduleName)
         return output
