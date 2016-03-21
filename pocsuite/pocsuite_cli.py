@@ -9,6 +9,8 @@ See the file 'docs/COPYING' for copying permission
 import os
 import sys
 import time
+import json
+import requests
 import traceback
 from .lib.utils import versioncheck
 from .lib.core.common import unhandledExceptionMessage
@@ -55,6 +57,29 @@ def pcsInit(PCS_OPTIONS=None):
 
         cmdLineOptions.update(argsDict)
         initOptions(cmdLineOptions)
+
+        if argsDict['dork']:
+            username = '349762273@qq.com'
+            password = '12345678'
+
+            # logger.log(CUSTOM_LOGGING.SYSINFO, 'Username')
+            # username = raw_input()
+            # logger.log(CUSTOM_LOGGING.SYSINFO, 'Password')
+            logger.log(CUSTOM_LOGGING.SYSINFO, 'fetching token')
+            data = '{"username":"%s", "password":"%s"}' % (username, password)
+            # TODO 合并到类里
+            # TODO 获取-写文件
+            req = requests.post('http://api.zoomeye.org/user/login', data=data)
+            if req.status_code != 401:
+                logger.log(CUSTOM_LOGGING.ERROR, 'loginfail')
+            else:
+                content = json.loads(req.content)
+                # TODO 提取IP写入文件
+                tmpFile = paths.POCSUITE_TMP_PATH + '/zoomeye.txt'
+                with open(tmpFile, 'w') as fp:
+                    fp.write('baidu.com')
+                conf.urlFile = argsDict['urlFile'] = tmpFile
+
 
         if not any((argsDict['url'] or argsDict['urlFile'], conf.requires, conf.requiresFreeze)):
             errMsg = 'No "url" or "urlFile" assigned.'

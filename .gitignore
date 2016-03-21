@@ -19,4 +19,5 @@ node_modules
 sdist
 venv
 pocsuite/modules/tmp/*.py
+pocsuite/modules/tmp/*.txt
 test.py

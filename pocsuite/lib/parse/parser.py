@@ -101,7 +101,13 @@ def parseCmdOptions():
                               help="Activate quiet mode, working without logger.")
 
     optimization.add_argument("--requires-freeze", dest="requiresFreeze", action="store_true", default=False,
-                              help="Check install_requires after register")
+                              help="Check install_requires after register.")
+    
+    X = parser.add_argument_group("Zoomeye or Seebug")
+    X.add_argument("--dork", dest="dork", action="store", default=None,
+                              help="Zoomeye dork used for search.")
+    X.add_argument("--vul", dest="vul", action="store", default=None,
+                              help="Seebug keyword used for search.")
 
     args = parser.parse_args()
     return args.__dict__
