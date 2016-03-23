@@ -739,7 +739,6 @@ result：[
     <tr><td>Malware </td><td> 挂马 </td><td> mal</td></tr>
     <tr><td>Black Link </td><td> 暗链 </td><td> black-link</td></tr>
     <tr><td>Backdoor </td><td> 后门 </td><td> backdoor</td></tr>
-<<<<<<< 9ee383755ef3980cf5e9245bcded89ac660776a9:docs/POCAPI.md
 
 </table>
 
