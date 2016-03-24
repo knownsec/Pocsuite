@@ -42,10 +42,9 @@ Pocsuite 支持 Python 2.7，如若编写 Python 格式的 PoC，需要开发者
   ```python
   #!/usr/bin/env python
   # -*- coding: utf-8 -*-
-
-  from pocsuite.net import req   #用法和 requests 完全相同
-  from pocsuite.poc import Output, POCBase
-  from pocsuite.utils import register
+  from pocsuite.api.request import req #用法和 requests 完全相同
+  from pocsuite.api.poc import register
+  from pocsuite.api.poc import Output, POCBase
 
   class TestPOC(POCBase):
     ...
