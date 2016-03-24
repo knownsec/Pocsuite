@@ -9,14 +9,14 @@ See the file 'docs/COPYING' for copying permission
 import time
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.common import filepathParser
 from pocsuite.lib.core.common import multipleReplace
 from pocsuite.lib.core.common import StringImporter
 from pocsuite.lib.core.common import delModule
 from pocsuite.lib.core.settings import POC_IMPORTDICT
 from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
-from pocsuite.api.utils import logger
-from pocsuite.api.utils import CUSTOM_LOGGING
 
 
 class Cannon():
@@ -37,7 +37,6 @@ class Cannon():
             kb.registeredPocs = {}
 
         self.registerPoc()
-
 
     def registerPoc(self):
         pocString = multipleReplace(self.pocString, POC_IMPORTDICT)
