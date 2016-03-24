@@ -7,7 +7,6 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import time
-import requests
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.common import filepathParser
@@ -37,6 +36,8 @@ class Cannon():
         except Exception:
             kb.registeredPocs = {}
 
+        self.registerPoc()
+
 
     def registerPoc(self):
         pocString = multipleReplace(self.pocString, POC_IMPORTDICT)
@@ -49,7 +50,6 @@ class Cannon():
 
     def run(self):
         try:
-            self.registerPoc()
             poc = kb.registeredPocs[self.moduleName]
             result = poc.execute(self.target, mode=self.mode)
             output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), result.result)
