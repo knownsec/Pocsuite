@@ -86,7 +86,6 @@ whois {}, web-search{}, host-search{}'.\
                     fp.write('%s\n' % ip[0])
             conf.urlFile = argsDict['urlFile'] = tmpIpFile
 
-
         if not any((argsDict['url'] or argsDict['urlFile'], conf.requires, conf.requiresFreeze)):
             errMsg = 'No "url" or "urlFile" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))

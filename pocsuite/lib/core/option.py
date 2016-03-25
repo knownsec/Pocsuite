@@ -66,6 +66,8 @@ def initOptions(inputOptions=AttribDict()):
     conf.retry = int(inputOptions.retry) if inputOptions.retry else None
     conf.delay = float(inputOptions.delay) if inputOptions.delay else None
     conf.quiet = inputOptions.quiet
+    conf.dork = inputOptions.dork if inputOptions.dork else None
+    conf.vulKeyword = inputOptions.vulKeyword if inputOptions.vulKeyword else None
     if inputOptions.host:
         conf.httpHeaders.update({'Host': inputOptions.host})
     try:

@@ -51,6 +51,22 @@ class ZoomEye():
             return [match['ip'] for match in content['matches']]
 
 
+class Seebug():
+    def __init__(self, confPath='conf.ini'):
+        self.confPath = confPath
+        self.parser = ConfigParser.ConfigParser()
+        self.parser.read(self.confPath)
+
+        self.token = self.parser.get('token', 'seebug')
+        self.headers = {'Authorization': 'JWT %s' % self.token}
+
+    def static():
+        pass
+
+    def fetchPoC():
+        pass
+
+
 if __name__ == "__main__":
     a = ZoomEye()
     print a.resourceInfo()

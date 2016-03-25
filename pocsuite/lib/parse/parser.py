@@ -106,7 +106,7 @@ def parseCmdOptions():
     X = parser.add_argument_group("Zoomeye or Seebug")
     X.add_argument("--dork", dest="dork", action="store", default=None,
                               help="Zoomeye dork used for search.")
-    X.add_argument("--vul", dest="vul", action="store", default=None,
+    X.add_argument("--vul-keyword", dest="vulKeyword", action="store", default=None,
                               help="Seebug keyword used for search.")
 
     args = parser.parse_args()
