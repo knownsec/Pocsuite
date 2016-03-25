@@ -90,6 +90,13 @@ whois {}, web-search{}, host-search{}'.\
             errMsg = 'No "url" or "urlFile" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 
+        if argsDict['vulKeyword']:
+            folderPath = '%s/modules/%s' % (paths.POCSUITE_ROOT_PATH, argsDict['vulKeyword'])
+            print folderPath
+            if not os.path.exists(folderPath):
+                os.mkdir(folderPath)
+            #TODO 文件夹新建之后就是poc的保存工作.
+
         def doNothin(*args, **kw):
             return
 

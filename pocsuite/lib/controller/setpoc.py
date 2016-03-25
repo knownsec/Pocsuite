@@ -49,6 +49,8 @@ def setPoc():
             errMsg = "can't find any valid PoCs"
             logger.log(CUSTOM_LOGGING.ERROR, errMsg)
 
+    conf.pocFile = None
+
 
 def loadPoc(pocFile):
     if pocFile.endswith(".pyc"):
