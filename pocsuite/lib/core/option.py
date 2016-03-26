@@ -119,9 +119,9 @@ def init():
     _setHTTPTimeout()
     _setHTTPExtraHeaders()
 
-    setPoc()
+    if conf.pocFile:
+        setPoc()
     if conf.vulKeyword:
-        # 如果使用了--vul-keyword，针对获取到的PoC重新进行注册操作
         conf.pocFile = 'pocsuite/modules/%s' % conf.vulKeyword
         setPoc()
     requiresCheck()

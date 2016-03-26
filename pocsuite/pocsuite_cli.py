@@ -56,15 +56,27 @@ def pcsInit(PCS_OPTIONS=None):
         cmdLineOptions.update(argsDict)
         initOptions(cmdLineOptions)
 
+        def doNothin(*args, **kw):
+            return
+
+        if conf.quiet:
+            logger.log = doNothin
+
+        banner()
+        conf.showTime = True
+        dataToStdout
+
+        dataToStdout("[!] legal disclaimer: %s\n\n" % LEGAL_DISCLAIMER)
+        dataToStdout("[*] starting at %s\n\n" % time.strftime("%X"))
+
         if argsDict['dork']:
             from pocsuite.api.x import ZoomEye
             z = ZoomEye(paths.POCSUITE_ROOT_PATH + '/api/conf.ini')
             if z.token:
-                logger.log(CUSTOM_LOGGING.SYSINFO, 'Use exsiting token from /api/conf.ini')
-
+                logger.log(CUSTOM_LOGGING.SYSINFO, 'Use exsiting ZoomEye token from /api/conf.ini')
 
             else:
-                logger.log(CUSTOM_LOGGING.ERROR, 'No token found in /api.conf.ini, generate new token')
+                logger.log(CUSTOM_LOGGING.ERROR, 'No ZoomEye token found in /api.conf.ini, generate new token')
                 logger.log(CUSTOM_LOGGING.SYSINFO, 'Username')
                 usr = raw_input()
                 logger.log(CUSTOM_LOGGING.SYSINFO, 'Password')
@@ -74,8 +86,8 @@ def pcsInit(PCS_OPTIONS=None):
                     logger.log(CUSTOM_LOGGING.SUCCESS, 'New token generation success')
             info = z.resourceInfo()
             if not z.token or not z.resources:
-                sys.exit(logger.log(CUSTOM_LOGGING.WARNING, 'Token invalid or out of date'))
-            logger.log(CUSTOM_LOGGING.SUCCESS, 'Aavaliable search times,\
+                sys.exit(logger.log(CUSTOM_LOGGING.WARNING, 'ZoomEye token invalid or out of date'))
+            logger.log(CUSTOM_LOGGING.SUCCESS, 'Aavaliable ZoomEye search ,\
 whois {}, web-search{}, host-search{}'.\
                     format(info['whois'], info['web-search'], \
                     info['host-search']))
@@ -90,25 +102,33 @@ whois {}, web-search{}, host-search{}'.\
             errMsg = 'No "url" or "urlFile" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 
+        if not any((argsDict['pocFile'], argsDict['vulKeyword'])):
+            errMsg = 'No "url" or "urlFile" assigned.'
+            sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
+
         if argsDict['vulKeyword']:
             folderPath = '%s/modules/%s' % (paths.POCSUITE_ROOT_PATH, argsDict['vulKeyword'])
-            print folderPath
             if not os.path.exists(folderPath):
                 os.mkdir(folderPath)
-            #TODO 文件夹新建之后就是poc的保存工作.
+            from pocsuite.api.x import Seebug
+            s = Seebug(paths.POCSUITE_ROOT_PATH + '/api/conf.ini')
+            if s.token:
+                logger.log(CUSTOM_LOGGING.SYSINFO, 'Use exsiting Seebug token from /api/conf.ini')
 
-        def doNothin(*args, **kw):
-            return
+                info = s.static()
+                if not s.stats:
+                    sys.exit(logger.log(CUSTOM_LOGGING.WARNING, 'Seebug token invalid or can\'t connect to server.'))
+                logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug token verification succeed.')
+                logger.log(CUSTOM_LOGGING.SYSINFO, s.seek(argsDict['vulKeyword']))
+                for poc in s.pocs:
+                    p = s.retrieve(poc['id'])
+                    tmp = '%s/%s.py' % (folderPath, poc['id'])
 
-        if conf.quiet:
-            logger.log = doNothin
+                    with open(tmp, 'w') as fp:
+                        fp.write(p['code'])
 
-        banner()
-        conf.showTime = True
-        dataToStdout
-
-        dataToStdout("[!] legal disclaimer: %s\n\n" % LEGAL_DISCLAIMER)
-        dataToStdout("[*] starting at %s\n\n" % time.strftime("%X"))
+            else:
+                logger.log(CUSTOM_LOGGING.ERROR, 'No Seebug token found in /api.conf.ini')
 
         init()
         start()

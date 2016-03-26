@@ -33,7 +33,7 @@ def parseCmdOptions():
     target.add_argument("-f", "--file", action="store", dest="urlFile",
                         help="Scan multiple targets given in a textual file")
 
-    target.add_argument("-r", dest="pocFile", required=True,
+    target.add_argument("-r", dest="pocFile", #required=True,
                         help="Load POC from a file (e.g. \"_0001_cms_sql_inj.py\") or directory (e.g. \"modules/\")")
 
     mode = parser.add_argument_group('mode')
