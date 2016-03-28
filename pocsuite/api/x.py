@@ -16,22 +16,27 @@ class ZoomEye():
         self.confPath = confPath
         self.parser = ConfigParser.ConfigParser()
         self.parser.read(self.confPath)
-        self.token = self.parser.get('token', 'zoomeye')
+
+        self.username = self.parser.get('zoomeye', 'Username')
+        self.password = self.parser.get('zoomeye', 'Password')
+        self.token = self.parser.get('zoomeye', 'Token')
 
         self.plan = None
         self.resources = {}
         self.headers = {'Authorization': 'JWT %s' % self.token}
 
-    def newToken(self, user='zuile@qq.com', pwd='zuile'):
-        data = '{{"username": "{}", "password": "{}"}}'.format(user, pwd)
+    def newToken(self):
+        suc = False
+        data = '{{"username": "{}", "password": "{}"}}'.format(self.username, self.password)
         req = requests.post('http://api.zoomeye.org/user/login', data=data)
         content = json.loads(req.content)
         if req.status_code != 401 and "access_token" in content:
             self.token = content['access_token']
-            self.parser.set('token', 'zoomeye', self.token)
+            self.parser.set('zoomeye', 'Token', self.token)
             self.parser.write(open(self.confPath, 'w'))
+            suc = True
 
-        return self.token
+        return suc
 
     def resourceInfo(self):
         req = requests.get('http://api.zoomeye.org/resources-info', headers=self.headers)

@@ -74,19 +74,15 @@ def pcsInit(PCS_OPTIONS=None):
             z = ZoomEye(paths.POCSUITE_ROOT_PATH + '/api/conf.ini')
             if z.token:
                 logger.log(CUSTOM_LOGGING.SYSINFO, 'Use exsiting ZoomEye token from /api/conf.ini')
+                info = z.resourceInfo()
 
-            else:
-                logger.log(CUSTOM_LOGGING.ERROR, 'No ZoomEye token found in /api.conf.ini, generate new token')
-                logger.log(CUSTOM_LOGGING.SYSINFO, 'Username')
-                usr = raw_input()
-                logger.log(CUSTOM_LOGGING.SYSINFO, 'Password')
-                pwd = raw_input()
-                z.newToken(usr, pwd)
-                if z.token:
-                    logger.log(CUSTOM_LOGGING.SUCCESS, 'New token generation success')
-            info = z.resourceInfo()
-            if not z.token or not z.resources:
-                sys.exit(logger.log(CUSTOM_LOGGING.WARNING, 'ZoomEye token invalid or out of date'))
+            if not z.resources:
+                logger.log(CUSTOM_LOGGING.WARNING, 'ZoomEye token invalid or out of date, generate new one.')
+                if z.newToken():
+                    logger.log(CUSTOM_LOGGING.SUCCESS, 'New token generation success.')
+                else:
+                    sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'ZoomEye token generation failed, make sure correct username&password provided.'))
+
             logger.log(CUSTOM_LOGGING.SUCCESS, 'Aavaliable ZoomEye search ,\
 whois {}, web-search{}, host-search{}'.\
                     format(info['whois'], info['web-search'], \
