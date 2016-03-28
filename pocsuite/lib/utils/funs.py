@@ -81,4 +81,4 @@ def strToDict(string):
 
 
 def randomStr(length=10, chars=string.ascii_letters+string.digits):
-    return ''.join(random.sample(string.ascii_letters+string.digits, length))
+    return ''.join(random.sample(chars, length))

@@ -42,10 +42,9 @@ Pocsuite 支持 Python 2.7，如若编写 Python 格式的 PoC，需要开发者
   ```python
   #!/usr/bin/env python
   # -*- coding: utf-8 -*-
-
-  from pocsuite.net import req   #用法和 requests 完全相同
-  from pocsuite.poc import Output, POCBase
-  from pocsuite.utils import register
+  from pocsuite.api.request import req #用法和 requests 完全相同
+  from pocsuite.api.poc import register
+  from pocsuite.api.poc import Output, POCBase
 
   class TestPOC(POCBase):
     ...
@@ -70,7 +69,7 @@ Pocsuite 支持 Python 2.7，如若编写 Python 格式的 PoC，需要开发者
         可以添加管理员、造成信息泄露。
     ''' # 漏洞简要描述
     samples = []# 测试样列,就是用 PoC 测试成功的网站
-    install_requires = [] # PoC 第三方模块依赖，填写要去请参考《PoC第三方模块依赖说明》
+    install_requires = [] # PoC 第三方模块依赖，请尽量不要使用第三方模块，必要时请参考《PoC第三方模块依赖说明》填写
     ```
 
 4. 编写验证模式
@@ -428,9 +427,9 @@ import random
 import string
 from collections import OrderedDict
 
-from pocsuite.net import req
-from pocsuite.poc import POCBase, Output
-from pocsuite.utils import register
+from pocsuite.api.request import req #用法和 requests 完全相同
+from pocsuite.api.poc import register
+from pocsuite.api.poc import Output, POCBase
 
 
 class TestPOC(POCBase):
@@ -451,7 +450,7 @@ class TestPOC(POCBase):
         可以添加管理员、造成信息泄露。
     '''
 
-    samples = ['http://216.119.147.168/', 'http://69.172.67.176/']
+    samples = []
 
     def _attack(self):
         result = {}
@@ -581,10 +580,10 @@ register(TestPOC)
 
 使用 JSON PoC 检测目标：
 
-![verify](./images/PoC_JSON_verify.png)
+![verify](http://pocsuite.org/images/PoC_JSON_verify.png)
 
 使用 JSON PoC 攻击目标：
-![attack](./images/PoC_JSON_attack.png)
+![attack](http://pocsuite.org/images/PoC_JSON_attack.png)
 
 
 ### PoC 规范说明<div id="PoCstandard"></div>
@@ -606,7 +605,7 @@ PoC 命名分成3个部分组成漏洞应用名_版本号_漏洞类型名称 然
 #### PoC 第三方模块依赖说明<div id="requires"></div>
 PoC 编写的时候要求尽量不要使用第三方模块，如果必要使用，请在 PoC 的基础信息部分，增加 install_requires 字段，按照以下格式填写依赖的模块名。
 ```
-install requires =[str_item_,str_item,…] # 整个字段的值为list，每个项为一个依赖模块
+install_requires =[str_item_,str_item,…] # 整个字段的值为list，每个项为一个依赖模块
 ```
 
 str_item 格式：模块名==版本号，模块名为pip install 安装时的模块名（请不要填写 import 的模块名）
@@ -739,7 +738,6 @@ result：[
     <tr><td>Malware </td><td> 挂马 </td><td> mal</td></tr>
     <tr><td>Black Link </td><td> 暗链 </td><td> black-link</td></tr>
     <tr><td>Backdoor </td><td> 后门 </td><td> backdoor</td></tr>
-<<<<<<< 9ee383755ef3980cf5e9245bcded89ac660776a9:docs/POCAPI.md
 
 </table>
 

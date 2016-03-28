@@ -9,6 +9,8 @@ See the file 'docs/COPYING' for copying permission
 import time
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.common import filepathParser
 from pocsuite.lib.core.common import multipleReplace
 from pocsuite.lib.core.common import StringImporter
@@ -26,7 +28,7 @@ class Cannon():
         self.mode = "verify"
         self.delmodule = False
         self.params = {}
-        conf.isPycFile = False
+        conf.isPycFile = info.get('ispycfile', False)
         conf.httpHeaders = {}
 
         try:
@@ -46,9 +48,12 @@ class Cannon():
             pass  # TODO
 
     def run(self):
-        poc = kb.registeredPocs[self.moduleName]
-        result = poc.execute(self.target, mode=self.mode)
-        output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), result.result)
-        if self.delmodule:
-            delModule(self.moduleName)
-        return output
+        try:
+            poc = kb.registeredPocs[self.moduleName]
+            result = poc.execute(self.target, mode=self.mode)
+            output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), result.result)
+            if self.delmodule:
+                delModule(self.moduleName)
+            return output
+        except Exception as errMsg:
+            logger.log(CUSTOM_LOGGING.ERROR, errMsg)

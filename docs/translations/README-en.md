@@ -19,16 +19,16 @@ You can use Pocsuite to verify and exploit vulnerabilities or write PoC/Exp base
 Functions
 ---------
 #### Vulnerability Testing Framework
-Written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets-imported against multiple exploit-plugins in advance.（See ["Pocsuite usage"](../USAGE.md)）
+Written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets against multiple exploit-plugins in advance.（See ["Pocsuite usage"](../USAGE.md)）
 
 #### PoC/Exp Development Kit
 Like Metasploit, it is a development kit for pentesters to develope their own exploits. Based on Pocsuite, you can write the most core code of PoC/Exp without caring about the resulting output etc. There are at least several hundred people writing PoC/Exp based on Pocsuite up to date.
 
 #### Integratable Module
-Users could utilze some auxiliary modules packaged in Pocsuite to extend their exploit functions or integrate Pocsuite to develop other vulnerability assesment tools.
+Users could utilize some auxiliary modules packaged in Pocsuite to extend their exploit functions or integrate Pocsuite to develop other vulnerability assesment tools.
 
 #### Integrated ZoomEye & Seebug APIs
-Pocsuite is also an extremely useful tool to integrate Seebug and ZoomEye APIs in a collaborative way. Vulnerablity assessment can be done automately and effectively by searching targets through ZoomEye and acquiring PoC scripts from Seebug or locally.
+Pocsuite is also an extremely useful tool to integrate Seebug and ZoomEye APIs in a collaborative way. Vulnerablity assessment can be done automatically and effectively by searching targets through ZoomEye and acquiring PoC scripts from Seebug or locally.
 
 
 Installation
