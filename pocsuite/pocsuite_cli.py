@@ -92,7 +92,7 @@ web-search{}, host-search{}'.\
                     format(info['web-search'], \
                     info['host-search']))
 
-            tmpIpFile = paths.POCSUITE_TMP_PATH + 'zoomeye_%s.txt' % time.strftime('%Y_%m_%d_%H_%M_%S')
+            tmpIpFile = paths.POCSUITE_OUTPUT_PATH + '/zoomeye_%s.txt' % time.strftime('%Y_%m_%d_%H_%M_%S')
             with open(tmpIpFile, 'w') as fp:
                 search_types = argsDict.get('search_type', 'web')
                 if 'host' not in search_types and 'web' not in search_types:
