@@ -122,7 +122,7 @@ def init():
     if conf.pocFile:
         setPoc()
     if conf.vulKeyword:
-        conf.pocFile = 'pocsuite/modules/%s' % conf.vulKeyword
+        conf.pocFile = '%s/%s' % (paths.POCSUITE_MODULES_PATH, conf.vulKeyword)
         setPoc()
     requiresCheck()
     registerPocFromDict()

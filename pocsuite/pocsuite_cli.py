@@ -115,13 +115,14 @@ web-search{}, host-search{}'.\
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 
         if argsDict['vulKeyword']:
-            folderPath = '%s/modules/%s' % (paths.POCSUITE_ROOT_PATH, argsDict['vulKeyword'])
+            if not os.path.exists(paths.POCSUITE_MODULES_PATH):
+                os.mkdir(paths.POCSUITE_MODULES_PATH)
+            folderPath = '%s/%s' % (paths.POCSUITE_MODULES_PATH, argsDict['vulKeyword'])
             if not os.path.exists(folderPath):
                 os.mkdir(folderPath)
             from pocsuite.api.x import Seebug
             s = Seebug(currentUserHomePath + '/.pocsuiterc')
             if s.token:
-                logger.log(CUSTOM_LOGGING.SYSINFO, 'Use exsiting Seebug token from /api/conf.ini')
                 if not s.static():
                     logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, Please input Seebug Token for use Seebug API，you can get it in [https://www.seebug.org/accounts/detail].')
                     s.write_conf()
@@ -137,7 +138,7 @@ web-search{}, host-search{}'.\
                         fp.write(p['code'])
 
             else:
-                logger.log(CUSTOM_LOGGING.ERROR, 'No Seebug token found in /api.conf.ini')
+                logger.log(CUSTOM_LOGGING.ERROR, 'No Seebug token found in ~/.pocsuiterc')
 
         init()
         start()
