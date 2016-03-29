@@ -8,6 +8,7 @@ See the file 'docs/COPYING' for copying permission
 
 import os
 import time
+import shutil
 import tempfile
 from textwrap import dedent
 from pocsuite.lib.core.settings import REPORT_HTMLBASE
@@ -25,6 +26,17 @@ from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.handlejson import execReq
 from pocsuite.lib.core.threads import runThreads
 from pocsuite.thirdparty.prettytable.prettytable import PrettyTable
+
+
+def cleanTrash():
+    nowTime = time.time()
+    for _ in os.listdir(paths.POCSUITE_TMP_PATH):
+        tempFile = '%s/%s' % (paths.POCSUITE_TMP_PATH, _)
+        if tempFile != '.keep' and (nowTime - os.stat(tempFile).st_mtime) / 3600 / 24 > 3:
+            if os.path.isfile(tempFile):
+                os.remove(tempFile)
+            else:
+                shutil.rmtree(tempFile)
 
 
 def start():

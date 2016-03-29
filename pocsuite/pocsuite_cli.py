@@ -27,6 +27,7 @@ from .lib.core.data import cmdLineOptions
 from .lib.parse.parser import parseCmdOptions
 from .lib.core.option import initOptions
 from .lib.controller.controller import start
+from .lib.controller.controller import cleanTrash
 from .lib.core.option import init
 from .lib.core.common import delModule
 from .lib.core.common import getUnicode
@@ -138,6 +139,7 @@ web-search{}, host-search{}'.\
 
         init()
         start()
+        cleanTrash()
 
     except PocsuiteUserQuitException:
         errMsg = "user quit"
