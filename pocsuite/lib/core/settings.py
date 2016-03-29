@@ -56,7 +56,6 @@ POC_IMPORTDICT = {
     "from pocsuite.net import": "from pocsuite.lib.request.basic import",
     "from pocsuite.poc import": "from pocsuite.lib.core.poc import",
     "from pocsuite.utils import register": "from pocsuite.lib.core.register import registerPoc as register",
-    "from pocsuite.lib": "from pocsuite.lib"
 }
 
 POC_REGISTER_STRING = "\nfrom pocsuite.api.poc import register\nregister({})"

@@ -45,7 +45,7 @@ class Cannon():
             importer = StringImporter(self.moduleName, pocString)
             importer.load_module(self.moduleName)
         except ImportError, ex:
-            pass  # TODO
+            logger.log(CUSTOM_LOGGING.ERROR, ex)
 
     def run(self):
         try:
@@ -55,5 +55,5 @@ class Cannon():
             if self.delmodule:
                 delModule(self.moduleName)
             return output
-        except Exception as errMsg:
-            logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+        except Exception, ex:
+            logger.log(CUSTOM_LOGGING.ERROR, ex)
