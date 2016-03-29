@@ -95,11 +95,11 @@ whois {}, web-search{}, host-search{}'.\
             conf.urlFile = argsDict['urlFile'] = tmpIpFile
 
         if not any((argsDict['url'] or argsDict['urlFile'], conf.requires, conf.requiresFreeze)):
-            errMsg = 'No "url" or "urlFile" assigned.'
+            errMsg = 'No "url" or "urlFile" or "dork" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 
         if not any((argsDict['pocFile'], argsDict['vulKeyword'])):
-            errMsg = 'No "url" or "urlFile" assigned.'
+            errMsg = 'No "url" or "urlFile" or "vulKeyword" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 
         if argsDict['vulKeyword']:
