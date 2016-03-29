@@ -47,6 +47,7 @@ def modulePath():
 
 
 def pcsInit(PCS_OPTIONS=None):
+    currentUserHomePath = os.path.expanduser('~')
     try:
         paths.POCSUITE_ROOT_PATH = modulePath()
         setPaths()
@@ -71,19 +72,15 @@ def pcsInit(PCS_OPTIONS=None):
 
         if argsDict['dork']:
             from pocsuite.api.x import ZoomEye
-            z = ZoomEye(paths.POCSUITE_ROOT_PATH + '/api/conf.ini')
-            if z.token:
-                logger.log(CUSTOM_LOGGING.SYSINFO, 'Use exsiting ZoomEye token from /api/conf.ini')
-                info = z.resourceInfo()
+            z = ZoomEye(currentUserHomePath + '/.pocsuiterc')
+            if z.newToken():
+                logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization success.')
+                z.resourceInfo()
+            else:
+                sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'ZoomEye API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
 
-            if not z.resources:
-                logger.log(CUSTOM_LOGGING.WARNING, 'ZoomEye token invalid or out of date, generate new one.')
-                if z.newToken():
-                    logger.log(CUSTOM_LOGGING.SUCCESS, 'New token generation success.')
-                else:
-                    sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'ZoomEye token generation failed, make sure correct username&password provided.'))
-
-            logger.log(CUSTOM_LOGGING.SUCCESS, 'Aavaliable ZoomEye search ,\
+            info = z.resources
+            logger.log(CUSTOM_LOGGING.SYSINFO, 'Aavaliable ZoomEye search ,\
 whois {}, web-search{}, host-search{}'.\
                     format(info['whois'], info['web-search'], \
                     info['host-search']))
@@ -107,14 +104,12 @@ whois {}, web-search{}, host-search{}'.\
             if not os.path.exists(folderPath):
                 os.mkdir(folderPath)
             from pocsuite.api.x import Seebug
-            s = Seebug(paths.POCSUITE_ROOT_PATH + '/api/conf.ini')
+            s = Seebug(currentUserHomePath + '/.pocsuiterc')
             if s.token:
                 logger.log(CUSTOM_LOGGING.SYSINFO, 'Use exsiting Seebug token from /api/conf.ini')
-
-                info = s.static()
-                if not s.stats:
-                    sys.exit(logger.log(CUSTOM_LOGGING.WARNING, 'Seebug token invalid or can\'t connect to server.'))
-                logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug token verification succeed.')
+                if not s.static():
+                    sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
+                logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug token authorization succeed.')
                 logger.log(CUSTOM_LOGGING.SYSINFO, s.seek(argsDict['vulKeyword']))
                 for poc in s.pocs:
                     p = s.retrieve(poc['id'])

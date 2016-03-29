@@ -5,38 +5,46 @@
 Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
+import os
 import ast
 import json
 import requests
 import ConfigParser
 
+currentUserHomePath = os.path.expanduser('~')
+
+def initial():
+    conf = """[zoomeye]\nusername = Your ZoomEye Username\npassword = Your ZoomEye Password\n\n[token]\nseebug = Your Seebug Token"""
+    if not os.path.isfile(currentUserHomePath + '/.pocsuiterc'):
+        with open(currentUserHomePath + '/.pocsuiterc', 'w') as fp:
+            fp.write(conf)
+
+initial()
+
 
 class ZoomEye():
-    def __init__(self, confPath='conf.ini'):
+    def __init__(self, confPath=currentUserHomePath + '/.pocsuiterc'):
         self.confPath = confPath
         self.parser = ConfigParser.ConfigParser()
         self.parser.read(self.confPath)
 
         self.username = self.parser.get('zoomeye', 'Username')
         self.password = self.parser.get('zoomeye', 'Password')
-        self.token = self.parser.get('zoomeye', 'Token')
 
         self.plan = None
+        self.token = None
+        self.headers = None
         self.resources = {}
-        self.headers = {'Authorization': 'JWT %s' % self.token}
 
     def newToken(self):
-        suc = False
         data = '{{"username": "{}", "password": "{}"}}'.format(self.username, self.password)
         req = requests.post('http://api.zoomeye.org/user/login', data=data)
         content = json.loads(req.content)
         if req.status_code != 401 and "access_token" in content:
             self.token = content['access_token']
-            self.parser.set('zoomeye', 'Token', self.token)
-            self.parser.write(open(self.confPath, 'w'))
-            suc = True
-
-        return suc
+            self.headers = {'Authorization': 'JWT %s' % self.token}
+            return True
+        return False
 
     def resourceInfo(self):
         req = requests.get('http://api.zoomeye.org/resources-info', headers=self.headers)
@@ -46,8 +54,8 @@ class ZoomEye():
             self.resources['whois'] = content['resources']['whois']
             self.resources['web-search'] = content['resources']['web-search']
             self.resources['host-search'] = content['resources']['host-search']
-
-        return self.resources
+            return True
+        return False
 
     def search(self, dork, resource='web'):
         req = requests.get('http://api.zoomeye.org/{}/search?query="{}"&page=1&facet=app,os'\
@@ -58,7 +66,7 @@ class ZoomEye():
 
 
 class Seebug():
-    def __init__(self, confPath='conf.ini'):
+    def __init__(self, confPath=currentUserHomePath + '/.pocsuiterc'):
         self.confPath = confPath
         self.parser = ConfigParser.ConfigParser()
         self.parser.read(self.confPath)
@@ -69,6 +77,8 @@ class Seebug():
     def static(self):
         req = requests.get('https://www.seebug.org/api/user/poc_list', headers=self.headers)
         self.stats = ast.literal_eval(req.content)
+        if 'detail' in self.stats:
+            return False
         return 'According to record total %s PoC purchased' % len(self.stats)
 
     def seek(self, keyword):
@@ -87,10 +97,10 @@ class Seebug():
 if __name__ == "__main__":
     a = ZoomEye()
     # print a.resourceInfo()
-    # print a.newToken()
+    print a.newToken()
     # a.search('port:21')
 
-    b = Seebug()
+    # b = Seebug()
     # b.static()
     # b.seek('redis')
     # b.retrieve(89339)
