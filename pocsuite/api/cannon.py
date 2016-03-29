@@ -28,7 +28,7 @@ class Cannon():
         self.mode = "verify"
         self.delmodule = False
         self.params = {}
-        conf.isPycFile = False
+        conf.isPycFile = info.get('ispycfile', False)
         conf.httpHeaders = {}
 
         try:
