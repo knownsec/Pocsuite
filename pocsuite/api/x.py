@@ -14,10 +14,10 @@ import ConfigParser
 currentUserHomePath = os.path.expanduser('~')
 
 def initial():
-    conf = """[zoomeye]\nusername = Your ZoomEye Username\npassword = Your ZoomEye Password\n\n[token]\nseebug = Your Seebug Token"""
+    _ = """[zoomeye]\nusername = Your ZoomEye Username\npassword = Your ZoomEye Password\n\n[token]\nseebug = Your Seebug Token"""
     if not os.path.isfile(currentUserHomePath + '/.pocsuiterc'):
         with open(currentUserHomePath + '/.pocsuiterc', 'w') as fp:
-            fp.write(conf)
+            fp.write(_)
 
 initial()
 
