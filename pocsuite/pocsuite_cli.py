@@ -47,6 +47,7 @@ def modulePath():
 
 
 def pcsInit(PCS_OPTIONS=None):
+    currentUserHomePath = os.path.expanduser('~')
     try:
         paths.POCSUITE_ROOT_PATH = modulePath()
         setPaths()
@@ -55,10 +56,6 @@ def pcsInit(PCS_OPTIONS=None):
 
         cmdLineOptions.update(argsDict)
         initOptions(cmdLineOptions)
-
-        if not any((argsDict['url'] or argsDict['urlFile'], conf.requires, conf.requiresFreeze)):
-            errMsg = 'No "url" or "urlFile" assigned.'
-            sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 
         def doNothin(*args, **kw):
             return
@@ -72,6 +69,57 @@ def pcsInit(PCS_OPTIONS=None):
 
         dataToStdout("[!] legal disclaimer: %s\n\n" % LEGAL_DISCLAIMER)
         dataToStdout("[*] starting at %s\n\n" % time.strftime("%X"))
+
+        if argsDict['dork']:
+            from pocsuite.api.x import ZoomEye
+            z = ZoomEye(currentUserHomePath + '/.pocsuiterc')
+            if z.newToken():
+                logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization success.')
+                z.resourceInfo()
+            else:
+                sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'ZoomEye API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
+
+            info = z.resources
+            logger.log(CUSTOM_LOGGING.SYSINFO, 'Aavaliable ZoomEye search ,\
+whois {}, web-search{}, host-search{}'.\
+                    format(info['whois'], info['web-search'], \
+                    info['host-search']))
+
+            tmpIpFile = paths.POCSUITE_TMP_PATH + '/zoomeye/%s.txt' % time.ctime()
+            with open(tmpIpFile, 'w') as fp:
+                for ip in z.search(argsDict['dork']):
+                    fp.write('%s\n' % ip[0])
+            conf.urlFile = argsDict['urlFile'] = tmpIpFile
+
+        if not any((argsDict['url'] or argsDict['urlFile'], conf.requires, conf.requiresFreeze)):
+            errMsg = 'No "url" or "urlFile" or "dork" assigned.'
+            sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
+
+        if not any((argsDict['pocFile'], argsDict['vulKeyword'])):
+            errMsg = 'No "url" or "urlFile" or "vulKeyword" assigned.'
+            sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
+
+        if argsDict['vulKeyword']:
+            folderPath = '%s/modules/%s' % (paths.POCSUITE_ROOT_PATH, argsDict['vulKeyword'])
+            if not os.path.exists(folderPath):
+                os.mkdir(folderPath)
+            from pocsuite.api.x import Seebug
+            s = Seebug(currentUserHomePath + '/.pocsuiterc')
+            if s.token:
+                logger.log(CUSTOM_LOGGING.SYSINFO, 'Use exsiting Seebug token from /api/conf.ini')
+                if not s.static():
+                    sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
+                logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug token authorization succeed.')
+                logger.log(CUSTOM_LOGGING.SYSINFO, s.seek(argsDict['vulKeyword']))
+                for poc in s.pocs:
+                    p = s.retrieve(poc['id'])
+                    tmp = '%s/%s.py' % (folderPath, poc['id'])
+
+                    with open(tmp, 'w') as fp:
+                        fp.write(p['code'])
+
+            else:
+                logger.log(CUSTOM_LOGGING.ERROR, 'No Seebug token found in /api.conf.ini')
 
         init()
         start()
