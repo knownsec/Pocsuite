@@ -100,7 +100,10 @@ web-search{}, host-search{}'.\
                     for search_type in search_types.split(','):
                         if search_type in ['web', 'host']:
                             for ip in z.search(argsDict['dork'], page, search_type):
-                                fp.write('%s\n' % ip)
+                                if type(ip) == list:
+                                    fp.write('%s\n' % ip[0])
+                                else:
+                                    fp.write('%s\n' % ip)
             conf.urlFile = argsDict['urlFile'] = tmpIpFile
 
         if not any((argsDict['url'] or argsDict['urlFile'], conf.requires, conf.requiresFreeze)):
