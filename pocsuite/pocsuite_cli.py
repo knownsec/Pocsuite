@@ -87,14 +87,20 @@ def pcsInit(PCS_OPTIONS=None):
 
             info = z.resources
             logger.log(CUSTOM_LOGGING.SYSINFO, 'Aavaliable ZoomEye search ,\
-whois {}, web-search{}, host-search{}'.\
-                    format(info['whois'], info['web-search'], \
+web-search{}, host-search{}'.\
+                    format(info['web-search'], \
                     info['host-search']))
 
             tmpIpFile = paths.POCSUITE_TMP_PATH + 'zoomeye_%s.txt' % time.strftime('%Y_%m_%d_%H_%M_%S')
             with open(tmpIpFile, 'w') as fp:
-                for ip in z.search(argsDict['dork']):
-                    fp.write('%s\n' % ip[0])
+                search_types = argsDict.get('search_type', 'web')
+                if 'host' not in search_types and 'web' not in search_types:
+                    search_types = 'web'
+                for page in range(argsDict.get('max_page', 1)):
+                    for search_type in search_types.split(','):
+                        if search_type in ['web', 'host']:
+                            for ip in z.search(argsDict['dork'], page, search_type):
+                                fp.write('%s\n' % ip)
             conf.urlFile = argsDict['urlFile'] = tmpIpFile
 
         if not any((argsDict['url'] or argsDict['urlFile'], conf.requires, conf.requiresFreeze)):

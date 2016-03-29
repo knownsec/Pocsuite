@@ -8,6 +8,7 @@ See the file 'docs/COPYING' for copying permission
 import os
 import ast
 import json
+import urllib
 import requests
 import ConfigParser
 
@@ -51,18 +52,19 @@ class ZoomEye():
         content = json.loads(req.content)
         if 'plan' in content:
             self.plan = content['plan']
-            self.resources['whois'] = content['resources']['whois']
             self.resources['web-search'] = content['resources']['web-search']
             self.resources['host-search'] = content['resources']['host-search']
             return True
         return False
 
-    def search(self, dork, resource='web'):
-        req = requests.get('http://api.zoomeye.org/{}/search?query="{}"&page=1&facet=app,os'\
-                        .format(resource, dork), headers=self.headers)
+    def search(self, dork, page=1, resource='web'):
+        req = requests.get('http://api.zoomeye.org/{}/search?query="{}"&page={}&facet=app,os'\
+                        .format(resource, urllib.quote(dork), page + 1), headers=self.headers)
         content = json.loads(req.content)
         if 'matches' in content:
             return [match['ip'] for match in content['matches']]
+        else:
+            return []
 
     def write_conf(self):
         if not self.parser.has_section("zoomeye"):

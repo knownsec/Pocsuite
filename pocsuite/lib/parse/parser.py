@@ -106,6 +106,10 @@ def parseCmdOptions():
     X = parser.add_argument_group("Zoomeye or Seebug")
     X.add_argument("--dork", dest="dork", action="store", default=None,
                               help="Zoomeye dork used for search.")
+    X.add_argument("--max-page", dest="max_page", type=int, default=1,
+                              help="Max page used in ZoomEye API(10 targets/Page).")
+    X.add_argument("--search-type", dest="search_type", action="store", default='web,host',
+                              help="search type used in ZoomEye API, web or host")
     X.add_argument("--vul-keyword", dest="vulKeyword", action="store", default=None,
                               help="Seebug keyword used for search.")
 
