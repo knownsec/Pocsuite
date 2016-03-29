@@ -25,7 +25,6 @@ def main():
     PCS_OPTIONS.update({'url': targetUrl, 'pocFile': pocFile, 'headers': None, 'extra_params': None, 'host': None, 'Mode': 'attack',
         'retry': None, 'delay': None, 'dork': None, 'vulKeyword': None,})    
     pcsInit(PCS_OPTIONS)
-    banner()
 
 if __name__ == "__main__":
     main()
