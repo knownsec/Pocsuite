@@ -139,7 +139,6 @@ web-search{}, host-search{}'.\
 
         init()
         start()
-        cleanTrash()
 
     except PocsuiteUserQuitException:
         errMsg = "user quit"
