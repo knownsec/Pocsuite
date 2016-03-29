@@ -22,7 +22,8 @@ def main():
         dataToStdout(excMsg)
         sys.exit(1)
 
-    PCS_OPTIONS.update({'url': targetUrl, 'pocFile': pocFile, 'headers': None, 'extra_params': None})
+    PCS_OPTIONS.update({'url': targetUrl, 'pocFile': pocFile, 'headers': None, 'extra_params': None, 'host': None, 'Mode': 'attack',
+        'retry': None, 'delay': None, 'dork': None, 'vulKeyword': None,})    
     pcsInit(PCS_OPTIONS)
     banner()
 

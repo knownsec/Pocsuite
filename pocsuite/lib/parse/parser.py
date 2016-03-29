@@ -67,7 +67,7 @@ def parseCmdOptions():
     request.add_argument("--timeout", dest="timeout",
                          help="Seconds to wait before timeout connection (default 30)")
 
-    request.add_argument("--retry", dest="retry",
+    request.add_argument("--retry", dest="retry", default=False,
                          help="Time out retrials times.")
 
     request.add_argument("--delay", dest="delay",
