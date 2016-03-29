@@ -77,7 +77,13 @@ def pcsInit(PCS_OPTIONS=None):
                 logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization success.')
                 z.resourceInfo()
             else:
-                sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'ZoomEye API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
+                logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization failed,Please input ZoomEye Email and Password for use ZoomEye API!')
+                z.write_conf()
+                if z.newToken():
+                    logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization success.')
+                    z.resourceInfo()
+                else:
+                    sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'ZoomEye API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
 
             info = z.resources
             logger.log(CUSTOM_LOGGING.SYSINFO, 'Aavaliable ZoomEye search ,\
@@ -85,7 +91,7 @@ whois {}, web-search{}, host-search{}'.\
                     format(info['whois'], info['web-search'], \
                     info['host-search']))
 
-            tmpIpFile = paths.POCSUITE_TMP_PATH + '/zoomeye/%s.txt' % time.ctime()
+            tmpIpFile = paths.POCSUITE_TMP_PATH + 'zoomeye_%s.txt' % time.strftime('%Y_%m_%d_%H_%M_%S')
             with open(tmpIpFile, 'w') as fp:
                 for ip in z.search(argsDict['dork']):
                     fp.write('%s\n' % ip[0])
@@ -108,7 +114,10 @@ whois {}, web-search{}, host-search{}'.\
             if s.token:
                 logger.log(CUSTOM_LOGGING.SYSINFO, 'Use exsiting Seebug token from /api/conf.ini')
                 if not s.static():
-                    sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
+                    logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, Please input Seebug Token for use Seebug API，you can get it in [https://www.seebug.org/accounts/detail].')
+                    s.write_conf()
+                    if not s.static():
+                        sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
                 logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug token authorization succeed.')
                 logger.log(CUSTOM_LOGGING.SYSINFO, s.seek(argsDict['vulKeyword']))
                 for poc in s.pocs:

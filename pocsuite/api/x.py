@@ -64,6 +64,18 @@ class ZoomEye():
         if 'matches' in content:
             return [match['ip'] for match in content['matches']]
 
+    def write_conf(self):
+        if not self.parser.has_section("zoomeye"):
+            self.parse.add_section("zoomeye")
+
+        username = raw_input("ZoomEye Email:")
+        password = raw_input("ZoomEye Password:")
+        self.parser.set("zoomeye", "Username", username)
+        self.parser.set("zoomeye", "Password", password)
+        self.username = username
+        self.password = password
+        self.parser.write(open(self.confPath, "r+"))
+
 
 class Seebug():
     def __init__(self, confPath=currentUserHomePath + '/.pocsuiterc'):
@@ -92,6 +104,15 @@ class Seebug():
         req = requests.get('https://www.seebug.org/api/user/poc_detail?id=%s' % ID, headers=self.headers)
         # {"code", "name"}
         return ast.literal_eval(req.content)
+
+    def write_conf(self):
+        if not self.parser.has_section("token"):
+            self.parse.add_section("token")
+
+        token = raw_input("Seebug Token:")
+        self.parser.set("token", "seebug", token)
+        self.token = token
+        self.parser.write(open(self.confPath, "r+"))
 
 
 if __name__ == "__main__":
