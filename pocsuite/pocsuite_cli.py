@@ -10,6 +10,8 @@ import os
 import sys
 import time
 import traceback
+from .api.x import Seebug
+from .api.x import ZoomEye
 from .lib.utils import versioncheck
 from .lib.core.common import unhandledExceptionMessage
 from .lib.core.enums import CUSTOM_LOGGING
@@ -47,7 +49,6 @@ def modulePath():
 
 
 def pcsInit(PCS_OPTIONS=None):
-    currentUserHomePath = os.path.expanduser('~')
     try:
         paths.POCSUITE_ROOT_PATH = modulePath()
         setPaths()
@@ -71,8 +72,7 @@ def pcsInit(PCS_OPTIONS=None):
         dataToStdout("[*] starting at %s\n\n" % time.strftime("%X"))
 
         if argsDict['dork']:
-            from pocsuite.api.x import ZoomEye
-            z = ZoomEye(currentUserHomePath + '/.pocsuiterc')
+            z = ZoomEye(paths.POCSUITE_RC_PATH)
             if z.newToken():
                 logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization success.')
                 z.resourceInfo()
@@ -120,8 +120,7 @@ web-search{}, host-search{}'.\
             folderPath = '%s/%s' % (paths.POCSUITE_MODULES_PATH, argsDict['vulKeyword'])
             if not os.path.exists(folderPath):
                 os.mkdir(folderPath)
-            from pocsuite.api.x import Seebug
-            s = Seebug(currentUserHomePath + '/.pocsuiterc')
+            s = Seebug(paths.POCSUITE_RC_PATH)
             if s.token:
                 if not s.static():
                     logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, Please input Seebug Token for use Seebug API，you can get it in [https://www.seebug.org/accounts/detail].')

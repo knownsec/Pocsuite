@@ -258,6 +258,8 @@ def setPaths():
 
     paths.POCSUITE_MODULES_PATH = os.path.join(_, "modules")
     paths.POCSUITE_TMP_PATH = os.path.join(paths.POCSUITE_MODULES_PATH, "tmp")
+    paths.POCSUITE_HOME_PATH = os.path.expanduser("~")
+    paths.POCSUITE_RC_PATH = paths.POCSUITE_HOME_PATH + "/.pocsuiterc"
 
 
 def getFileItems(filename, commentPrefix='#', unicode_=True, lowercase=False, unique=False):
