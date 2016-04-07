@@ -25,7 +25,7 @@ GurdZain
 Jeremy
 * for reporting a bug
 
-rains31
+rains31 <rains31+github(at)gmail.com>
 * for contributing packet.py
 * for contributing a minor patch
 
