@@ -11,31 +11,22 @@ import json
 import urllib
 import requests
 import ConfigParser
-
-currentUserHomePath = os.path.expanduser('~')
-
-def initial():
-    _ = """[zoomeye]\nusername = Your ZoomEye Username\npassword = Your ZoomEye Password\n\n[token]\nseebug = Your Seebug Token"""
-    if not os.path.isfile(currentUserHomePath + '/.pocsuiterc'):
-        with open(currentUserHomePath + '/.pocsuiterc', 'w') as fp:
-            fp.write(_)
-
-initial()
+from .rcGen import initial
 
 
 class ZoomEye():
-    def __init__(self, confPath=currentUserHomePath + '/.pocsuiterc'):
-        self.confPath = confPath
-        self.parser = ConfigParser.ConfigParser()
-        self.parser.read(self.confPath)
-
-        self.username = self.parser.get('zoomeye', 'Username')
-        self.password = self.parser.get('zoomeye', 'Password')
-
-        self.plan = None
-        self.token = None
-        self.headers = None
+    def __init__(self, confPath=None):
+        self.plan = self.token = None
+        self.headers = self.username = self.password = None
         self.resources = {}
+
+        if confPath:
+            self.confPath = confPath
+            self.parser = ConfigParser.ConfigParser()
+            self.parser.read(self.confPath)
+
+            self.username = self.parser.get('zoomeye', 'Username')
+            self.password = self.parser.get('zoomeye', 'Password')
 
     def newToken(self):
         data = '{{"username": "{}", "password": "{}"}}'.format(self.username, self.password)
@@ -80,13 +71,15 @@ class ZoomEye():
 
 
 class Seebug():
-    def __init__(self, confPath=currentUserHomePath + '/.pocsuiterc'):
-        self.confPath = confPath
-        self.parser = ConfigParser.ConfigParser()
-        self.parser.read(self.confPath)
-
-        self.token = self.parser.get('token', 'seebug')
+    def __init__(self, confPath=None):
+        self.token = None
         self.headers = {'Authorization': 'Token %s' % self.token}
+
+        if confPath:
+            self.confPath = confPath
+            self.parser = ConfigParser.ConfigParser()
+            self.parser.read(self.confPath)
+            self.token = self.parser.get('token', 'seebug')
 
     def static(self):
         req = requests.get('https://www.seebug.org/api/user/poc_list', headers=self.headers)
@@ -97,14 +90,11 @@ class Seebug():
 
     def seek(self, keyword):
         req = requests.get('https://www.seebug.org/api/user/poc_list?q=%s' % keyword, headers=self.headers)
-        # [{"id", "name"}]
-        # {"detail": msg}
         self.pocs = ast.literal_eval(req.content)
         return '%s purchased poc related to keyword "%s"' % (len(self.pocs), keyword)
 
     def retrieve(self, ID):
         req = requests.get('https://www.seebug.org/api/user/poc_detail?id=%s' % ID, headers=self.headers)
-        # {"code", "name"}
         return ast.literal_eval(req.content)
 
     def write_conf(self):
@@ -115,15 +105,3 @@ class Seebug():
         self.parser.set("token", "seebug", token)
         self.token = token
         self.parser.write(open(self.confPath, "r+"))
-
-
-if __name__ == "__main__":
-    a = ZoomEye()
-    # print a.resourceInfo()
-    print a.newToken()
-    # a.search('port:21')
-
-    # b = Seebug()
-    # b.static()
-    # b.seek('redis')
-    # b.retrieve(89339)

