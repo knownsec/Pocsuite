@@ -25,5 +25,9 @@ GurdZain
 Jeremy
 * for reporting a bug
 
+rains31
+* for contributing packet.py
+* for contributing a minor patch
+
 tanjelly
 * for contributing a minor path
