@@ -24,3 +24,6 @@ GurdZain
 
 Jeremy
 * for reporting a bug
+
+tanjelly
+* for contributing a minor path
