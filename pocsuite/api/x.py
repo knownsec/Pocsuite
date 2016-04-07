@@ -67,7 +67,7 @@ class ZoomEye():
         self.parser.set("zoomeye", "Password", password)
         self.username = username
         self.password = password
-        self.parser.write(open(self.confPath, "r+"))
+        self.parser.write(open(self.confPath, "w"))
 
 
 class Seebug():
@@ -104,4 +104,4 @@ class Seebug():
         token = raw_input("Seebug Token:")
         self.parser.set("token", "seebug", token)
         self.token = token
-        self.parser.write(open(self.confPath, "r+"))
+        self.parser.write(open(self.confPath, "w"))

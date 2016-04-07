@@ -13,3 +13,5 @@ def initial():
     if not os.path.isfile(currentUserHomePath + '/.pocsuiterc'):
         with open(currentUserHomePath + '/.pocsuiterc', 'w') as fp:
             fp.write(_)
+
+initial()
