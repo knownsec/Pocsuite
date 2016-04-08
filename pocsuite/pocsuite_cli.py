@@ -121,23 +121,19 @@ web-search{}, host-search{}'.\
             if not os.path.exists(folderPath):
                 os.mkdir(folderPath)
             s = Seebug(paths.POCSUITE_RC_PATH)
-            if s.token:
-                if not s.static():
+            if (s.token or not s.static()) or not s.token:
                     logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, Please input Seebug Token for use Seebug API，you can get it in [https://www.seebug.org/accounts/detail].')
                     s.write_conf()
                     if not s.static():
                         sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
-                logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug token authorization succeed.')
-                logger.log(CUSTOM_LOGGING.SYSINFO, s.seek(argsDict['vulKeyword']))
-                for poc in s.pocs:
-                    p = s.retrieve(poc['id'])
-                    tmp = '%s/%s.py' % (folderPath, poc['id'])
+            logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug token authorization succeed.')
+            logger.log(CUSTOM_LOGGING.SYSINFO, s.seek(argsDict['vulKeyword']))
+            for poc in s.pocs:
+                p = s.retrieve(poc['id'])
+                tmp = '%s/%s.py' % (folderPath, poc['id'])
 
-                    with open(tmp, 'w') as fp:
-                        fp.write(p['code'])
-
-            else:
-                logger.log(CUSTOM_LOGGING.ERROR, 'No Seebug token found in ~/.pocsuiterc')
+                with open(tmp, 'w') as fp:
+                    fp.write(p['code'])
 
         init()
         start()

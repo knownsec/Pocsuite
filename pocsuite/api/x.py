@@ -12,10 +12,13 @@ import urllib
 import requests
 import ConfigParser
 from .rcGen import initial
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 
 
 class ZoomEye():
     def __init__(self, confPath=None):
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         self.plan = self.token = None
         self.headers = self.username = self.password = None
         self.resources = {}
@@ -72,6 +75,7 @@ class ZoomEye():
 
 class Seebug():
     def __init__(self, confPath=None):
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         self.token = None
         self.headers = {'Authorization': 'Token %s' % self.token}
 
