@@ -9,7 +9,7 @@ import os
 import ast
 import json
 import urllib
-import requests
+from pocsuite.lib.request.basic import req as requests
 import ConfigParser
 from .rcGen import initial
 from requests.packages.urllib3.exceptions import InsecureRequestWarning

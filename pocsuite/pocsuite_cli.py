@@ -52,6 +52,8 @@ def pcsInit(PCS_OPTIONS=None):
     try:
         paths.POCSUITE_ROOT_PATH = modulePath()
         setPaths()
+        if not os.path.exists(paths.POCSUITE_HOME_PATH + '/.pocsuite'):
+            os.mkdir(paths.POCSUITE_HOME_PATH + '/.pocsuite')
 
         argsDict = PCS_OPTIONS or parseCmdOptions()
 
