@@ -12,13 +12,11 @@ import urllib
 from pocsuite.lib.request.basic import req as requests
 import ConfigParser
 from .rcGen import initial
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
 
 class ZoomEye():
     def __init__(self, confPath=None):
-        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         self.plan = self.token = None
         self.headers = self.username = self.password = None
         self.resources = {}
@@ -33,7 +31,7 @@ class ZoomEye():
 
     def newToken(self):
         data = '{{"username": "{}", "password": "{}"}}'.format(self.username, self.password)
-        req = requests.post('http://api.zoomeye.org/user/login', data=data, verify=False)
+        req = requests.post('http://api.zoomeye.org/user/login', data=data, )
         content = json.loads(req.content)
         if req.status_code != 401 and "access_token" in content:
             self.token = content['access_token']
@@ -42,7 +40,7 @@ class ZoomEye():
         return False
 
     def resourceInfo(self):
-        req = requests.get('http://api.zoomeye.org/resources-info', headers=self.headers, verify=False)
+        req = requests.get('http://api.zoomeye.org/resources-info', headers=self.headers, )
         content = json.loads(req.content)
         if 'plan' in content:
             self.plan = content['plan']
@@ -53,7 +51,7 @@ class ZoomEye():
 
     def search(self, dork, page=1, resource='web'):
         req = requests.get('http://api.zoomeye.org/{}/search?query="{}"&page={}&facet=app,os'\
-                        .format(resource, urllib.quote(dork), page + 1), headers=self.headers, verify=False)
+                        .format(resource, urllib.quote(dork), page + 1), headers=self.headers, )
         content = json.loads(req.content)
         if 'matches' in content:
             return [match['ip'] for match in content['matches']]
@@ -75,7 +73,6 @@ class ZoomEye():
 
 class Seebug():
     def __init__(self, confPath=None):
-        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         self.token = None
 
         if confPath:
@@ -87,19 +84,19 @@ class Seebug():
         self.headers = {'Authorization': 'Token %s' % self.token}
 
     def static(self):
-        req = requests.get('https://www.seebug.org/api/user/poc_list', headers=self.headers, verify=False)
+        req = requests.get('https://www.seebug.org/api/user/poc_list', headers=self.headers, )
         self.stats = ast.literal_eval(req.content)
         if 'detail' in self.stats:
             return False
         return 'According to record total %s PoC purchased' % len(self.stats)
 
     def seek(self, keyword):
-        req = requests.get('https://www.seebug.org/api/user/poc_list?q=%s' % keyword, headers=self.headers, verify=False)
+        req = requests.get('https://www.seebug.org/api/user/poc_list?q=%s' % keyword, headers=self.headers, )
         self.pocs = ast.literal_eval(req.content)
         return '%s purchased poc related to keyword "%s"' % (len(self.pocs), keyword)
 
     def retrieve(self, ID):
-        req = requests.get('https://www.seebug.org/api/user/poc_detail?id=%s' % ID, headers=self.headers, verify=False)
+        req = requests.get('https://www.seebug.org/api/user/poc_detail?id=%s' % ID, headers=self.headers, )
         return ast.literal_eval(req.content)
 
     def write_conf(self):
