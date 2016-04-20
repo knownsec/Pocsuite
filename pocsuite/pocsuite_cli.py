@@ -54,6 +54,8 @@ def pcsInit(PCS_OPTIONS=None):
         setPaths()
         if not os.path.exists(paths.POCSUITE_HOME_PATH + '/.pocsuite'):
             os.mkdir(paths.POCSUITE_HOME_PATH + '/.pocsuite')
+        if not os.path.exists(paths.POCSUITE_OUTPUT_PATH):
+            os.mkdir(paths.POCSUITE_OUTPUT_PATH)
 
         argsDict = PCS_OPTIONS or parseCmdOptions()
 
