@@ -77,13 +77,14 @@ class Seebug():
     def __init__(self, confPath=None):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         self.token = None
-        self.headers = {'Authorization': 'Token %s' % self.token}
 
         if confPath:
             self.confPath = confPath
             self.parser = ConfigParser.ConfigParser()
             self.parser.read(self.confPath)
             self.token = self.parser.get('token', 'seebug')
+
+        self.headers = {'Authorization': 'Token %s' % self.token}
 
     def static(self):
         req = requests.get('https://www.seebug.org/api/user/poc_list', headers=self.headers, verify=False)
