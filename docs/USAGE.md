@@ -51,6 +51,14 @@ Pocsuite 支持命令行模式(cli)和交互式控制台模式(console), 如果�
   --requires			检查 install_requires 是否都符合
   --quite				安静模式, 不输出 Pocsuite 的日志
   --require-freeze		在 Poc 注册后进行 install_requires 检查
+
+Zoomeye 和 Seebug:
+  --dork DORK           ZoomEye Dork，用于在 ZoomEye 搜索目标
+  --max-page MAX_PAGE   ZoomEye API 的请求翻页数(10 目标/页)
+  --search-type SEARCH_TYPE
+                        ZoomEye API 搜索类型，web 或者 host
+  --vul-keyword VULKEYWORD
+                        Seebug 搜索关键词，用于在 Seebug 搜索漏洞
 ```
 
 ### 命令行模式
@@ -199,6 +207,23 @@ Attack 模式:
    [15:13:26] [*] starting 1 threads
    [15:13:26] [*] poc:'_poc_example1' target:'www.example.com'
    ```
+
+### 使用 ZoomEye 和 Seebug API
+
+如：
+
+```
+    pocsuite --dork 'port:6379' --vul-keyword 'redis' --max-page 2
+```
+
+搜索 Redis 服务器目标，指定两页，即20个目标，进行自动化的批量测试
+
+```
+--dork DORK                 ZoomEye Dork，用于在 ZoomEye 搜索目标
+--max-page MAX_PAGE         ZoomEye API 的请求翻页数(10 目标/页)
+--search-type SEARCH_TYPE   ZoomEye API 搜索类型，web 或者 host
+--vul-keyword VULKEYWORD    Seebug 搜索关键词，用于在 Seebug 搜索漏洞
+```
 
 ### Pocsuite 报告自动生成
 

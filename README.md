@@ -20,10 +20,10 @@ Pocsuite 是由知道创宇安全研究团队打造的一款远程漏洞验证�
 ---------
 
 #### 漏洞测试框架
-Pocsuite 采用 Pyhton 编写，支持验证与利用两种插件模式，你可以指定单个目标或者从文件导入多个目标，使用单个 PoC 或者 PoC 集合进行漏洞的验证或利用。可以使用命令行模式进行调用，也支持类似 Metaspolit 的交互模式进行处理，除此之外，还包含了一些基本的如输出结果报告等功能。（[使用方法参考《Pocsuite 使用方法》](./docs/USAGE.md)）
+Pocsuite 采用 Python 编写，支持验证与利用两种插件模式，你可以指定单个目标或者从文件导入多个目标，使用单个 PoC 或者 PoC 集合进行漏洞的验证或利用。可以使用命令行模式进行调用，也支持类似 Metaspolit 的交互模式进行处理，除此之外，还包含了一些基本的如输出结果报告等功能。（[使用方法参考《Pocsuite 使用方法》](./docs/USAGE.md)）
 
 #### PoC/Exp 开发包
-Pocsuite 也是一个 PoC/Exp 的 SDK，也就是开发包，我们封装了基础的 PoC 类,以及一些常用的方法，比如 Webshell 的相关方法，基于Pocsuite 进行 PoC/Exp 的开发，你可以只要编写最核心的漏洞验证部分代码，而不用去关心整体的结果输出等其他一些处理。基于 Pocsuite 编写的 PoC/Exp 可以直接被 Pocsuite 使用，现在有几百人基于 Pocsuite 编写 PoC/Exp。
+Pocsuite 也是一个 PoC/Exp 的 SDK，也就是开发包，我们封装了基础的 PoC 类,以及一些常用的方法，比如 Webshell 的相关方法，基于 Pocsuite 进行 PoC/Exp 的开发，你可以只要编写最核心的漏洞验证部分代码，而不用去关心整体的结果输出等其他一些处理。基于 Pocsuite 编写的 PoC/Exp 可以直接被 Pocsuite 使用，现在有几百人基于 Pocsuite 编写 PoC/Exp。
 
 #### 可被集成模块
 Pocsuite 除了本身具有直接就是一个安全工具除外，也可以成为一个可被集成的漏洞测试模块。你还可以基于Pocsuite开发你自己的应用，我们在 Pocsuite 里封装了可以被其他程序 import 的 PoC 调用类，你可以基于 Pocsuite 进行二次开发，调用 Pocsuite 开发您自己的漏洞验证工具。
