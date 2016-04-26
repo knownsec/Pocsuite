@@ -9,7 +9,7 @@ from pocsuite import (
 setup(
     name='pocsuite',
     version=version,
-    description="A famework for poc definition, check and debug",
+    description="A framework for poc definition, check and debug",
     long_description="""\
 TODO""",
     classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
