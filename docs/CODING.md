@@ -360,6 +360,7 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
 |from api.utils import url2ip|将传入的url（str）转换为ip|
 |from api.utils import strToDict|把形如 "{'test': '1'}" 的字符串转化成字典的函数|
 |from api.utils import writeText|/ writeBinary 以文本 / 二进制模式写入文件|
+|from api.utils import resolve_js_redirects|获取js跳转后的url |
 
 **Shell 类**<div id="api_shell"></div>
 
