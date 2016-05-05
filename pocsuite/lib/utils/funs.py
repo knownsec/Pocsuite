@@ -6,6 +6,7 @@ Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
+import re
 import ast
 import codecs
 import string
@@ -16,6 +17,7 @@ from urlparse import urlsplit
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.api.request import req
 
 
 def url2ip(url):
@@ -82,3 +84,21 @@ def strToDict(string):
 
 def randomStr(length=10, chars=string.ascii_letters+string.digits):
     return ''.join(random.sample(chars, length))
+
+
+def resolve_js_redirects(url):
+    meta_regx = '(?is)\<meta[^<>]*?url\s*=([\d\w://\\\\.?=&;%-]*)[^<>]*'
+    body_regx = '''(?is)\<body[^<>]*?location[\s\.\w]*=['"]?([\d\w://\\\\.?=&;%-]*)['"]?[^<>]*'''
+    js_regx = '''(?is)<script.*?>[^<>]*?window\.location\.(?:replace|href|assign)[\("']*([\d\w://\\\\.?=&;%-]*)[^<>]*?</script>'''
+
+    if not url.startswith(('http://', 'https://')):
+        url = 'http://' + url
+    res = req.get(url)
+    true_url = res.url
+
+    for regx in [meta_regx, body_regx, js_regx]:
+        result = re.search(regx, res.text)
+        if result:
+            true_url = result.group(1)
+            break
+    return true_url

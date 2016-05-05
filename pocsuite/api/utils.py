@@ -20,3 +20,4 @@ from pocsuite.lib.utils.funs import randomStr
 from pocsuite.lib.utils.funs import writeText
 from pocsuite.lib.utils.funs import writeBinary
 from pocsuite.lib.utils.funs import loadText
+from pocsuite.lib.utils.funs import resolve_js_redirects
