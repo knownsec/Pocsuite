@@ -61,7 +61,7 @@ $ pocsuite --version
 
 Usage
 ------
-* [How to use Pocsuite to test vulnerability](./docs/USAGE.md)
+* [How to use Pocsuite to test vulnerability](./USAGE-en.md)
 * [How to develop PoC/Exp based on Pocsuite](./docs/CODING.md)
 * [How to integrate Pocsuite in applications](./docs/INTEGRATE.md)
 
