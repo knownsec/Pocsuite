@@ -1,76 +1,55 @@
 
-```
-                              ,--. ,--.
- ,---. ,---. ,---.,---.,--.,--`--,-'  '-.,---.
-| .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. :
-| '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --.
-|  |-' `---' `---`----' `----'`--' `--'  `----'
-`--'                        http://pocsuite.org
-```
+# Pocsuite
 
 [![Python 2.6|2.7](https://img.shields.io/badge/python-2.6|2.7-yellow.svg)](https://www.python.org/) [![License](https://img.shields.io/badge/license-GPLv2-red.svg)](https://raw.githubusercontent.com/knownsec/Pocsuite/master/docs/COPYING) [![Twitter](https://img.shields.io/badge/twitter-@seebug-blue.svg)](https://twitter.com/sebug)
 
-Introduction
-----
-Pocsuite is an open-sourced remote vulnerability testing and PoC development framework developed by the Knownsec Security Team. It serves as the cornerstone of the team.
-You can use Pocsuite to verify and exploit vulnerabilities or write PoC/Exp based on it. You can also integrate Pocsuite in your vulnerability testing tool, which provides a standard calling class.
+
+## Overview
+
+Pocsuite is an open-sourced remote vulnerability testing and proof-of-concept development framework developed by the [**Knownsec Security Team**](http://www.knownsec.com/). It comes with a powerful proof-of-concept engine, many niche features for the ultimate penetration testers and security researchers.
 
 
-Functions
----------
-#### Vulnerability Testing Framework
-Written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets against multiple exploit-plugins in advance.（See ["Pocsuite usage"](../USAGE.md)）
+## Requirements
 
-#### PoC/Exp Development Kit
-Like Metasploit, it is a development kit for pentesters to develope their own exploits. Based on Pocsuite, you can write the most core code of PoC/Exp without caring about the resulting output etc. There are at least several hundred people writing PoC/Exp based on Pocsuite up to date.
+- Python 2.6+
+- Works on Linux, Windows, Mac OSX, BSD
 
-#### Integratable Module
-Users could utilize some auxiliary modules packaged in Pocsuite to extend their exploit functions or integrate Pocsuite to develop other vulnerability assesment tools.
+## Installation
 
-#### Integrated ZoomEye & Seebug APIs
-Pocsuite is also an extremely useful tool to integrate Seebug and ZoomEye APIs in a collaborative way. Vulnerablity assessment can be done automatically and effectively by searching targets through ZoomEye and acquiring PoC scripts from Seebug or locally.
-
-
-Installation
------
-Pocsuite works out of the box with Python version 2.6.x and 2.7.x on any platform.
-
-You can use Git to clone the latest source code repository
+The quick way:
 
 ``` bash
-$ git clone git@github.com:knownsec/Pocsuite.git
+$ pip install pocsuite
 ```
-Or click [here](https://github.com/knownsec/Pocsuite/archive/master.zip) to Download the latest source zip package and extract
+
+Or click [here](https://github.com/knownsec/Pocsuite/archive/master.zip) to download the latest source zip package and extract
 
 ``` bash
 $ wget https://github.com/knownsec/Pocsuite/archive/master.zip
 $ unzip master.zip
 ```
 
-``` bash
-$ cd Pocsuite
-$ python pocsuite.py --version
-```
 
-Or use pip
+The latest version of this software is available from: http://pocsuite.org
 
-``` bash
-$ pip install pocsuite
-$ pocsuite --version
-```
+## Documentation
 
-Usage
-------
-* [How to use Pocsuite to test vulnerability](./docs/USAGE.md)
-* [How to develop PoC/Exp based on Pocsuite](./docs/CODING.md)
-* [How to integrate Pocsuite in applications](./docs/INTEGRATE.md)
+Documentation is available in the [```docs```](https://github.com/knownsec/Pocsuite/tree/dev/docs) directory.
 
-Links
----------
+## How to Contribute
+
+1. Check for open issues or open a fresh issue to start a discussion around a feature idea or a bug.
+2. Fork [the repository](https://github.com/knownsec/Pocsuite) on GitHub to start making your changes to the **dev** branch (or branch off of it).
+3. Write a test which shows that the bug was fixed or that the feature works as expected.
+4. Send a pull request and bug the maintainer until it gets merged and published. Make sure to add yourself to [THANKS](https://github.com/knownsec/Pocsuite/blob/dev/docs/THANKS.md).
+
+
+## Links
+
 * [Thanks List](./docs/THANKS.md)
 * [Change Log](./docs/CHANGELOG.md)
-* [Bug feedback](https://github.com/knownsec/Pocsuite/issues)
-* [Copying](./docs/COPYING)
-* [Pocsuite Website: http://pocsuite.org](http://pocsuite.org)
-* [Seebug Website: https://www.seebug.org](https://www.seebug.org)
-* [ZoomEye Website: https://www.zoomeye.org](https://www.zoomeye.org)
+* [Bug tracking](https://github.com/knownsec/Pocsuite/issues)
+* [Copyright](./docs/COPYING)
+* [Pocsuite](http://pocsuite.org)
+* [Seebug](https://www.seebug.org)
+* [ZoomEye](https://www.zoomeye.org)
