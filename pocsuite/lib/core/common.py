@@ -221,7 +221,6 @@ def isListLike(value):
 
 
 def readFile(filename):
-    fileObject = open(filename)
     try:
         with open(filename) as f:
             retVal = f.read()
