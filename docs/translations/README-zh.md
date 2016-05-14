@@ -33,7 +33,7 @@ $ unzip master.zip
 
 ## 文档
 
-Pocsuite相关的**帮助/开发文档**, 请查阅目录 [```docs```](https://github.com/knownsec/Pocsuite/tree/dev/docs) .
+Pocsuite相关的**帮助/开发文档**, 请查阅目录 [```docs```](../../docs) .
 
 ## 功能
 
