@@ -5,6 +5,13 @@
 
 ## pocsuite
 
+Enter into `pocsuite` directory, execute `python pocsuite.py`. It supports double mode:
+
+ - ```verify```
+ - ```attack```
+
+You can also use ```python pocsuite.py -h``` for more details.
+
 ```
 $ python pocsuite.py -h
 
@@ -58,13 +65,6 @@ Zoomeye or Seebug:
                         Seebug keyword used for search.
 ```
 
-
-Command-line mode can be initiated on the target Verify/Attack test. Enter `pocsuite` directory, execute `pocsuite.py`.
-
-If you already have a PoC (e.g. poc_example.py), and save it in the `tests` directory (**you can specify any directory**).
-
-PoC script for `.py` and` .json` file formats, both of which use the same.
-
 **-f, --file URLFILE**
 
 Scan multiple targets given in a textual file
@@ -77,7 +77,8 @@ $ python pocsuite.py -r tests/poc_example.py -f url.txt --verify
 
 **-r POCFILE**
 
-POCFILE can be a file or a directory. If a directory, Pocsuite will load multiple PoCs from special destination.
+POCFILE can be a file or a directory. If a file, it can be placed in it in the `tests` directory (or anywhere you prefer). If a directory, Pocsuite will load multiple PoCs from special destination.
+
 
 ```
 $ python pocsuite.py -r tests/ -u http://www.example.com --verify
@@ -176,13 +177,11 @@ Pcs> help
 
 **Note**: PoC(s) should be in ```pocsuite/modules/``` directory.
 
-If you want to test against thr target **www.example.com**, please try it step by step.
+If you want to test against **www.example.com**, please try it step by step.
 
   - set a target (url, urlFile)
   - load avaliable PoC(s)
 
-
-If a target, **url** is a good choice. Otherwise, **urlFile** can be choosed.
 
 ```
 $ python pcs-console.py
@@ -232,7 +231,7 @@ Pcs.config> q
 ```
 
 
-**avaliable** command will show all PoC(s), one PoC one id. If you want a special PoC, please enter ``` load pocId``` in the console.
+**avaliable** command will show all PoC(s), one PoC one id. If you want a special PoC, please enter ```load pocId``` in the console.
 
 ```
 Pcs> poc
