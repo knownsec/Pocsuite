@@ -20,7 +20,7 @@ Pocsuite module? If so, read on...
 
 ## Code Contributions
 
-* **Do** stick to the [Google Python style guide](Google Python Style Guide) and [Code Style](http://docs.python-guide.org/en/latest/writing/style/).
+* **Do** stick to the [Google Python style guide](https://google.github.io/styleguide/pyguide.html) and [Code Style](http://docs.python-guide.org/en/latest/writing/style/).
 * **Do** get [Pep8](https://www.python.org/dev/peps/pep-0008/) and [Pep257](https://www.python.org/dev/peps/pep-0257/) relatively quiet against the code you are adding or modifying.
 * **Do** follow the [50/72 rule] for Git commit messages.
 * **Don't** use the default merge messages when merging from other branches.
