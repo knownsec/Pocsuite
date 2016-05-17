@@ -41,6 +41,7 @@ class POCBase(object):
         self.params = strToDict(params) if params else {}
         self.mode = mode
         self.verbose = verbose
+        self.expt = 'None'
         # TODO
         output = None
 
@@ -50,11 +51,13 @@ class POCBase(object):
             else:
                 output = self._verify()
 
-        except NotImplementedError:
+        except NotImplementedError, e:
+            self.expt = e
             logger.log(CUSTOM_LOGGING.ERROR, 'POC: %s not defined ' '%s mode' % (self.name, self.mode))
             output = Output(self)
 
         except ConnectTimeout, e:
+            self.expt = e
             while conf.retry > 0:
                 logger.log(CUSTOM_LOGGING.WARNING, 'POC: %s timeout, start it over.' % self.name)
                 try:
@@ -72,6 +75,7 @@ class POCBase(object):
                 output = Output(self)
 
         except Exception, e:
+            self.expt = e
             logger.log(CUSTOM_LOGGING.ERROR, str(e))
             output = Output(self)
 
@@ -123,6 +127,9 @@ class Output(object):
     '''
 
     def __init__(self, poc=None):
+        self.error = ''
+        self.result = {}
+        self.status = OUTPUT_STATUS.FAILED
         if poc:
             self.url = poc.url
             self.mode = poc.mode
@@ -130,9 +137,7 @@ class Output(object):
             self.name = poc.name
             self.appName = poc.appName
             self.appVersion = poc.appVersion
-        self.error = ""
-        self.result = {}
-        self.status = OUTPUT_STATUS.FAILED
+            self.error = poc.expt
 
     def is_success(self):
         return bool(True and self.status)
