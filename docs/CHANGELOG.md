@@ -12,3 +12,4 @@ version 2.1
 * add method:resolve_js_redirects
 * class pocsuite.api.cannon.Cannon returns details of  error and failure of a PoC
 * fix ImportError in class Cannon
+* fix wrong md5 func used in PhpShell
