@@ -1,3 +1,4 @@
+
 集成 Pocsuite
 ----------
 
@@ -14,4 +15,10 @@ info = {"pocname": "PoC的名字",
 target = "test.site"
 invoker = Cannon(target, info) # 生成用来引用 Pocsuite 的实例
 result = invoker.run()			# 调用 Pocsuite, result 保存了 Pocsuite 执行的返回结果
+```
+
+具体返回结果如下:
+
+```
+('test.site', 'PoC Name', 'SeebugID', 'target application', 'target version', 'failedMessage/success/error', 'Date', {result(dict type) returned in PoC})
 ```

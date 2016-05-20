@@ -6,7 +6,9 @@ version 2.0
 * update webshell class
 
 
+
 version 2.1
 --------------
 * add method:resolve_js_redirects
-* differentiate between error and failure
+* class pocsuite.api.cannon.Cannon returns details of  error and failure of a PoC
+* fix ImportError in class Cannon
