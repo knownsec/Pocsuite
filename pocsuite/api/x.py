@@ -9,7 +9,10 @@ import os
 import ast
 import json
 import urllib
-from pocsuite.lib.request.basic import req as requests
+try:
+    from pocsuite.lib.request.basic import req as requests
+else:
+    import requests
 import ConfigParser
 from .rcGen import initial
 
