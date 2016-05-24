@@ -11,7 +11,7 @@ import json
 import urllib
 try:
     from pocsuite.lib.request.basic import req as requests
-else:
+except:
     import requests
 import ConfigParser
 from .rcGen import initial
