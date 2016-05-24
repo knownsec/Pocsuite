@@ -7,7 +7,7 @@ version 2.0
 
 
 
-version 2.1
+version 2.0.3
 --------------
 * add method:resolve_js_redirects
 * class pocsuite.api.cannon.Cannon returns details of  error and failure of a PoC
