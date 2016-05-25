@@ -28,8 +28,21 @@ result = invoker.run()			# 调用 Pocsuite, result 保存了 Pocsuite 执行的�
 	'SeebugID', # seebug id
 	'applications', # poc针对应用
 	'version', 	# 目标应用版本
-	'failedMessage/success/(errorID, error)', # poc执行后返回的成功失败信息,成功则显示 success,失败则显示 PoC 里通过 output.fail(msg) 保存的 msg 字符串,异常则显示程序捕获到的异常和该异常的编号
+	'(ID,message)', # poc执行后返回的成功、失败或异常等信息
 	'Date', 	# 时间
 	{result}	# poc返回的result字典, 格式参照docs/CODING.md#poc-结果返回规范
 )
 ```
+#### PoC 成功、失败、异常信息
+
+|  ID  |        返回信息         |               ID说明               |
+| :--: | :-----------------: | :------------------------------: |
+|  0   |       success       |         PoC 正常执行，并成功检测漏洞         |
+|  1   | NotImplementedError | PoC 执行时发生 NotImplementedError 异常 |
+| 2.0  |   ConnectionError   |   PoC 执行时发生 ConnectionError 异常   |
+| 2.1  |      HTTPError      |      PoC 执行时发生 HTTPError 异常      |
+| 2.2  |   ConnectTimeout    |   PoC 执行时发生 ConnectTimeout 异常    |
+| 2.3  |  TooManyRedirects   |  PoC 执行时发生 TooManyRedirects 异常   |
+|  3   |        Other        |          PoC 执行时发生其他异常           |
+|  4   |        Fail         |        PoC 正常执行，但是检测不存在漏洞        |
+
