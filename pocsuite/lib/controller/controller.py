@@ -130,6 +130,8 @@ def _createTargetDirs():
 
 def _setRecordFiles():
     for (target, pocname, pocid, component, version, status, r_time, result) in kb.results:
+        if type(status) != str:
+            status = status[1]
         outputPath = os.path.join(getUnicode(paths.POCSUITE_OUTPUT_PATH), normalizeUnicode(getUnicode(target)))
 
         if not os.path.isdir(outputPath):
