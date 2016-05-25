@@ -51,7 +51,7 @@ class Cannon():
         try:
             poc = kb.registeredPocs[self.moduleName]
             result = poc.execute(self.target, mode=self.mode)
-            output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, (0, "success") if result.is_success() else result.error, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
+            output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, (1, "success") if result.is_success() else result.error, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
             
             if self.delmodule:
                 delModule(self.moduleName)

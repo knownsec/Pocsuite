@@ -178,7 +178,7 @@ class Output(object):
         self.status = OUTPUT_STATUS.FAILED
         assert isinstance(error, types.StringType)
         if type(self.error) == str:
-            error = (4, error)
+            error = (0, error)
         self.error = error
 
     def show_result(self):
