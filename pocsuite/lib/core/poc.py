@@ -20,7 +20,7 @@ from pocsuite.thirdparty.requests.exceptions import ProxyError
 from pocsuite.thirdparty.requests.exceptions import ReadTimeout
 from pocsuite.thirdparty.requests.exceptions import TooManyRedirects
 from pocsuite.lib.core.data import logger
-from pocsuite.lib.core.enums import ERROR_TYPE
+from pocsuite.lib.core.enums import ERROR_TYPE_ID
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.enums import OUTPUT_STATUS
 from pocsuite.lib.core.common import parseTargetUrl
@@ -64,12 +64,12 @@ class POCBase(object):
                 output = self._verify()
 
         except NotImplementedError, e:
-            self.expt = (ERROR_TYPE.NOTIMPLEMENTEDERROR, e)
+            self.expt = (ERROR_TYPE_ID.NOTIMPLEMENTEDERROR, e)
             logger.log(CUSTOM_LOGGING.ERROR, 'POC: %s not defined ' '%s mode' % (self.name, self.mode))
             output = Output(self)
 
         except ConnectTimeout, e:
-            self.expt = (ERROR_TYPE.CONNECTTIMEOUT, e)
+            self.expt = (ERROR_TYPE_ID.CONNECTTIMEOUT, e)
             while conf.retry > 0:
                 logger.log(CUSTOM_LOGGING.WARNING, 'POC: %s timeout, start it over.' % self.name)
                 try:
@@ -87,57 +87,22 @@ class POCBase(object):
                 output = Output(self)
 
         except HTTPError, e:
-            self.expt = (ERROR_TYPE.HTTPERROR, e)
+            self.expt = (ERROR_TYPE_ID.HTTPERROR, e)
             logger.log(CUSTOM_LOGGING.WARNING, 'POC: %s HTTPError occurs, start it over.' % self.name)
             output = Output(self)
 
         except ConnectionError, e:
-            self.expt = (ERROR_TYPE.CONNECTIONERROR, e)
+            self.expt = (ERROR_TYPE_ID.CONNECTIONERROR, e)
             logger.log(CUSTOM_LOGGING.ERROR, str(e))
             output = Output(self)
 
         except TooManyRedirects, e:
-            self.expt = (ERROR_TYPE.TOOMANYREDIRECTS, e)
-            logger.log(CUSTOM_LOGGING.ERROR, str(e))
-            output = Output(self)
-
-        except BaseHTTPError, e:
-            self.expt = (ERROR_TYPE.BASEHTTPERROR, e)
-            logger.log(CUSTOM_LOGGING.ERROR, str(e))
-            output = Output(self)
-
-        except ChunkedEncodingError, e:
-            self.expt = (ERROR_TYPE.CHUNKEDENCODINGERROR, e)
-            logger.log(CUSTOM_LOGGING.ERROR, str(e))
-            output = Output(self)
-
-        except ContentDecodingError, e:
-            self.expt = (ERROR_TYPE.CONTENTDECODINGERROR, e)
-            logger.log(CUSTOM_LOGGING.ERROR, str(e))
-            output = Output(self)
-
-        except InvalidSchema, e:
-            self.expt = (ERROR_TYPE.INVALIDSCHEMA, e)
-            logger.log(CUSTOM_LOGGING.ERROR, str(e))
-            output = Output(self)
-
-        except InvalidURL, e:
-            self.expt = (ERROR_TYPE.INVALIDURL, e)
-            logger.log(CUSTOM_LOGGING.ERROR, str(e))
-            output = Output(self)
-
-        except ProxyError, e:
-            self.expt = (ERROR_TYPE.PROXYERROR, e)
-            logger.log(CUSTOM_LOGGING.ERROR, str(e))
-            output = Output(self)
-
-        except ReadTimeout, e:
-            self.expt = (ERROR_TYPE.READTIMEOUT, e)
+            self.expt = (ERROR_TYPE_ID.TOOMANYREDIRECTS, e)
             logger.log(CUSTOM_LOGGING.ERROR, str(e))
             output = Output(self)
 
         except Exception, e:
-            self.expt = (ERROR_TYPE.OTHER, e)
+            self.expt = (ERROR_TYPE_ID.OTHER, e)
             logger.log(CUSTOM_LOGGING.ERROR, str(e))
             output = Output(self)
 
