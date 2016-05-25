@@ -26,7 +26,7 @@ result = invoker.run()			# 调用 Pocsuite, result 保存了 Pocsuite 执行的�
 	'SeebugID', # seebug id
 	'applications', # poc针对应用
 	'version', 	# 目标应用版本
-	'failedMessage/success/error', # poc执行后返回的成功失败信息
+	'failedMessage/success/error', # poc执行后返回的成功失败信息,成功则显示 success,失败则显示 PoC 里通过 output.fail(msg) 保存的 msg 字符串,异常则显示程序捕获到的异常
 	'Date', 	# 时间
 	{result}	# poc返回的result字典, 格式参照docs/CODING.md#poc-结果返回规范
 )
