@@ -7,7 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 
 __title__ = 'pocsuite'
-__version__ = '2.0.3'
+__version__ = '2.0.3.1'
 __author__ = 'Knownsec Security Team'
 __author_email__ = 's1@seebug.org'
 __license__ = 'GPL 2.0'
