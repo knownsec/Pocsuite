@@ -7,7 +7,10 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import types
+from pocsuite.thirdparty.requests.exceptions import HTTPError
 from pocsuite.thirdparty.requests.exceptions import ConnectTimeout
+from pocsuite.thirdparty.requests.exceptions import ConnectionError
+from pocsuite.thirdparty.requests.exceptions import TooManyRedirects
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.enums import OUTPUT_STATUS
@@ -73,6 +76,21 @@ class POCBase(object):
             else:
                 logger.log(CUSTOM_LOGGING.ERROR, str(e))
                 output = Output(self)
+
+        except HTTPError, e:
+            self.expt = e
+            logger.log(CUSTOM_LOGGING.WARNING, 'POC: %s HTTPError occurs, start it over.' % self.name)
+            output = Output(self)
+
+        except ConnectionError, e:
+            self.expt = e
+            logger.log(CUSTOM_LOGGING.ERROR, str(e))
+            output = Output(self)
+
+        except TooManyRedirects, e:
+            self.expt = e
+            logger.log(CUSTOM_LOGGING.ERROR, str(e))
+            output = Output(self)
 
         except Exception, e:
             self.expt = e
