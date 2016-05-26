@@ -35,14 +35,14 @@ result = invoker.run()			# 调用 Pocsuite, result 保存了 Pocsuite 执行的�
 ```
 #### PoC 成功、失败、异常信息
 
-|  ID  |        返回信息         |               ID说明               |
+|  ID  |        返回信息      |               ID说明               |
 | :--: | :-----------------: | :------------------------------: |
-|  0   |        Fail         |        PoC 正常执行，但是检测不存在漏洞        |
-|  1   |       Success       |         PoC 正常执行，且检测存在漏洞         |
-|  2   | NotImplementedError |   PoC 执行时发生 ConnectionError 异常   |
-| 3.0  |   ConnectionError   |      PoC 执行时发生 HTTPError 异常      |
-| 3.1  |      HTTPError      |   PoC 执行时发生 ConnectTimeout 异常    |
-| 3.2  |   ConnectTimeout    |  PoC 执行时发生 TooManyRedirects 异常   |
-| 3.3  |  TooManyRedirects   |          PoC 执行时发生其他异常           |
-|  4   |        Other        | PoC 执行时发生 NotImplementedError 异常 |
+|  0   |        Fail         |    PoC 正常执行，但是检测不存在漏洞            |
+|  1   |       Success       |         PoC 正常执行，且检测存在漏洞          |
+|  2   | NotImplementedError |    PoC 执行时发生 NotImplementedError 异常  |
+| 3.0  |   ConnectionError   |      PoC 执行时发生 ConnectionError 异常    |
+| 3.1  |      HTTPError      |   PoC 执行时发生 HTTPError 异常             |
+| 3.2  |   ConnectTimeout    |  PoC 执行时发生 ConnectTimeout 异常         |
+| 3.3  |  TooManyRedirects   |    PoC 执行时发生 TooManyRedirects 异常     |
+|  4   |        Other        |            PoC 执行时发生其他异常            |
 
