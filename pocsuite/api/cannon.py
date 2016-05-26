@@ -24,7 +24,7 @@ class Cannon():
     def __init__(self, target, info={}):
         self.target = target
         self.pocString = info["pocstring"]
-        self.pocName = info["pocname"]
+        self.pocName = info["pocname"].replace('.', '')
         self.mode = "verify"
         self.delmodule = False
         self.params = {}
