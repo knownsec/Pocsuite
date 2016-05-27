@@ -20,7 +20,6 @@ from .lib.core.exception import PocsuiteUserQuitException
 from .lib.core.common import dataToStdout
 from .lib.core.common import setPaths
 from .lib.core.settings import LEGAL_DISCLAIMER
-from .lib.core.settings import PCS_OPTIONS
 from .lib.core.data import kb
 from .lib.core.data import conf
 from .lib.core.data import paths
@@ -89,10 +88,10 @@ def pcsInit(PCS_OPTIONS=None):
                     sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'ZoomEye API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
 
             info = z.resources
-            logger.log(CUSTOM_LOGGING.SYSINFO, 'Aavaliable ZoomEye search ,\
-web-search{}, host-search{}'.\
-                    format(info['web-search'], \
-                    info['host-search']))
+            logger.log(
+                CUSTOM_LOGGING.SYSINFO,
+                'Aavaliable ZoomEye search ,\ web-search{}, host-search{}'.format(info['web-search'], info['host-search'])
+            )
 
             tmpIpFile = paths.POCSUITE_OUTPUT_PATH + '/zoomeye_%s.txt' % time.strftime('%Y_%m_%d_%H_%M_%S')
             with open(tmpIpFile, 'w') as fp:
@@ -161,8 +160,8 @@ web-search{}, host-search{}'.\
     except Exception, ex:
         print
         print ex
-        #errMsg = unhandledExceptionMessage()
-        #logger.log(CUSTOM_LOGGING.WARNING, errMsg)
+        # errMsg = unhandledExceptionMessage()
+        # logger.log(CUSTOM_LOGGING.WARNING, errMsg)
         excMsg = traceback.format_exc()
         dataToStdout(excMsg)
 

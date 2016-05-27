@@ -109,7 +109,7 @@ def registerPocFromDict():
                 registerPyPoc(pocDict)
             else:
                 warnMsg = "invalid PoC %s" % pocDict["pocname"]
-                logger.log(CUSTOM_LOGGING.WARNING, errMsg)
+                logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
 
 
 def init():

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 
 """
 Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
@@ -291,8 +291,6 @@ class pocConsole(Cmd):
             print
 
             pass
-        else:
-            do_help()
 
     def do_avaliable(self, args):
         avaliable()
@@ -334,7 +332,6 @@ class pocConsole(Cmd):
         graph = PrettyTable(["pocId", "unloadPocsName"])
         graph.align["unloadPocsName"] = "m"
         graph.padding_width = 1
-        count = 0
 
         if hasattr(kb, 'unloadedList') and getattr(kb, 'unloadedList'):
             for no in sorted(kb.unloadedList.keys()):

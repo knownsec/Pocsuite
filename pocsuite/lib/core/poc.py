@@ -14,7 +14,7 @@ from pocsuite.thirdparty.requests.exceptions import ConnectTimeout
 from pocsuite.thirdparty.requests.exceptions import ConnectionError
 from pocsuite.thirdparty.requests.exceptions import ChunkedEncodingError
 from pocsuite.thirdparty.requests.exceptions import ContentDecodingError
-from pocsuite.thirdparty.requests.exceptions import InvalidSchema 
+from pocsuite.thirdparty.requests.exceptions import InvalidSchema
 from pocsuite.thirdparty.requests.exceptions import InvalidURL
 from pocsuite.thirdparty.requests.exceptions import ProxyError
 from pocsuite.thirdparty.requests.exceptions import ReadTimeout
@@ -109,7 +109,7 @@ class POCBase(object):
         return output
 
     def _attack(self):
-        ''' 
+        '''
         @function   以Poc的attack模式对urls进行检测(可能具有危险性)
                     需要在用户自定义的Poc中进行重写
                     返回一个Output类实例

@@ -19,14 +19,14 @@ from pocsuite.lib.core.settings import OLD_VERSION_CHARACTER
 def requiresCheck():
     if not conf.requires:
         return
-    
+
     requires_regex = re.compile(POC_REQUIRES_REGEX)
     install_requires = []
     for _, poc in kb.pocs.items():
         try:
             requires = requires_regex.search(poc).group(1)
             install_requires += [require[1:-1] for require in requires.split(",")]
-        except Exception, ex:
+        except:
             pass
 
     infoMsg = "install_requires:\n" + "\n".join(install_requires)

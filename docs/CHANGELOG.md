@@ -16,3 +16,11 @@ version 2.0.3.1
 * change PoC success & fail return format from string to tuple  in Cannon API
 * catch more exceptions when processing HTTP request in POCBase
 * fix error 'importing from source results in parent module not found while handling absolute import' when '.' in fullname in Cannon API
+
+version 2.0.4
+-----------
+* fix bug in lib/core/common.py: not import locale and used it
+* fix bug in lib/core/common.py: there is not Variable or constant name NULL,bug it is used
+* fix bug in lib/core/consoles.py:baseConsole:do_ls:endless loop when command ls something
+* add file .travis.yml and integrate travis-ci
+* PEP8

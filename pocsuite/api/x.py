@@ -17,7 +17,6 @@ import ConfigParser
 from .rcGen import initial
 
 
-
 class ZoomEye():
     def __init__(self, confPath=None):
         self.plan = self.token = None
@@ -53,8 +52,10 @@ class ZoomEye():
         return False
 
     def search(self, dork, page=1, resource='web'):
-        req = requests.get('http://api.zoomeye.org/{}/search?query="{}"&page={}&facet=app,os'\
-                        .format(resource, urllib.quote(dork), page + 1), headers=self.headers, )
+        req = requests.get(
+            'http://api.zoomeye.org/{}/search?query="{}"&page={}&facet=app,os'.format(resource, urllib.quote(dork), page + 1),
+            headers=self.headers
+        )
         content = json.loads(req.content)
         if 'matches' in content:
             return [match['ip'] for match in content['matches']]

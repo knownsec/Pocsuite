@@ -16,22 +16,24 @@ from optparse import OptionParser
 # 注意：使用raw socket需要setcap给python进程发raw包的权限
 # sudo setcap cap_net_raw,cap_net_admin=eip /usr/bin/python2.7
 
-ETH_P_IP = 0x0800 # Internet Protocol Packet
+ETH_P_IP = 0x0800  # Internet Protocol Packet
+
 
 def checksum(data):
     s = 0
     n = len(data) % 2
-    for i in range(0, len(data)-n, 2):
-        s+= ord(data[i]) + (ord(data[i+1]) << 8)
+    for i in range(0, len(data) - n, 2):
+        s += ord(data[i]) + (ord(data[i + 1]) << 8)
 
     if n:
-        s+= ord(data[i+2])
+        s += ord(data[i + 2])
 
     while (s >> 16):
         s = (s & 0xFFFF) + (s >> 16)
     s = ~s & 0xffff
 
     return s
+
 
 def recv(event, src, dst, srcp, dstp, buff, timeout):
     """
@@ -116,6 +118,7 @@ def send(ip, tcp, payload="", retry=1, timeout=1):
 class layer():
     pass
 
+
 class ETHER(object):
     def __init__(self, src, dst, typ=ETH_P_IP):
         self.src = src
@@ -123,53 +126,58 @@ class ETHER(object):
         self.typ = typ
 
     def pack(self):
-        ethernet = struct.pack('!6s6sH',
-        self.dst,
-        self.src,
-        self.typ)
+        ethernet = struct.pack(
+            '!6s6sH',
+            self.dst,
+            self.src,
+            self.typ
+        )
         return ethernet
+
 
 class IP(object):
     def __init__(self, source, destination, payload='', proto=socket.IPPROTO_TCP):
         self.version = 4
-        self.ihl = 5 # Internet Header Length
-        self.tos = 0 # Type of Service
-        self.tl = 20+len(payload)
-        self.id = 0#random.randint(0, 65535)
-        self.flags = 0 # Don't fragment
+        self.ihl = 5  # Internet Header Length
+        self.tos = 0  # Type of Service
+        self.tl = 20 + len(payload)
+        self.id = 0  # random.randint(0, 65535)
+        self.flags = 0  # Don't fragment
         self.offset = 0
         self.ttl = 64
         self.protocol = proto
-        self.checksum = 2 # will be filled by kernel
+        self.checksum = 2  # will be filled by kernel
         self.source = socket.inet_aton(source)
         self.destination = socket.inet_aton(destination)
+
     def pack(self):
         ver_ihl = (self.version << 4) + self.ihl
         flags_offset = (self.flags << 13) + self.offset
         ip_header = struct.pack("!BBHHHBBH4s4s",
-                    ver_ihl,
-                    self.tos,
-                    self.tl,
-                    self.id,
-                    flags_offset,
-                    self.ttl,
-                    self.protocol,
-                    self.checksum,
-                    self.source,
-                    self.destination)
+                                ver_ihl,
+                                self.tos,
+                                self.tl,
+                                self.id,
+                                flags_offset,
+                                self.ttl,
+                                self.protocol,
+                                self.checksum,
+                                self.source,
+                                self.destination)
         self.checksum = checksum(ip_header)
         ip_header = struct.pack("!BBHHHBBH4s4s",
-                    ver_ihl,
-                    self.tos,
-                    self.tl,
-                    self.id,
-                    flags_offset,
-                    self.ttl,
-                    self.protocol,
-                    socket.htons(self.checksum),
-                    self.source,
-                    self.destination)
+                                ver_ihl,
+                                self.tos,
+                                self.tl,
+                                self.id,
+                                flags_offset,
+                                self.ttl,
+                                self.protocol,
+                                socket.htons(self.checksum),
+                                self.source,
+                                self.destination)
         return ip_header
+
     def unpack(self, packet):
         _ip = layer()
         _ip.ihl = (ord(packet[0]) & 0xf) * 4
@@ -199,13 +207,14 @@ class IP(object):
             _ip.dst]
         return _ip
 
+
 class TCP(object):
     def __init__(self, srcp, dstp, seqn=1):
         self.srcp = srcp
         self.dstp = dstp
         self.seqn = seqn
         self.ackn = 0
-        self.offset = 5 # Data offset: 5x4 = 20 bytes
+        self.offset = 5  # Data offset: 5x4 = 20 bytes
         self.reserved = 0
         self.urg = 0
         self.ack = 0
@@ -217,20 +226,21 @@ class TCP(object):
         self.checksum = 0
         self.urgp = 0
         self.payload = ""
+
     def pack(self, source, destination):
         data_offset = (self.offset << 4) + 0
         flags = self.fin + (self.syn << 1) + (self.rst << 2) + (self.psh << 3) + (self.ack << 4) + (self.urg << 5)
         tcp_header = struct.pack('!HHLLBBHHH',
-                     self.srcp,
-                     self.dstp,
-                     self.seqn,
-                     self.ackn,
-                     data_offset,
-                     flags,
-                     self.window,
-                     self.checksum,
-                     self.urgp)
-        #pseudo header fields
+                                 self.srcp,
+                                 self.dstp,
+                                 self.seqn,
+                                 self.ackn,
+                                 data_offset,
+                                 flags,
+                                 self.window,
+                                 self.checksum,
+                                 self.urgp)
+        # pseudo header fields
         source_ip = source
         destination_ip = destination
         reserved = 0
@@ -238,47 +248,49 @@ class TCP(object):
         total_length = len(tcp_header) + len(self.payload)
         # Pseudo header
         psh = struct.pack("!4s4sBBH",
-              source_ip,
-              destination_ip,
-              reserved,
-              protocol,
-              total_length)
+                          source_ip,
+                          destination_ip,
+                          reserved,
+                          protocol,
+                          total_length)
         psh = psh + tcp_header + self.payload
         tcp_checksum = checksum(psh)
         tcp_header = struct.pack("!HHLLBBH",
-                  self.srcp,
-                  self.dstp,
-                  self.seqn,
-                  self.ackn,
-                  data_offset,
-                  flags,
-                  self.window)
-        tcp_header+= struct.pack('H', tcp_checksum) + struct.pack('!H', self.urgp)
+                                 self.srcp,
+                                 self.dstp,
+                                 self.seqn,
+                                 self.ackn,
+                                 data_offset,
+                                 flags,
+                                 self.window)
+        tcp_header += struct.pack('H', tcp_checksum) + struct.pack('!H', self.urgp)
         return tcp_header
+
     def unpack(self, packet):
-        cflags = { # Control flags
-            32:"U",
-            16:"A",
-            8:"P",
-            4:"R",
-            2:"S",
-            1:"F"}
+        cflags = {  # Control flags
+            32: "U",
+            16: "A",
+            8: "P",
+            4: "R",
+            2: "S",
+            1: "F"
+        }
         _tcp = layer()
-        _tcp.thl = (ord(packet[12])>>4) * 4
+        _tcp.thl = (ord(packet[12]) >> 4) * 4
         _tcp.options = packet[20:_tcp.thl]
         _tcp.payload = packet[_tcp.thl:]
         tcph = struct.unpack("!HHLLBBHHH", packet[:20])
-        _tcp.srcp = tcph[0] # source port
-        _tcp.dstp = tcph[1] # destination port
-        _tcp.seq = tcph[2] # sequence number
-        _tcp.ack = hex(tcph[3]) # acknowledgment number
+        _tcp.srcp = tcph[0]  # source port
+        _tcp.dstp = tcph[1]  # destination port
+        _tcp.seq = tcph[2]  # sequence number
+        _tcp.ack = hex(tcph[3])  # acknowledgment number
         _tcp.flags = ""
         for f in cflags:
             if tcph[5] & f:
-                _tcp.flags+=cflags[f]
-        _tcp.window = tcph[6] # window
-        _tcp.checksum = hex(tcph[7]) # checksum
-        _tcp.urg = tcph[8] # urgent pointer
+                _tcp.flags += cflags[f]
+        _tcp.window = tcph[6]  # window
+        _tcp.checksum = hex(tcph[7])  # checksum
+        _tcp.urg = tcph[8]  # urgent pointer
         _tcp.list = [
             _tcp.srcp,
             _tcp.dstp,
@@ -293,23 +305,25 @@ class TCP(object):
             _tcp.payload]
         return _tcp
 
+
 class UDP(object):
     def __init__(self, src, dst, payload=''):
         self.src = src
         self.dst = dst
         self.payload = payload
         self.checksum = 0
-        self.length = 8 # UDP Header length
+        self.length = 8  # UDP Header length
+
     def pack(self, src, dst, proto=socket.IPPROTO_UDP):
         length = self.length + len(self.payload)
-        pseudo_header = struct.pack('!4s4sBBH',
+        pseudo_header = struct.pack(
+            '!4s4sBBH',
             socket.inet_aton(src), socket.inet_aton(dst), 0,
-            proto, length)
+            proto, length
+        )
         self.checksum = checksum(pseudo_header)
-        packet = struct.pack('!HHHH',
-            self.src, self.dst, length, 0)
+        packet = struct.pack('!HHHH', self.src, self.dst, length, 0)
         return packet
-
 
 
 def main():
@@ -319,21 +333,21 @@ def main():
     parser.add_option("-d", "--dst", dest="dst", type="string",
                       help="Destination IP address", metavar="IP")
     options, args = parser.parse_args()
-    if options.dst == None:
+    if options.dst is None:
         parser.print_help()
         sys.exit()
     else:
         dst_host = socket.gethostbyname(options.dst)
-    if options.src == None:
+    if options.src is None:
         # Get the current Network Interface
         src_host = socket.gethostbyname(socket.gethostname())
     else:
         src_host = options.src
 
-    print("[+] Local Machine: %s"%src_host)
-    print("[+] Remote Machine: %s"%dst_host)
+    print("[+] Local Machine: %s" % src_host)
+    print("[+] Remote Machine: %s" % dst_host)
     data = "TEST!!"
-    print("[+] Data to inject: %s"%data)
+    print("[+] Data to inject: %s" % data)
     # IP Header
     ipobj = IP(src_host, dst_host)
     # TCP Header
@@ -345,6 +359,7 @@ def main():
         tcp = tcpobj.unpack(response)
         print "IP Header:", ip.list
         print "TCP Header:", tcp.list
+
 
 if __name__=="__main__":
     main()
