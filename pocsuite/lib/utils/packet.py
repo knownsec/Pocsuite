@@ -361,5 +361,5 @@ def main():
         print "TCP Header:", tcp.list
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
