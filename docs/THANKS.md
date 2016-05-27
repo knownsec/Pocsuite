@@ -31,3 +31,12 @@ rains31 <rains31+github(at)gmail.com>
 
 tanjelly
 * for contributing a minor path
+
+join-us
+* for contributing doc
+
+Xyntax
+* PEP8
+
+MyKings
+* add English Usage
