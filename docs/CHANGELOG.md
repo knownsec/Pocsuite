@@ -23,4 +23,4 @@ version 2.0.4
 * fix bug in lib/core/common.py: there is not Variable or constant name NULL,bug it is used
 * fix bug in lib/core/consoles.py:baseConsole:do_ls:endless loop when command ls something
 * add file .travis.yml and integrate travis-ci
-* PEP8
+* PEP8 and fix some error Variable
