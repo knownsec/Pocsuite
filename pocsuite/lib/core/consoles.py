@@ -148,8 +148,6 @@ class baseConsole(Cmd):
             print "   verify       : conducting verification. "
             print "   attack       : conduncting attack. "
             print
-        else:
-            self.do_help(args)
 
     def do_help(self, args):
         self.do_ls(args)

@@ -11,6 +11,7 @@ import re
 import sys
 import imp
 import ntpath
+import locale
 import inspect
 import posixpath
 import marshal
@@ -183,7 +184,7 @@ def getUnicode(value, encoding=None, noneToNull=False):
     """
 
     if noneToNull and value is None:
-        return NULL
+        return u'NULL'
 
     if isListLike(value):
         value = list(getUnicode(_, encoding, noneToNull) for _ in value)
