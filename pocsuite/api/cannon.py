@@ -21,15 +21,17 @@ from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
 
 class Cannon():
 
-    def __init__(self, target, info={}):
+    def __init__(self, target, info={}, mode='veirfy', params={}, headers={}, timeout=30):
         self.target = target
         self.pocString = info["pocstring"]
         self.pocName = info["pocname"].replace('.', '')
-        self.mode = "verify"
+        self.mode = mode if mode in ('verify', 'attack') else 'verify'
         self.delmodule = False
-        self.params = {}
+        self.params = params
         conf.isPycFile = info.get('ispycfile', False)
-        conf.httpHeaders = {}
+        conf.httpHeaders = HTTP_DEFAULT_HEADER
+        if headers:
+            conf.httpHeaders.update(headers)
 
         try:
             kb.registeredPocs
@@ -37,6 +39,14 @@ class Cannon():
             kb.registeredPocs = {}
 
         self.registerPoc()
+        self._setHTTPTimeout(timeout)
+
+    def _setHTTPTimeout(self, timeout):
+        """
+        Set the HTTP timeout
+        """
+        timeout = float(timeout)
+        socket.setdefaulttimeout(timeout)
 
     def registerPoc(self):
         pocString = multipleReplace(self.pocString, POC_IMPORTDICT)
@@ -50,7 +60,7 @@ class Cannon():
     def run(self):
         try:
             poc = kb.registeredPocs[self.moduleName]
-            result = poc.execute(self.target, mode=self.mode)
+            result = poc.execute(target, headers=conf.httpHeaders, mode=self.mode, params=self.params)
             output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, (1, "success") if result.is_success() else result.error, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
 
             if self.delmodule:
