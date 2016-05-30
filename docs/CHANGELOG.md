@@ -3,27 +3,28 @@ version 2.0
 ---------------
 * Integrate Seebug and ZoomEye APIs（doing）
 * Add English document（doing）
-* update webshell class
+* Update webshell class
 
 
-version 2.0.3.1
+version 2.0.3
 ---------------
-* add method:resolve_js_redirects
-* class pocsuite.api.cannon.Cannon returns details of  error and failure of a PoC
-* fix ImportError in class Cannon
-* fix wrong md5 func used in PhpShell
-* change PoC success & fail return format from string to tuple  in Cannon API
-* catch more exceptions when processing HTTP request in POCBase
-* fix error 'importing from source results in parent module not found while handling absolute import' when '.' in fullname in Cannon API
+* Add method:resolve_js_redirects
+* Class pocsuite.api.cannon.Cannon returns details of  error and failure of a PoC
+* Fix ImportError in class Cannon
+* Fix wrong md5 func used in PhpShell
+* Change PoC success & fail return format from string to tuple  in Cannon API
+* Catch more exceptions when processing HTTP request in POCBase
+* Fix error 'importing from source results in parent module not found while handling absolute import' when '.' in fullname in Cannon API
 
 
 version 2.0.4
------------
-* fix bug in lib/core/common.py: not import locale and used it
-* fix bug in lib/core/common.py: there is not Variable or constant name NULL,bug it is used
-* fix bug in lib/core/consoles.py:baseConsole:do_ls:endless loop when command ls something
-* add file .travis.yml and integrate travis-ci
+---------------
+* Fix bug in lib/core/common.py: not import locale and used it
+* Fix bug in lib/core/common.py: there is not Variable or constant name NULL,bug it is used
+* Fix bug in lib/core/consoles.py:baseConsole:do_ls:endless loop when command ls something
+* Add file .travis.yml and integrate travis-ci
 * PEP8 and fix some error Variable
+* Update cannon API, you can custom mode/Http Headers/Http Timeout and params
 
 
 version 3.0
