@@ -6,9 +6,8 @@ version 2.0
 * update webshell class
 
 
-
 version 2.0.3.1
---------------
+---------------
 * add method:resolve_js_redirects
 * class pocsuite.api.cannon.Cannon returns details of  error and failure of a PoC
 * fix ImportError in class Cannon
@@ -17,6 +16,7 @@ version 2.0.3.1
 * catch more exceptions when processing HTTP request in POCBase
 * fix error 'importing from source results in parent module not found while handling absolute import' when '.' in fullname in Cannon API
 
+
 version 2.0.4
 -----------
 * fix bug in lib/core/common.py: not import locale and used it
@@ -24,3 +24,14 @@ version 2.0.4
 * fix bug in lib/core/consoles.py:baseConsole:do_ls:endless loop when command ls something
 * add file .travis.yml and integrate travis-ci
 * PEP8 and fix some error Variable
+
+
+version 3.0
+---------------
+
+todo:
+* Compact structure and code
+* Update thread to coroutine
+* update Interactive mode
+* Add PoC search function
+* Add some PoC to module directory
