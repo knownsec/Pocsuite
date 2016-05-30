@@ -7,6 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import time
+import socket
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.data import logger
@@ -60,7 +61,7 @@ class Cannon():
     def run(self):
         try:
             poc = kb.registeredPocs[self.moduleName]
-            result = poc.execute(target, headers=conf.httpHeaders, mode=self.mode, params=self.params)
+            result = poc.execute(self.target, headers=conf.httpHeaders, mode=self.mode, params=self.params)
             output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, (1, "success") if result.is_success() else result.error, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
 
             if self.delmodule:
