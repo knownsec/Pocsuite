@@ -60,7 +60,7 @@ class Seebug(object):
 
         try:
             body = response.json()
-        except ValueError as ex:
+        except ValueError:
             errMsg = "Received a %i error for %s but it did not include the expected JSON body" % (status, uri)
             logger.log(CUSTOM_LOGGING.ERROR, errMsg)
         else:

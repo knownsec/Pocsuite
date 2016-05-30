@@ -82,7 +82,7 @@ def strToDict(string):
         # logger.log(CUSTOM_LOGGING.ERROR, "try to use getExtPar instead.")
 
 
-def randomStr(length=10, chars=string.ascii_letters+string.digits):
+def randomStr(length=10, chars=string.ascii_letters + string.digits):
     return ''.join(random.sample(chars, length))
 
 

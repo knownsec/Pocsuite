@@ -11,6 +11,7 @@ import re
 import sys
 import imp
 import ntpath
+import locale
 import inspect
 import posixpath
 import marshal
@@ -30,7 +31,7 @@ from pocsuite.thirdparty.termcolor.termcolor import colored
 class StringImporter(object):
 
     """
-    Use custom meta hook to import modules available as strings. 
+    Use custom meta hook to import modules available as strings.
     Cp. PEP 302 http://www.python.org/dev/peps/pep-0302/#specification-part-2-registering-hooks
     """
 
@@ -183,7 +184,7 @@ def getUnicode(value, encoding=None, noneToNull=False):
     """
 
     if noneToNull and value is None:
-        return NULL
+        return u'NULL'
 
     if isListLike(value):
         value = list(getUnicode(_, encoding, noneToNull) for _ in value)
@@ -352,7 +353,7 @@ def safeExpandUser(filepath):
 
 def parseTargetUrl(url):
     """
-    Parse target URL 
+    Parse target URL
     """
     retVal = url
 

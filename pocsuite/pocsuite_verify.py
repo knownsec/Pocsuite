@@ -22,8 +22,13 @@ def main():
         dataToStdout(excMsg)
         sys.exit(1)
 
-    PCS_OPTIONS.update({'url': targetUrl, 'pocFile': pocFile, 'headers': None, 'extra_params': None, 'host': None,
-        'retry': None, 'delay': None, 'dork': None, 'vulKeyword': None,})
+    PCS_OPTIONS.update(
+        {
+            'url': targetUrl, 'pocFile': pocFile, 'headers': None,
+            'extra_params': None, 'host': None, 'retry': None,
+            'delay': None, 'dork': None, 'vulKeyword': None,
+        }
+    )
     pcsInit(PCS_OPTIONS)
 
 if __name__ == "__main__":

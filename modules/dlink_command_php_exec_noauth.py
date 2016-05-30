@@ -23,25 +23,25 @@ def send_command(url, cmd):
 
 
 class TestPOC(POCBase):
-    name         = 'Multiple Vulnerabilities in D-Link DIR-600 and DIR-300'
-    vulID        = '78176'  # https://www.seebug.org/vuldb/ssvid-78176
-    author       = ['debug']
-    vulType      = 'cmd-exec'
-    version      = '1.0'    # default version: 1.0
-    references   = ['http://www.s3cur1ty.de/m1adv2013-003']
-    desc         = '''The vulnerability is caused by missing access
-                      restrictions and missing input validation in the cmd
-                      parameter (command.php) and can be exploited to inject
-                      and execute arbitrary shell commands.'''
+    name = 'Multiple Vulnerabilities in D-Link DIR-600 and DIR-300'
+    vulID = '78176'  # https://www.seebug.org/vuldb/ssvid-78176
+    author = ['debug']
+    vulType = 'cmd-exec'
+    version = '1.0'    # default version: 1.0
+    references = ['http://www.s3cur1ty.de/m1adv2013-003']
+    desc = '''The vulnerability is caused by missing access
+           restrictions and missing input validation in the cmd
+           parameter (command.php) and can be exploited to inject
+           and execute arbitrary shell commands.'''
 
-    vulDate      = '2013-02-14'
-    createDate   = '2013-02-14'
-    updateDate   = '2013-02-14'
+    vulDate = '2013-02-14'
+    createDate = '2013-02-14'
+    updateDate = '2013-02-14'
 
-    appName      = 'D-Link'
-    appVersion   = 'DIR-300, DIR-600'
+    appName = 'D-Link'
+    appVersion = 'DIR-300, DIR-600'
     appPowerLink = ''
-    samples      = ['']
+    samples = ['']
 
     def _attack(self):
         '''attack mode'''
