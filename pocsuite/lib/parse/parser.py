@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
+Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -33,7 +33,7 @@ def parseCmdOptions():
     target.add_argument("-f", "--file", action="store", dest="urlFile",
                         help="Scan multiple targets given in a textual file")
 
-    target.add_argument("-r", dest="pocFile", required=True,
+    target.add_argument("-r", dest="pocFile",
                         help="Load POC from a file (e.g. \"_0001_cms_sql_inj.py\") or directory (e.g. \"modules/\")")
 
     mode = parser.add_argument_group('mode')
@@ -67,7 +67,7 @@ def parseCmdOptions():
     request.add_argument("--timeout", dest="timeout",
                          help="Seconds to wait before timeout connection (default 30)")
 
-    request.add_argument("--retry", dest="retry",
+    request.add_argument("--retry", dest="retry", default=False,
                          help="Time out retrials times.")
 
     request.add_argument("--delay", dest="delay",
@@ -101,7 +101,17 @@ def parseCmdOptions():
                               help="Activate quiet mode, working without logger.")
 
     optimization.add_argument("--requires-freeze", dest="requiresFreeze", action="store_true", default=False,
-                              help="Check install_requires after register")
+                              help="Check install_requires after register.")
+
+    X = parser.add_argument_group("Zoomeye or Seebug")
+    X.add_argument("--dork", dest="dork", action="store", default=None,
+                   help="Zoomeye dork used for search.")
+    X.add_argument("--max-page", dest="max_page", type=int, default=1,
+                   help="Max page used in ZoomEye API(10 targets/Page).")
+    X.add_argument("--search-type", dest="search_type", action="store", default='web,host',
+                   help="search type used in ZoomEye API, web or host")
+    X.add_argument("--vul-keyword", dest="vulKeyword", action="store", default=None,
+                   help="Seebug keyword used for search.")
 
     args = parser.parse_args()
     return args.__dict__

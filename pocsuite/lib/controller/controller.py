@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
+Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
 import os
 import time
+import shutil
 import tempfile
 from textwrap import dedent
 from pocsuite.lib.core.settings import REPORT_HTMLBASE
@@ -25,6 +26,17 @@ from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.lib.core.handlejson import execReq
 from pocsuite.lib.core.threads import runThreads
 from pocsuite.thirdparty.prettytable.prettytable import PrettyTable
+
+
+def cleanTrash():
+    nowTime = time.time()
+    for _ in os.listdir(paths.POCSUITE_TMP_PATH):
+        tempFile = '%s/%s' % (paths.POCSUITE_TMP_PATH, _)
+        if tempFile != '.keep' and (nowTime - os.stat(tempFile).st_mtime) / 3600 / 24 > 3:
+            if os.path.isfile(tempFile):
+                os.remove(tempFile)
+            else:
+                shutil.rmtree(tempFile)
 
 
 def start():
@@ -80,7 +92,7 @@ def pocThreads():
             result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=True)
             if not result:
                 continue
-            output = (target, pocname, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
+            output = (target, pocname, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else result.error, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
             result.show_result()
 
         kb.results.add(output)
@@ -118,6 +130,8 @@ def _createTargetDirs():
 
 def _setRecordFiles():
     for (target, pocname, pocid, component, version, status, r_time, result) in kb.results:
+        if type(status) != str:
+            status = status[1]
         outputPath = os.path.join(getUnicode(paths.POCSUITE_OUTPUT_PATH), normalizeUnicode(getUnicode(target)))
 
         if not os.path.isdir(outputPath):

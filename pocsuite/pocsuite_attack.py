@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
+Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -22,9 +22,14 @@ def main():
         dataToStdout(excMsg)
         sys.exit(1)
 
-    PCS_OPTIONS.update({'url': targetUrl, 'pocFile': pocFile, 'headers': None, 'extra_params': None})
+    PCS_OPTIONS.update(
+        {
+            'url': targetUrl, 'pocFile': pocFile, 'headers': None, 'extra_params': None,
+            'host': None, 'Mode': 'attack', 'retry': None, 'delay': None, 'dork': None,
+            'vulKeyword': None,
+        }
+    )
     pcsInit(PCS_OPTIONS)
-    banner()
 
 if __name__ == "__main__":
     main()

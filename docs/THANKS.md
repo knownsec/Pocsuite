@@ -24,3 +24,19 @@ GurdZain
 
 Jeremy
 * for reporting a bug
+
+rains31 <rains31+github(at)gmail.com>
+* for contributing packet.py
+* for contributing a minor patch
+
+tanjelly
+* for contributing a minor path
+
+join-us
+* for contributing doc
+
+Xyntax
+* PEP8
+
+MyKings
+* add English Usage

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
+Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -66,6 +66,8 @@ def initOptions(inputOptions=AttribDict()):
     conf.retry = int(inputOptions.retry) if inputOptions.retry else None
     conf.delay = float(inputOptions.delay) if inputOptions.delay else None
     conf.quiet = inputOptions.quiet
+    conf.dork = inputOptions.dork if inputOptions.dork else None
+    conf.vulKeyword = inputOptions.vulKeyword if inputOptions.vulKeyword else None
     if inputOptions.host:
         conf.httpHeaders.update({'Host': inputOptions.host})
     try:
@@ -107,7 +109,7 @@ def registerPocFromDict():
                 registerPyPoc(pocDict)
             else:
                 warnMsg = "invalid PoC %s" % pocDict["pocname"]
-                logger.log(CUSTOM_LOGGING.WARNING, errMsg)
+                logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
 
 
 def init():
@@ -117,7 +119,11 @@ def init():
     _setHTTPTimeout()
     _setHTTPExtraHeaders()
 
-    setPoc()
+    if conf.pocFile:
+        setPoc()
+    if conf.vulKeyword:
+        conf.pocFile = '%s/%s' % (paths.POCSUITE_MODULES_PATH, conf.vulKeyword)
+        setPoc()
     requiresCheck()
     registerPocFromDict()
     pocViolation()

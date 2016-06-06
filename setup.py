@@ -9,14 +9,14 @@ from pocsuite import (
 setup(
     name='pocsuite',
     version=version,
-    description="A famework for poc definition, check and debug",
+    description="Pocsuite is an open-sourced remote vulnerability testing framework developed by the Knownsec Security Team.",
     long_description="""\
-TODO""",
+Pocsuite is an open-sourced remote vulnerability testing and proof-of-concept development framework developed by the Knownsec Security Team. It comes with a powerful proof-of-concept engine, many niche features for the ultimate penetration testers and security researchers.""",
     classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-    keywords='PoC',
+    keywords='PoC,Exp,Pocsuite',
     author=author,
     author_email=author_email,
-    url='https://github.com/knownsec/Pocsuite',
+    url='http://pocsuite.org',
     license=license,
     packages=find_packages(),
     include_package_data=True,

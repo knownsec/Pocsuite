@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
+Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -16,7 +16,7 @@ from pocsuite import __version__
 
 VERSION = __version__
 REVISION = getRevisionNumber()
-SITE = "http://seebug.org"
+SITE = "http://pocsuite.org"
 VERSION_STRING = "pocsuite/%s%s" % (VERSION, "-%s" % REVISION if REVISION else "-nongit-%s" % time.strftime("%Y%m%d", time.gmtime(os.path.getctime(__file__))))
 
 IS_WIN = subprocess.mswindows
@@ -56,7 +56,6 @@ POC_IMPORTDICT = {
     "from pocsuite.net import": "from pocsuite.lib.request.basic import",
     "from pocsuite.poc import": "from pocsuite.lib.core.poc import",
     "from pocsuite.utils import register": "from pocsuite.lib.core.register import registerPoc as register",
-    "from pocsuite.lib": "from pocsuite.lib"
 }
 
 POC_REGISTER_STRING = "\nfrom pocsuite.api.poc import register\nregister({})"

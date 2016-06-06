@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
+Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -52,3 +52,12 @@ class PROXY_TYPE:
     HTTPS = "HTTPS"
     SOCKS4 = "SOCKS4"
     SOCKS5 = "SOCKS5"
+
+
+class ERROR_TYPE_ID:
+    NOTIMPLEMENTEDERROR = 2
+    CONNECTIONERROR = 3.0
+    HTTPERROR = 3.1
+    CONNECTTIMEOUT = 3.2
+    TOOMANYREDIRECTS = 3.3
+    OTHER = 4

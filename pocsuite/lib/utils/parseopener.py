@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
+Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -17,7 +17,7 @@ def openerHeaders(op):
         assert isinstance(op, urllib2.OpenerDirector)
         _ = op.addheaders
         for pair in _:
-            pair_copy = [part for part in pair]
+            # pair_copy = [part for part in pair]
             headers.update({pair[0]: pair[1]})
     except:
         errMsg = 'unable to fetch headers from given opener'

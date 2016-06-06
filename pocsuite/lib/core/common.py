@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
+Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -11,6 +11,7 @@ import re
 import sys
 import imp
 import ntpath
+import locale
 import inspect
 import posixpath
 import marshal
@@ -30,7 +31,7 @@ from pocsuite.thirdparty.termcolor.termcolor import colored
 class StringImporter(object):
 
     """
-    Use custom meta hook to import modules available as strings. 
+    Use custom meta hook to import modules available as strings.
     Cp. PEP 302 http://www.python.org/dev/peps/pep-0302/#specification-part-2-registering-hooks
     """
 
@@ -183,7 +184,7 @@ def getUnicode(value, encoding=None, noneToNull=False):
     """
 
     if noneToNull and value is None:
-        return NULL
+        return u'NULL'
 
     if isListLike(value):
         value = list(getUnicode(_, encoding, noneToNull) for _ in value)
@@ -221,7 +222,6 @@ def isListLike(value):
 
 
 def readFile(filename):
-    fileObject = open(filename)
     try:
         with open(filename) as f:
             retVal = f.read()
@@ -247,16 +247,19 @@ def setPaths():
     Sets absolute paths for project directories and files
     """
 
-    paths.POCSUITE_MODULES_PATH = os.path.join(paths.POCSUITE_ROOT_PATH, "modules")
     paths.POCSUITE_DATA_PATH = os.path.join(paths.POCSUITE_ROOT_PATH, "data")
 
-    paths.POCSUITE_TMP_PATH = os.path.join(paths.POCSUITE_MODULES_PATH, "tmp")
     paths.USER_AGENTS = os.path.join(paths.POCSUITE_DATA_PATH, "user-agents.txt")
     paths.WEAK_PASS = os.path.join(paths.POCSUITE_DATA_PATH, "password-top100.txt")
     paths.LARGE_WEAK_PASS = os.path.join(paths.POCSUITE_DATA_PATH, "password-top1000.txt")
 
     _ = os.path.join(os.path.expanduser("~"), ".pocsuite")
     paths.POCSUITE_OUTPUT_PATH = getUnicode(paths.get("POCSUITE_OUTPUT_PATH", os.path.join(_, "output")), encoding=sys.getfilesystemencoding())
+
+    paths.POCSUITE_MODULES_PATH = os.path.join(_, "modules")
+    paths.POCSUITE_TMP_PATH = os.path.join(paths.POCSUITE_MODULES_PATH, "tmp")
+    paths.POCSUITE_HOME_PATH = os.path.expanduser("~")
+    paths.POCSUITE_RC_PATH = paths.POCSUITE_HOME_PATH + "/.pocsuiterc"
 
 
 def getFileItems(filename, commentPrefix='#', unicode_=True, lowercase=False, unique=False):
@@ -350,7 +353,7 @@ def safeExpandUser(filepath):
 
 def parseTargetUrl(url):
     """
-    Parse target URL 
+    Parse target URL
     """
     retVal = url
 

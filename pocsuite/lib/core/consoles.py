@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 
 """
-Copyright (c) 2014-2015 pocsuite developers (http://seebug.org)
+Copyright (c) 2014-2016 pocsuite developers (https://seebug.org)
 See the file 'docs/COPYING' for copying permission
 """
 
@@ -148,8 +148,6 @@ class baseConsole(Cmd):
             print "   verify       : conducting verification. "
             print "   attack       : conduncting attack. "
             print
-        else:
-            self.do_help(args)
 
     def do_help(self, args):
         self.do_ls(args)
@@ -293,8 +291,6 @@ class pocConsole(Cmd):
             print
 
             pass
-        else:
-            do_help()
 
     def do_avaliable(self, args):
         avaliable()
@@ -336,7 +332,6 @@ class pocConsole(Cmd):
         graph = PrettyTable(["pocId", "unloadPocsName"])
         graph.align["unloadPocsName"] = "m"
         graph.padding_width = 1
-        count = 0
 
         if hasattr(kb, 'unloadedList') and getattr(kb, 'unloadedList'):
             for no in sorted(kb.unloadedList.keys()):

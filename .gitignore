@@ -18,5 +18,6 @@ man
 node_modules
 sdist
 venv
-pocsuite/modules/tmp/*.py
+pocsuite/modules/tmp/*
 test.py
+pocsuite/api/conf.ini
