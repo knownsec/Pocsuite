@@ -111,7 +111,7 @@ Pocsuite 支持 Python 2.7，如若编写 Python 格式的 PoC，需要开发者
     }
     ```
 
-    output 为 Pocsuite 标准输出API，如果要输出调用成功信息则使用 `output.success(result)`,如果要输出调用失败则 `output.fail('Error Message')`,建议直接使用模板中的parse_output通用结果处理函数对_verify和_attack结果进行处理。
+    output 为 Pocsuite 标准输出API，如果要输出调用成功信息则使用 `output.success(result)`,如果要输出调用失败则 `output.fail()`,系统自动捕获异常，不需要PoC里处理捕获,如果PoC里使用try...except 来捕获异常，可通过`output.error('Error Message')`来传递异常内容,建议直接使用模板中的parse_output通用结果处理函数对_verify和_attack结果进行处理。
     ```
     def _verify(self, verify=True):
         result = {}
@@ -124,7 +124,7 @@ Pocsuite 支持 Python 2.7，如若编写 Python 格式的 PoC，需要开发者
         if result:
             output.success(result)
         else:
-            output.fail('Internet nothing returned')
+            output.fail()
         return output
     ```
 
@@ -505,7 +505,7 @@ class TestPOC(POCBase):
         if result:
             output.success(result)
         else:
-            output.fail('Internet nothing returned')
+            output.fail()
         return output
 
 register(TestPOC)
