@@ -53,7 +53,7 @@ class POCBase(object):
         self.params = strToDict(params) if params else {}
         self.mode = mode
         self.verbose = verbose
-        self.expt = 'None'
+        self.expt = (0, 'None')
         # TODO
         output = None
 
@@ -174,11 +174,15 @@ class Output(object):
         self.status = OUTPUT_STATUS.SUCCESS
         self.result = result
 
-    def fail(self, error):
+    def fail(self, error=""):
         self.status = OUTPUT_STATUS.FAILED
         assert isinstance(error, types.StringType)
         if type(self.error) == str:
-            error = (0, error)
+            error = (0, None)
+        self.error = error
+
+    def error(self, error=""):
+        self.expt = (ERROR_TYPE_ID.OTHER, error)
         self.error = error
 
     def show_result(self):

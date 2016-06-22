@@ -92,7 +92,8 @@ def pocThreads():
             result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=True)
             if not result:
                 continue
-            output = (target, pocname, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else result.error, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
+            result_error = "failed," + result.error[1] if result.error[1] else "failed"
+            output = (target, pocname, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else result_error, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
             result.show_result()
 
         kb.results.add(output)
