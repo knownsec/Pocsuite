@@ -27,6 +27,13 @@ version 2.0.4
 * Update cannon API, you can custom mode/Http Headers/Http Timeout and params
 
 
+version 2.0.4.1
+---------------
+* Add api method output.error and modify output.fail
+* Optimization results show
+* Fix bug in lib/core/poc.py: output.error is not tuple type
+
+
 version 3.0
 ---------------
 
