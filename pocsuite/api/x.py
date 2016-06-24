@@ -33,7 +33,7 @@ class ZoomEye():
 
     def newToken(self):
         data = '{{"username": "{}", "password": "{}"}}'.format(self.username, self.password)
-        req = requests.post('http://api.zoomeye.org/user/login', data=data, )
+        req = requests.post('https://api.zoomeye.org/user/login', data=data, )
         content = json.loads(req.content)
         if req.status_code != 401 and "access_token" in content:
             self.token = content['access_token']
@@ -42,7 +42,7 @@ class ZoomEye():
         return False
 
     def resourceInfo(self):
-        req = requests.get('http://api.zoomeye.org/resources-info', headers=self.headers, )
+        req = requests.get('https://api.zoomeye.org/resources-info', headers=self.headers, )
         content = json.loads(req.content)
         if 'plan' in content:
             self.plan = content['plan']
@@ -53,7 +53,7 @@ class ZoomEye():
 
     def search(self, dork, page=1, resource='web'):
         req = requests.get(
-            'http://api.zoomeye.org/{}/search?query="{}"&page={}&facet=app,os'.format(resource, urllib.quote(dork), page + 1),
+            'https://api.zoomeye.org/{}/search?query="{}"&page={}&facet=app,os'.format(resource, urllib.quote(dork), page + 1),
             headers=self.headers
         )
         content = json.loads(req.content)
