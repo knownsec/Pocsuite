@@ -60,7 +60,7 @@ class ZoomEye():
 
     def write_conf(self):
         if not self.parser.has_section("zoomeye"):
-            self.parse.add_section("zoomeye")
+            self.parser.add_section("zoomeye")
 
         username = raw_input("ZoomEye Email:")
         password = raw_input("ZoomEye Password:")
