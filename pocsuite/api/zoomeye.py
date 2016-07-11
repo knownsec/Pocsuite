@@ -43,7 +43,7 @@ class ZoomEye(object):
                ex: [app, device]
                A comma-separated list of properties to get summary information
         """
-        results = []
+        result = []
         if isinstance(facet, (tuple, list)):
             facet = ','.join(facet)
 
@@ -53,7 +53,7 @@ class ZoomEye(object):
         resp = requests.get(zoomeye_api, params=params, headers=headers)
         if resp and resp.status_code == 200 and 'matches' in resp.json():
             matches = resp.json().get('matches')
-            total = resp.json().get('total')  # all matches items num
+            # total = resp.json().get('total')  # all matches items num
             result = matches
 
             # Every match item incudes the following information:
