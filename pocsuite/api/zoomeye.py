@@ -93,6 +93,12 @@ def show_site_ip(data):
             print(i.get('site'), i.get('ip'))
 
 
+def show_ip_port(data):
+    if data:
+        for i in data:
+            print(i.get('ip'), i.get('portinfo').get('port'))
+
+
 def zoomeye_api_test():
     zoomeye = ZoomEye()
     zoomeye.username = raw_input('ZoomEye Username: ')
@@ -110,7 +116,7 @@ def zoomeye_api_test():
     show_site_ip(data)
 
     data = zoomeye.dork_search('solr country:cn', resource='host')
-    show_site_ip(data)
+    show_ip_port(data)
 
 
 # zoomeye_api_test()
