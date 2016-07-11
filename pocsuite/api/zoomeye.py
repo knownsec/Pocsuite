@@ -8,6 +8,7 @@ See the file 'docs/COPYING' for copying permission
 
 
 import requests
+import getpass
 
 
 class ZoomEye(object):
@@ -102,7 +103,7 @@ def show_ip_port(data):
 def zoomeye_api_test():
     zoomeye = ZoomEye()
     zoomeye.username = raw_input('ZoomEye Username: ')
-    zoomeye.password = raw_input('ZoomEye Password: ')
+    zoomeye.password = getpass.getpass(prompt='ZoomEye Password: ')
     zoomeye.login()
     print(zoomeye.resources_info())
 
