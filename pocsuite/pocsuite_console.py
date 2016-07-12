@@ -8,7 +8,7 @@ See the file 'docs/COPYING' for copying permission
 
 import sys
 from pocsuite_cli import modulePath
-from .lib.core.consoles import baseConsole
+from .lib.core.consoles import PocsuiteInterpreter
 from .lib.core.data import kb
 from .lib.core.data import paths
 from .lib.core.common import setPaths
@@ -26,8 +26,8 @@ def main():
     initializeKb()
     initializePoc(folders)
 
-    pcs = baseConsole()
-    pcs.cmdloop()
+    pcs = PocsuiteInterpreter()
+    pcs.shell_will_go()
 
 if __name__ == "__main__":
     main()

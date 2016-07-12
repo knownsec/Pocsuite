@@ -7,6 +7,8 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import os
+from cmd import Cmd
+
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.data import paths
@@ -25,7 +27,6 @@ from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
 from pocsuite.lib.controller.check import pocViolation
 from pocsuite.lib.controller.setpoc import setPoc
 from pocsuite.lib.controller.controller import start
-from pocsuite.thirdparty.cmd2.cmd2 import Cmd
 from pocsuite.thirdparty.oset.pyoset import oset
 from pocsuite.thirdparty.prettytable.prettytable import PrettyTable
 from pocsuite.thirdparty.colorama.initialise import init as coloramainit
@@ -41,10 +42,6 @@ except:
 
 
 def initializePoc(folders):
-    # 加载文件夹下的poc时默认只加载modules目录下的, modules目录下可以新建文件夹, 如wordpress
-    # 默认情况不加载wordpress文件夹内的poc
-    # Usage: pcs-console.py modules/wordpress tests
-    # 调用方式如上时可以将modules/wordpress 和 tests两个文件夹下的poc导入
     pocNumber = 0
     if not os.path.isdir(paths.POCSUITE_MODULES_PATH):
         os.makedirs(paths.POCSUITE_MODULES_PATH)
@@ -52,32 +49,87 @@ def initializePoc(folders):
     folders = [_ for _ in folders if os.path.isdir(_)]
 
     for folder in folders:
-        for file in os.listdir(folder):
-            if file.endswith(".py") or file.endswith('.json') and "__init__" not in file:
+        for fname in os.listdir(folder):
+            fname_lower = fname.lower()
+
+            if fname_lower in ("__init__.py"):
+                next
+            elif fname_lower.endswith(".py") or fname_lower.endswith('.json'):
                 pocNumber += 1
-                kb.unloadedList.update({pocNumber: os.path.join(folder, file)})
+                kb.unloadedList.update({
+                    pocNumber: os.path.join(folder, fname)
+                })
 
 
-def avaliable():
-    graph = PrettyTable(["pocId", "avaliablePocName", "Folder"])
-    graph.align["PocsName"] = "m"
-    graph.padding_width = 1
+class BaseInterpreter(Cmd):
+    ruler = '='
+    lastcmd = ''
+    intro = None
+    doc_leader = ''
+    doc_header = 'Core Commands Menu (help <command> for details)'
+    misc_header = 'Miscellaneous help topics:'
+    undoc_header = 'No help on following command(s)'
 
-    for k, v in kb.unloadedList.iteritems():
-        path, name = filepathParser(v)
-        graph.add_row([k, name, os.path.relpath(path, paths.POCSUITE_ROOT_PATH)])
+    def __init__(self):
+        Cmd.__init__(self)
+        self.do_help.__func__.__doc__ = "Show help menu"
 
-    print graph
-    print
+    def emptyline(self):
+        """Called when an empty line is entered in response to the prompt."""
+        if self.lastcmd:
+            return self.onecmd(self.lastcmd)
+
+    def default(self, line):
+        """Called on an input line when the cmd prefix is not recognized."""
+        pass
+        # return line
+
+    def precmd(self, line):
+        """Hook method executed just before the command line is interpreted,
+        but after the input prompt is generated and issued"""
+        return line
+
+    def postcmd(self, stop, line):
+        """Hook method executed just after a command dispatch is finished."""
+        return stop
+
+    def preloop(self):
+        """Hook method executed once when the cmdloop() method is called."""
+        pass
+
+    def postloop(self):
+        """Hook method executed once when the cmdloop() method is
+        about to return"""
+        pass
+
+    def shell_will_go(self):
+        try:
+            self.cmdloop()
+        except KeyboardInterrupt:
+            print
+
+    def print_topics(self, header, cmds, cmdlen, maxcol):
+        """make help menu more readable"""
+        if cmds:
+            self.stdout.write(header)
+            self.stdout.write("\n")
+            if self.ruler:
+                self.stdout.write(self.ruler * len(header))
+                self.stdout.write("\n")
+
+            for cmd in cmds:
+                help_msg = getattr(self, "do_{}".format(cmd)).__doc__
+                self.stdout.write("{:<16}".format(cmd))
+                self.stdout.write(help_msg)
+                self.stdout.write("\n")
+            self.stdout.write("\n")
 
 
-class baseConsole(Cmd):
-
+class PocsuiteInterpreter(BaseInterpreter):
     def __init__(self):
         if IS_WIN:
             coloramainit()
-        Cmd.__init__(self)
-        os.system("clear")
+        BaseInterpreter.__init__(self)
 
         conf.report = False
         conf.retry = False
@@ -102,19 +154,12 @@ class baseConsole(Cmd):
         conf.timeout = 5
         conf.httpHeaders = HTTP_DEFAULT_HEADER
 
-        self.prompt = "Pcs> "
+        self.prompt = "Pocsuite> "
         banner()
         self.case_insensitive = False
+        self.showcommands = [_ for _ in dir(self) if _.startswith('show_')]
 
-    def do_verify(self, args):
-        conf.mode = 'verify'
-        self._execute()
-
-    def do_attack(self, args):
-        conf.mode = 'attack'
-        self._execute()
-
-    def _execute(self):
+    def exploit(self):
         kb.results = oset()
 
         _setHTTPUserAgent()
@@ -130,235 +175,116 @@ class baseConsole(Cmd):
 
         start()
 
-    def do_config(self, args):
-        subConsole = configConsole()
-        subConsole.cmdloop()
+    def do_verify(self, args):
+        """conducting verification"""
+        conf.mode = 'verify'
+        self.exploit()
 
-    def do_poc(self, args):
-        subConsole = pocConsole()
-        subConsole.cmdloop()
+    def do_attack(self, args):
+        """conduncting attack"""
+        conf.mode = 'attack'
+        self.exploit()
 
-    def do_ls(self, args):
-        if not args:
-            print
-            print "[Command]"
-            print "   config       : register global configs. "
-            print "   poc          : enter pocConsole, basic poc operation. "
-            print
-            print "[Mode]"
-            print "   verify       : conducting verification. "
-            print "   attack       : conduncting attack. "
-            print
+    def do_back(self, line):
+        """Move back from the current Interpreter"""
+        return True
 
-    def do_help(self, args):
-        self.do_ls(args)
+    def do_banner(self, line):
+        """Display an awesome framework banner"""
+        banner()
 
-    pass
+    def do_exit(self, line):
+        """Exit the current interpre"""
+        return True
 
-
-class configConsole(Cmd):
-
-    def __init__(self):
-        Cmd.__init__(self)
-        self.prompt = "Pcs.config> "
-        self.case_insensitive = False
-
-    def do_url(self, args):
-        if not args:
-            conf.url = raw_input('Pcs.config.url> ')
+    def do_load(self, line):
+        """load specific poc file(s)."""
+        if line.isdigit():
+            conf.pocFile = kb.unloadedList[int(line)]
+            del kb.unloadedList[int(line)]
         else:
-            conf.url = str(args)
-
-    def do_thread(self, args):
-        if not args:
-            conf.threads = input('Pcs.config.threads> ')
-        else:
-            conf.threads = int(args)
-
-    def do_urlfile(self, args):
-        if not args:
-            conf.urlFile = raw_input('Pcs.config.urlFile> ')
-        else:
-            conf.urlFile = str(args)
-
-    def do_header(self, args):
-        subConsole = headerConsole()
-        subConsole.cmdloop()
-        pass
-
-    def do_proxy(self, args):
-        if not args:
-            conf.proxy = raw_input('Pcs.config.proxy> ')
-        else:
-            conf.proxy = str(args)
-        pass
-
-    def do_timeout(self, args):
-        if not args:
-            conf.timeout = raw_input('Pcs.config.timeout> ')
-        else:
-            conf.timeout = args
-        conf.timeout = int(conf.timeout)
-        pass
-
-    def do_show(self, args):
-
-        graph = PrettyTable(["config", "value"])
-        graph.align["config"] = "l"
-
-        for k, v in conf.iteritems():
-            if v and k != 'httpHeaders':
-                graph.add_row([k, v])
-        print graph
-
-    def do_ls(self, args):
-        if not args:
-            print
-            print "[Command]"
-            print "   thread       : set multiple threads. (Default 1) "
-            print "   url          : set target url from stdin. "
-            print "   urlFile      : set target url from urlFile. "
-            print "   q            : return upper level. "
-            print
-            print "[Option]"
-            print "   header       : set http headers for follow requests."
-            print "   proxy        : set proxy. format: '(http|https|socks4|socks5)://address:port'."
-            print "   timeout      : set max requests time. (Default 5s)"
-            print "   show         : show config."
-            print
-
-    def do_help(self, args):
-        self.do_ls(args)
-
-
-class headerConsole(Cmd):
-
-    def __init__(self):
-        Cmd.__init__(self)
-        self.prompt = "Pcs.config.header> "
-        self.case_insensitive = False
-
-    def do_ls(self, args):
-        if not args:
-            print
-            print "[Command]"
-            print "   cookie       : set cookie for requests. "
-            print "   referer      : set referer for requests. "
-            print "   ua           : set ua for requests. "
-            print "   q            : return upper level. "
-            print
-        pass
-
-    def do_cookie(self, args):
-        if not args:
-            conf.cookie = raw_input('Pcs.config.header.cookie> ')
-        else:
-            conf.cookie = str(args)
-
-    def do_referer(self, args):
-        if not args:
-            conf.referer = raw_input('Pcs.config.header.referer> ')
-        else:
-            conf.referer = str(args)
-
-    def do_ua(self, args):
-        if not args:
-            conf.agent = raw_input('Pcs.config.header.user-agent> ')
-        else:
-            conf.agent = str(args)
-
-    def do_help(self, args):
-        self.do_ls(args)
-
-
-class pocConsole(Cmd):
-
-    def __init__(self):
-        Cmd.__init__(self)
-        self.prompt = "Pcs.poc> "
-        self.case_insensitive = False
-
-    def do_ls(self, args):
-        if not args:
-            print
-            print "[Command]"
-            print "   avaliable    : list avaliable poc file(s)"
-            print "   search       : search from avaliable poc file(s). "
-            print "   load         : load specific poc file(s). "
-            print "   loaded       : list all loaded poc file(s). "
-            print "   unload       : list all unload poc files(s)."
-            print "   clear        : unload all loaded poc file(s)."
-            print "   q            : return upper level. "
-            print
-
-            pass
-
-    def do_avaliable(self, args):
-        avaliable()
-
-    def do_load(self, args):
-        if args.isdigit():
-            conf.pocFile = kb.unloadedList[int(args)]
-            del kb.unloadedList[int(args)]
-            pass
-        else:
-            conf.pocFile = args
+            conf.pocFile = line
 
         conf.pocname = os.path.split(conf.pocFile)[1]
         setPoc()
-
         print '[*] load poc file(s) success!'
-        print
-        pass
 
-    def do_loaded(self, args):
-        registerPocFromDict()
+    def do_set(self, line):
+        """Set key equal to value"""
+        key, value, pairs = self.parseline(line)
 
-        graph = PrettyTable(["pocId", "loadedPocsName"])
-        graph.align["LoadedPocsName"] = "m"
-        graph.padding_width = 1
-        count = 0
+        if (not key) or (not value):
+            self.help_set()
+            return False
 
-        if hasattr(kb, 'registeredPocs') and getattr(kb, 'registeredPocs'):
-            for poc in sorted(kb.registeredPocs.keys()):
-                count += 1
-                graph.add_row([count, poc])
+        if key in conf:
+            conf[key] = value
+
+    def do_show(self, line):
+        """Show available options / modules"""
+        key, value, pairs = self.parseline(line)
+
+        if (not key):
+            self.help_show()
+            return False
+
+        method = 'show_{}'.format(key)
+        # commands = [_ for _ in dir(self) if _.startswith('show_')]
+        if method in self.showcommands and hasattr(self, method):
+            func = getattr(self, method)
+            func()
+
+    def complete_set(self, line, text, *ignored):
+        """Tab complete set"""
+        keys = []
+        if line:
+            keys = [_ for _ in conf.keys() if _.startswith(line)]
         else:
-            graph.add_row(["0", "None"])
-        print graph
-        print
+            keys = conf.keys()
+        return keys
 
-    def do_unload(self, args):
-        # TODO 补全
-        graph = PrettyTable(["pocId", "unloadPocsName"])
-        graph.align["unloadPocsName"] = "m"
-        graph.padding_width = 1
+    def available_show_completion(self, text):
+        """match all possible show commands"""
+        return filter(lambda x: x.startswith(text), self.showcommands)
 
-        if hasattr(kb, 'unloadedList') and getattr(kb, 'unloadedList'):
-            for no in sorted(kb.unloadedList.keys()):
-                from ntpath import split
-                graph.add_row([no, split(kb.unloadedList[no])[1]])
+    def complete_show(self, line, text, *ignored):
+        """Tab complete show"""
+        if line:
+            line = "show_{}".format(line)
+            methods = self.available_show_completion(line)
         else:
-            graph.add_row(["0", "None"])
-        print graph
+            methods = self.showcommands
+
+        return map(lambda x: x.replace('show_', ''), methods)
+
+    def show_options(self):
+        """show options"""
+        from pprint import pprint
+        pprint(conf)
+
+    def show_pocs(self):
+        """show all available pocs"""
+        from pprint import pprint
+        pprint(kb.unloadedList)
+
+    def help_back(self):
+        print
+        print('  Usage : back')
+        print('  Desp  : {}'.format(getattr(self, 'do_back').__doc__))
+        print('  Demo  : back')
         print
 
-    def do_clear(self, args):
-        initializeKb()
-        pass
+    def help_set(self):
+        print
+        print('  Usage :  set <key> <value>')
+        print('  Desp  :  {}'.format(getattr(self, 'do_set').__doc__))
+        print('  Demo  :  set threads 1')
+        print
 
-    def do_help(self, args):
-        self.do_ls(args)
-
-    def do_search(self, args):
-        graph = PrettyTable(["pocId", "PocName"])
-        graph.align["PocName"] = "m"
-        graph.padding_width = 1
-
-        for k, v in kb.unloadedList.iteritems():
-            if str(args) in v:
-                graph.add_row([k, filepathParser(v)[1]])
-        print graph
-        pass
-
-    pass
+    def help_show(self):
+        """Show available options / pocs"""
+        print
+        print('  Usage : show | show <options | pocs>')
+        print('  Desp  : {}'.format(getattr(self, 'do_show').__doc__))
+        print('  Demo  : show options')
+        print
