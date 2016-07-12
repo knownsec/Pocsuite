@@ -51,7 +51,7 @@ def rand_text_alpha_upper(length, bad=''):
     return rand_base(length, bad, set(upperAlpha))
 
 
-def rand_text_alphanumeric():
+def rand_text_alphanumeric(length, bad=''):
     '''generate a random string with alpha and numerals chars'''
     chars = upperAlpha + lowerAlpha + numerals
     return rand_base(length, bad, set(chars))
