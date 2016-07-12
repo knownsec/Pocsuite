@@ -49,9 +49,10 @@ def initializePoc(folders):
     if not os.path.isdir(paths.POCSUITE_MODULES_PATH):
         os.makedirs(paths.POCSUITE_MODULES_PATH)
     folders.append(paths.POCSUITE_MODULES_PATH)
+    folders = [_ for _ in folders if os.path.isdir(_)]
+
     for folder in folders:
-        files = os.listdir(folder)
-        for file in files:
+        for file in os.listdir(folder):
             if file.endswith(".py") or file.endswith('.json') and "__init__" not in file:
                 pocNumber += 1
                 kb.unloadedList.update({pocNumber: os.path.join(folder, file)})
