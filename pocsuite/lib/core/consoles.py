@@ -259,13 +259,23 @@ class PocsuiteInterpreter(BaseInterpreter):
 
     def show_options(self):
         """Show options"""
-        from pprint import pprint
-        pprint(conf)
+        msg_format = "  {:>12} {:<32} "
+        print
+        print(msg_format.format('OPTION-KEY', 'OPTION-VALUE'))
+        print(msg_format.format('==========', '============'))
+        for i in conf.items():
+            print(msg_format.format(*i))
+        print
 
     def show_pocs(self):
         """Show all available pocs"""
-        from pprint import pprint
-        pprint(kb.unloadedList)
+        msg_format = "  {:>12} {:<32} "
+        print
+        print(msg_format.format('POC-ID', 'POC-PATH'))
+        print(msg_format.format('======', '========'))
+        for i in kb.unloadedList.items():
+            print(msg_format.format(*i))
+        print
 
     def help_back(self):
         print
