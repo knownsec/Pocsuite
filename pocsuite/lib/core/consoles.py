@@ -176,12 +176,12 @@ class PocsuiteInterpreter(BaseInterpreter):
         start()
 
     def do_verify(self, args):
-        """conducting verification"""
+        """Verify Mode, checks if a vuln exists or not"""
         conf.mode = 'verify'
         self.exploit()
 
     def do_attack(self, args):
-        """conduncting attack"""
+        """Attack mode, sends exploit payload"""
         conf.mode = 'attack'
         self.exploit()
 
@@ -198,7 +198,7 @@ class PocsuiteInterpreter(BaseInterpreter):
         return True
 
     def do_load(self, line):
-        """load specific poc file(s)."""
+        """Load specific poc file(s)."""
         if line.isdigit():
             conf.pocFile = kb.unloadedList[int(line)]
             del kb.unloadedList[int(line)]
@@ -244,7 +244,7 @@ class PocsuiteInterpreter(BaseInterpreter):
         return keys
 
     def available_show_completion(self, text):
-        """match all possible show commands"""
+        """Match all possible show commands"""
         return filter(lambda x: x.startswith(text), self.showcommands)
 
     def complete_show(self, line, text, *ignored):
@@ -258,12 +258,12 @@ class PocsuiteInterpreter(BaseInterpreter):
         return map(lambda x: x.replace('show_', ''), methods)
 
     def show_options(self):
-        """show options"""
+        """Show options"""
         from pprint import pprint
         pprint(conf)
 
     def show_pocs(self):
-        """show all available pocs"""
+        """Show all available pocs"""
         from pprint import pprint
         pprint(kb.unloadedList)
 
