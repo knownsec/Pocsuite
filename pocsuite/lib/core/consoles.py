@@ -219,7 +219,7 @@ class PocsuiteInterpreter(BaseInterpreter):
         pocs = sb.poc_list()
         for poc in pocs:
             ssvid = poc.get('id')
-            name = poc.get('name')
+            # name = poc.get('name')
 
             if ssvid and str(ssvid).isdigit():
                 filename = os.path.join(
