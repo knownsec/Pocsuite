@@ -25,6 +25,7 @@ from pocsuite.lib.core.option import _setHTTPReferer
 from pocsuite.lib.core.option import _setHTTPCookies
 from pocsuite.lib.core.option import _setHTTPProxy
 from pocsuite.lib.core.option import _setHTTPTimeout
+
 from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
 from pocsuite.lib.controller.check import pocViolation
 from pocsuite.lib.controller.setpoc import setPoc
@@ -34,6 +35,9 @@ from pocsuite.lib.controller.controller import start
 from pocsuite.thirdparty.oset.pyoset import oset
 from pocsuite.thirdparty.prettytable.prettytable import PrettyTable
 from pocsuite.thirdparty.colorama.initialise import init as coloramainit
+
+from pocsuite.api.seebug import Seebug
+import codecs
 
 
 try:
@@ -183,6 +187,13 @@ class PocsuiteInterpreter(BaseInterpreter):
         else:
             return False
 
+    def save_poc(self, filename, data):
+        if not data:
+            return
+
+        with codecs.open(filename, "w", encoding="utf-8") as f:
+            f.write(data)
+
     def import_poc(self, pocfile=None):
         """Import a poc file or from a directory"""
         if pocfile and os.path.isfile(pocfile) and self.is_a_poc(pocfile):
@@ -192,10 +203,32 @@ class PocsuiteInterpreter(BaseInterpreter):
                 self.current_pocid += 1
 
     def import_poc_dir(self, pocdir=None):
+        """Import a pocfile / multiple pocs from a directory"""
         if pocdir and os.path.isdir(pocdir):
             for fname in os.listdir(pocdir):
                 fname = os.path.join(pocdir, fname)
                 self.import_poc(fname)
+
+    def do_seebug(self, line):
+        """Download pocs from seebug with API Token"""
+        sb = Seebug()
+        sb.token = raw_input("[*] Seebug API Token: ")
+        if not os.path.isdir(paths.POCSUITE_MODULES_PATH):
+            os.makedirs(paths.POCSUITE_MODULES_PATH)
+
+        pocs = sb.poc_list()
+        for poc in pocs:
+            ssvid = poc.get('id')
+            name = poc.get('name')
+
+            if ssvid and str(ssvid).isdigit():
+                filename = os.path.join(
+                    paths.POCSUITE_MODULES_PATH, "{}.py".format(ssvid))
+                code = sb.poc_code(ssvid)
+
+                self.save_poc(filename, code)
+                print('[+] seebug ssvid-{} ---->> {}'.format(ssvid, filename))
+        self.import_poc_dir(pocdir=paths.POCSUITE_MODULES_PATH)
 
     def do_debug(self, line):
         """Enter into python debug mode"""
