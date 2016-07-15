@@ -234,6 +234,10 @@ class PocsuiteInterpreter(BaseInterpreter):
             poc_name = os.path.basename(poc_path)
             if poc_name in kb.pocs:
                 kb.pocs.pop(poc_name)
+                poc_modname = poc_name.split('.')
+                poc_modname = '.'.join(poc_modname[:-1])
+                if poc_modname in kb.registeredPocs:
+                    kb.registeredPocs.pop(poc_modname)
                 print '[*] unload poc-{}: {}'.format(line, poc_name)
 
     def do_pocadd(self, line):
