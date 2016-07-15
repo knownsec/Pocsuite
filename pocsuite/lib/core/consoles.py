@@ -7,6 +7,8 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import os
+import pdb
+import signal
 from cmd import Cmd
 
 from pocsuite.lib.core.data import kb
@@ -26,10 +28,13 @@ from pocsuite.lib.core.option import _setHTTPTimeout
 from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
 from pocsuite.lib.controller.check import pocViolation
 from pocsuite.lib.controller.setpoc import setPoc
+from pocsuite.lib.controller.setpoc import loadPoc
+
 from pocsuite.lib.controller.controller import start
 from pocsuite.thirdparty.oset.pyoset import oset
 from pocsuite.thirdparty.prettytable.prettytable import PrettyTable
 from pocsuite.thirdparty.colorama.initialise import init as coloramainit
+
 
 try:
     import readline
@@ -41,24 +46,9 @@ except:
     pass
 
 
-def initializePoc(folders):
-    pocNumber = 0
-    if not os.path.isdir(paths.POCSUITE_MODULES_PATH):
-        os.makedirs(paths.POCSUITE_MODULES_PATH)
-    folders.append(paths.POCSUITE_MODULES_PATH)
-    folders = [_ for _ in folders if os.path.isdir(_)]
-
-    for folder in folders:
-        for fname in os.listdir(folder):
-            fname_lower = fname.lower()
-
-            if fname_lower in ("__init__.py"):
-                next
-            elif fname_lower.endswith(".py") or fname_lower.endswith('.json'):
-                pocNumber += 1
-                kb.unloadedList.update({
-                    pocNumber: os.path.join(folder, fname)
-                })
+def handler(signum, frame):
+    """Handle Signals"""
+    print
 
 
 class BaseInterpreter(Cmd):
@@ -103,9 +93,10 @@ class BaseInterpreter(Cmd):
         pass
 
     def shell_will_go(self):
+        "Enter into a pocsuite interactive shell"
         try:
             self.cmdloop()
-        except KeyboardInterrupt:
+        except (KeyboardInterrupt, pdb.bdb.BdbQuit):
             print
 
     def print_topics(self, header, cmds, cmdlen, maxcol):
@@ -159,7 +150,10 @@ class PocsuiteInterpreter(BaseInterpreter):
         self.case_insensitive = False
         self.showcommands = [_ for _ in dir(self) if _.startswith('show_')]
 
+        self.current_pocid = 1
+
     def exploit(self):
+        """Start to exploit targets"""
         kb.results = oset()
 
         _setHTTPUserAgent()
@@ -174,6 +168,42 @@ class PocsuiteInterpreter(BaseInterpreter):
         _setHTTPProxy()
 
         start()
+
+    def is_a_poc(self, filename):
+        """Is a valid pocsuite poc"""
+        if not filename:
+            return False
+
+        fname_lower = filename.lower()
+        if fname_lower in ("__init__.py"):
+            return False
+
+        if fname_lower.endswith('.py') or fname_lower.endswith('.json'):
+            return True
+        else:
+            return False
+
+    def import_poc(self, pocfile=None):
+        """Import a poc file or from a directory"""
+        if pocfile and os.path.isfile(pocfile) and self.is_a_poc(pocfile):
+            kb.pocs.update(loadPoc(pocfile))
+            if pocfile not in kb.unloadedList.values():
+                kb.unloadedList.update({self.current_pocid: pocfile})
+                self.current_pocid += 1
+
+    def import_poc_dir(self, pocdir=None):
+        if pocdir and os.path.isdir(pocdir):
+            for fname in os.listdir(pocdir):
+                fname = os.path.join(pocdir, fname)
+                self.import_poc(fname)
+
+    def do_debug(self, line):
+        """Enter into python debug mode"""
+        signal.signal(signal.SIGINT, handler)
+        import pdb
+        debugger = pdb.Pdb()
+        debugger.prompt = "Pocsuite-debug-shell> "
+        debugger.set_trace()
 
     def do_verify(self, args):
         """Verify Mode, checks if a vuln exists or not"""
@@ -197,17 +227,38 @@ class PocsuiteInterpreter(BaseInterpreter):
         """Exit the current interpre"""
         return True
 
-    def do_load(self, line):
-        """Load specific poc file(s)."""
-        if line.isdigit():
-            conf.pocFile = kb.unloadedList[int(line)]
-            del kb.unloadedList[int(line)]
-        else:
-            conf.pocFile = line
+    def do_pocdel(self, line):
+        """Unload specific poc file(s)"""
+        if line and line.isdigit() and int(line) in kb.unloadedList:
+            poc_path = kb.unloadedList.get(int(line))
+            poc_name = os.path.basename(poc_path)
+            if poc_name in kb.pocs:
+                kb.pocs.pop(poc_name)
+                print '[*] unload poc-{}: {}'.format(line, poc_name)
 
-        conf.pocname = os.path.split(conf.pocFile)[1]
-        setPoc()
-        print '[*] load poc file(s) success!'
+    def do_pocadd(self, line):
+        """Load available poc(s) from a directory or a file"""
+        if os.path.isfile(line):
+            self.import_poc(pocfile=line)
+        elif os.path.isdir(line):
+            self.import_poc_dir(pocdir=line)
+
+    def do_poclist(self, line):
+        """Show all available pocs / task pocs"""
+        msg_format = "  {:>12} {:<32} "
+        print
+        print(msg_format.format('IMPORTED-ID', 'POC-PATH'))
+        print(msg_format.format('===========', '========'))
+        for i in kb.unloadedList.items():
+            print(msg_format.format(*i))
+        print
+
+        print
+        print(msg_format.format('POC--STATUS', 'POC-PATH'))
+        print(msg_format.format('===========', '========'))
+        for i in kb.pocs.keys():
+            print(msg_format.format("ok", i))
+        print
 
     def do_set(self, line):
         """Set key equal to value"""
@@ -229,7 +280,6 @@ class PocsuiteInterpreter(BaseInterpreter):
             return False
 
         method = 'show_{}'.format(key)
-        # commands = [_ for _ in dir(self) if _.startswith('show_')]
         if method in self.showcommands and hasattr(self, method):
             func = getattr(self, method)
             func()
@@ -267,21 +317,18 @@ class PocsuiteInterpreter(BaseInterpreter):
             print(msg_format.format(*i))
         print
 
-    def show_pocs(self):
-        """Show all available pocs"""
-        msg_format = "  {:>12} {:<32} "
-        print
-        print(msg_format.format('POC-ID', 'POC-PATH'))
-        print(msg_format.format('======', '========'))
-        for i in kb.unloadedList.items():
-            print(msg_format.format(*i))
-        print
-
     def help_back(self):
         print
         print('  Usage : back')
         print('  Desp  : {}'.format(getattr(self, 'do_back').__doc__))
         print('  Demo  : back')
+        print
+
+    def help_pocadd(self):
+        print
+        print('  Usage :  pocadd /path/to/pocfile or /path/to/poc_dir')
+        print('  Desp  :  {}'.format(getattr(self, 'do_pocadd').__doc__))
+        print('  Demo  :  pocadd modules')
         print
 
     def help_set(self):
