@@ -21,7 +21,7 @@ version 2.0.4
 ---------------
 * Fix bug in lib/core/common.py: not import locale and used it
 * Fix bug in lib/core/common.py: there is not Variable or constant name NULL,bug it is used
-* Fix bug in lib/core/consoles.py:baseConsole:do_ls:endless loop when command ls something
+* Fix bug in lib/core/consoles.py:PocsuiteInterpreter:do_ls:endless loop when command ls something
 * Add file .travis.yml and integrate travis-ci
 * PEP8 and fix some error Variable
 * Update cannon API, you can custom mode/Http Headers/Http Timeout and params
