@@ -9,8 +9,6 @@ See the file 'docs/COPYING' for copying permission
 import re
 import ast
 import codecs
-import string
-import random
 from socket import gethostbyname
 from urlparse import urlsplit
 
@@ -80,10 +78,6 @@ def strToDict(string):
     except ValueError as e:
         logger.log(CUSTOM_LOGGING.ERROR, "conv string failed : %s" % e)
         # logger.log(CUSTOM_LOGGING.ERROR, "try to use getExtPar instead.")
-
-
-def randomStr(length=10, chars=string.ascii_letters + string.digits):
-    return ''.join(random.sample(chars, length))
 
 
 def resolve_js_redirects(url):
