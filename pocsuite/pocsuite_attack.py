@@ -15,7 +15,7 @@ from .lib.core.settings import PCS_OPTIONS
 
 def main():
     try:
-        pocFile, targetUrl = sys.argv[1: 3]
+        pocFile, targetUrl = sys.argv[1:3]
     except ValueError:
         excMsg = "usage: pcs-attack [pocfile] [url]\n"
         excMsg += "pocsuite: error: too few arguments"
