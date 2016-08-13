@@ -318,7 +318,7 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
         检测 PHP 文件上传是否成功,
 
             token = randomStr()
-            payload = '<?php echo md5(%s);unlink(__FILE__);?>' % token
+            payload = '<?php echo md5("%s");unlink(__FILE__);?>' % token
             ...
 
             if hashlib.new('md5', token).hexdigest() in content:
