@@ -127,7 +127,7 @@ class PocsuiteInterpreter(BaseInterpreter):
         BaseInterpreter.__init__(self)
 
         conf.report = False
-        conf.retry = False
+        conf.retry = 0
         conf.delay = 0
         conf.quiet = False
         conf.isPocString = False
