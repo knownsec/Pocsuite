@@ -31,6 +31,8 @@ class Cannon():
         self.params = params
         conf.isPycFile = info.get('ispycfile', False)
         conf.httpHeaders = HTTP_DEFAULT_HEADER
+        # fix issue #112
+        conf.retry = 0
         if headers:
             conf.httpHeaders.update(headers)
 
