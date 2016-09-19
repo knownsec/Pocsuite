@@ -4,7 +4,8 @@ python:
   - "2.7"
 install:
     # Install old (pytest-)flake8 for py26
-  - pip install -q 'flake8<3'
+  - if [[ ${TRAVIS_PYTHON_VERSION:0:3} == 2.6 ]]; then pip install -q flake8==2.6.2; fi
+  - if [[ ${TRAVIS_PYTHON_VERSION:0:3} == 2.7 ]]; then pip install -q flake8; fi
   - pip install pydocstyle
 script:
  - python -c "from pocsuite.api.cannon import Cannon; import pocsuite"
