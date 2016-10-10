@@ -154,7 +154,7 @@ class Output(object):
     '''
 
     def __init__(self, poc=None):
-        self.error = ''
+        self.error = tuple()
         self.result = {}
         self.status = OUTPUT_STATUS.FAILED
         if poc:
@@ -177,13 +177,11 @@ class Output(object):
     def fail(self, error=""):
         self.status = OUTPUT_STATUS.FAILED
         assert isinstance(error, types.StringType)
-        if type(self.error) == str:
-            error = (0, None)
-        self.error = error
+        self.error = (0, error)
 
     def error(self, error=""):
         self.expt = (ERROR_TYPE_ID.OTHER, error)
-        self.error = error
+        self.error = (0, error)
 
     def show_result(self):
         if self.status == OUTPUT_STATUS.SUCCESS:
