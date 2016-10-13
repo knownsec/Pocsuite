@@ -53,7 +53,7 @@ class ZoomEye():
 
     def search(self, dork, page=1, resource='web'):
         req = requests.get(
-            'https://api.zoomeye.org/{}/search?query={}&page={}&facet=app,os'.format(resource, urllib.quote(dork), page + 1),
+            'https://api.zoomeye.org/{}/search?query="{}"&page={}&facet=app,os'.format(resource, urllib.quote(dork), page + 1),
             headers=self.headers
         )
         content = json.loads(req.content)
