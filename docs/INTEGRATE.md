@@ -2,7 +2,7 @@
 集成 Pocsuite
 ----------
 
-pocsuite/api/cannon.py 定义了 Cannon 类, 可以通过传递一个包含「待检测目标」,「 PoC 字符串」, 「检测模式」等内容的字典来获得 Cannon 类实例取名为 cannon, 之后通过 cannon.run 可以启动 Pocsuite 来进行检测, 此时会进行单线程检测, 并支持在上层对Cannon进行多线程/多进程调用. 
+pocsuite/api/cannon.py 定义了 Cannon 类, 可以通过传递一个包含「待检测目标」,「 PoC 字符串」, 「检测模式」等内容的字典来获得 Cannon 类实例取名为 cannon, 之后通过 cannon.run 可以启动 Pocsuite 来进行检测, 此时会进行单线程检测, 并支持在上层对Cannon进行多线程/多进程调用.
 
 另外将切换到静默模式不输出任何内容, 结束时返回一个记录此次运行结果的字典, 具体代码如下:
 
@@ -46,3 +46,22 @@ result = invoker.run()			# 调用 Pocsuite, result 保存了 Pocsuite 执行的�
 | 3.3  |  TooManyRedirects   |    PoC 执行时发生 TooManyRedirects 异常     |
 |  4   |        Other        |            PoC 执行时发生其他异常            |
 
+Demo Code
+----
+
+`$ cd /path/to/Pocsuite-Root-Dir && python demo_cannon.py`
+
+```
+#!/usr/bin/python
+# coding:utf-8
+
+from pocsuite.api.cannon import Cannon
+info = {"pocname": "dlink_command_php_exec_noauth",
+        "pocstring": open("./modules/dlink_command_php_exec_noauth.py").read(),
+        "mode": "verify"}
+
+target = "www.baidu.com"
+invoker = Cannon(target, info)
+result = invoker.run()
+print result
+```
