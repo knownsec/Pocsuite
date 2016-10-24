@@ -35,6 +35,20 @@ version 2.0.4.1
 * Update ZoomEye API address
 
 
+version 2.0.4.2
+---------------
+* Add seebug api support
+* Add zoomeye api support
+* Add random functions
+* Add a new console feature
+* Update cannon doc
+* Fix AttributeErrir bug in pocsuite/api/x.py
+* Fix OSError bug in pocsuite/lib/core/consoles.py
+* Fix pep8 syntax check
+* Fix output bug in pocsuite/lib/core/poc.py
+* Fix timeout retry bug in pocsuite/lib/core/option.py
+
+
 version 3.0
 ---------------
 
