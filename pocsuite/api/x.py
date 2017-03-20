@@ -64,7 +64,7 @@ class ZoomEye():
                 anslist = []
                 for match in content['matches']:
                     ans = match['ip']
-                    if match.has_key('portinfo'):
+                    if 'portinfo' in match:
                         ans += ':' + str(match['portinfo']['port'])
                     anslist.append(ans)
                 return anslist
