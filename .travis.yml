@@ -11,4 +11,3 @@ script:
  - python -c "from pocsuite.api.cannon import Cannon; import pocsuite"
  - python pocsuite.py --help
  - flake8 . --max-line-length=120 --exclude pocsuite/thirdparty --ignore F401,N802,N803,N806,E501,N813,N801,N812,E305
-g
