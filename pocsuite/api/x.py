@@ -53,12 +53,21 @@ class ZoomEye():
 
     def search(self, dork, page=1, resource='web'):
         req = requests.get(
-            'https://api.zoomeye.org/{}/search?query="{}"&page={}&facet=app,os'.format(resource, urllib.quote(dork), page + 1),
+            'https://api.zoomeye.org/{}/search?query={}&page={}&facet=app,os'.format(resource, urllib.quote(dork), page + 1),
             headers=self.headers
         )
         content = json.loads(req.content)
         if 'matches' in content:
-            return [match['ip'] for match in content['matches']]
+            if resource == 'web':
+                return [match['site'] for match in content['matches']]
+            else:
+                anslist = []
+                for match in content['matches']:
+                    ans = match['ip']
+                    if 'portinfo' in match:
+                        ans += ':' + str(match['portinfo']['port'])
+                    anslist.append(ans)
+                return anslist
         else:
             return []
 
