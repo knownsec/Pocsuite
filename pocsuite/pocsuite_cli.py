@@ -139,7 +139,7 @@ def pcsInit(PCS_OPTIONS=None):
                         fp.write(p['code'])
                     conf.pocFile = tmp
                 else:
-                    warnMsg = "Fetch SSV-ID '%s' PoC failed! Check your Telnet404 account API permission." %argsDict['ssvid']
+                    warnMsg = "Fetch SSV-ID '%s' PoC failed! Check your Telnet404 account API permission." % argsDict['ssvid']
                     logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
 
         if argsDict['vulKeyword']:
