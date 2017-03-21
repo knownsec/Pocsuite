@@ -125,7 +125,11 @@ class Seebug():
 
     def retrieve(self, ID):
         req = requests.get('https://www.seebug.org/api/user/poc_detail?id=%s' % ID, headers=self.headers, )
-        return ast.literal_eval(req.content)
+        try:
+            ret = ast.literal_eval(req.content)
+        except:
+            ret = json.loads(req.content)
+        return ret
 
     def write_conf(self):
         if not self.parser.has_section("Telnet404"):

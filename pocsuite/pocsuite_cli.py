@@ -112,9 +112,35 @@ def pcsInit(PCS_OPTIONS=None):
             errMsg = 'No "url" or "urlFile" or "dork" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 
-        if not any((argsDict['pocFile'], argsDict['vulKeyword'])):
-            errMsg = 'No "url" or "urlFile" or "vulKeyword" assigned.'
+        if not any((argsDict['pocFile'], argsDict['vulKeyword'], argsDict['ssvid'])):
+            errMsg = 'No "--url" or "--file" or "--vul-keyword" or "--ssv-id" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
+
+        if argsDict['ssvid']:
+            if not os.path.exists(paths.POCSUITE_MODULES_PATH):
+                os.mkdir(paths.POCSUITE_MODULES_PATH)
+            if not argsDict['ssvid'].isdigit():
+                warnMsg = "Paramenter SSV ID must be integer number"
+                logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
+            else:
+                s = Seebug(paths.POCSUITE_RC_PATH)
+                if not s.newToken():
+                    logger.log(CUSTOM_LOGGING.ERROR,
+                               'Seebug API authorization failed, Please input Telnet404 Email account for use Seebug API，you can get it in [https://www.seebug.org/accounts/detail].')
+                    s.write_conf()
+                    if not s.static():
+                        sys.exit(logger.log(CUSTOM_LOGGING.ERROR,
+                                            'Seebug API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
+                logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug API authorization succeed.')
+                p = s.retrieve(argsDict['ssvid'])
+                if 'code' in p:
+                    tmp = '%s/%s.py' % (paths.POCSUITE_MODULES_PATH, argsDict['ssvid'])
+                    with open(tmp, 'w') as fp:
+                        fp.write(p['code'])
+                    conf.pocFile = tmp
+                else:
+                    warnMsg = "Fetch SSV-ID '%s' PoC failed! Check your Telnet404 account API permission." %argsDict['ssvid']
+                    logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
 
         if argsDict['vulKeyword']:
             if not os.path.exists(paths.POCSUITE_MODULES_PATH):
