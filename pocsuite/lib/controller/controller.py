@@ -47,6 +47,7 @@ def start():
     runThreads(conf.threads, pocThreads)
 
     resultTable = PrettyTable(["target-url", "poc-name", "poc-id", "component", "version", "status"])
+    resultTable.align["target-url"] = "l"
     resultTable.padding_width = 1
 
     if not kb.results:
@@ -89,11 +90,11 @@ def pocThreads():
             output = (target, pocname, pocInfo["vulID"], pocInfo["appName"], pocInfo["appVersion"], "success" if result else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
         else:
             kb.pCollect.add(poc.__module__)
-            result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=True)
+            result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=False)
             if not result:
                 continue
-            result_error = "Error: {}".format(result.error[1]) if result.error[1] else "failed"
-            output = (target, pocname, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else result_error, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
+            result_status = "success" if result.is_success() else "failed"
+            output = (target, pocname, result.vulID, result.appName, result.appVersion, result_status, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
             result.show_result()
 
         kb.results.add(output)
