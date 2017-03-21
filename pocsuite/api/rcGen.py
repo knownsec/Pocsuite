@@ -10,7 +10,7 @@ import os
 
 def initial():
     currentUserHomePath = os.path.expanduser('~')
-    _ = """[zoomeye]\nusername = Your ZoomEye Username\npassword = Your ZoomEye Password\n\n[token]\nseebug = Your Seebug Token"""
+    _ = """[Telnet404]\nAccount = Your Telnet404 Account\npassword = Your Telnet404 Password"""
     if not os.path.isfile(currentUserHomePath + '/.pocsuiterc'):
         with open(currentUserHomePath + '/.pocsuiterc', 'w') as fp:
             fp.write(_)

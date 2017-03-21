@@ -79,7 +79,7 @@ def pcsInit(PCS_OPTIONS=None):
                 logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization success.')
                 z.resourceInfo()
             else:
-                logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization failed,Please input ZoomEye Email and Password for use ZoomEye API!')
+                logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization failed,Please input Telnet404 Email account and Password for use ZoomEye API!')
                 z.write_conf()
                 if z.newToken():
                     logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization success.')
@@ -90,7 +90,7 @@ def pcsInit(PCS_OPTIONS=None):
             info = z.resources
             logger.log(
                 CUSTOM_LOGGING.SYSINFO,
-                'Available ZoomEye search, web-search{}, host-search{}'.format(info['web-search'], info['host-search'])
+                'Available ZoomEye web search limit count: {}, host search limit count: {}'.format(info['web-search'], info['host-search'])
             )
 
             tmpIpFile = paths.POCSUITE_OUTPUT_PATH + '/zoomeye_%s.txt' % time.strftime('%Y_%m_%d_%H_%M_%S')
@@ -123,13 +123,18 @@ def pcsInit(PCS_OPTIONS=None):
             if not os.path.exists(folderPath):
                 os.mkdir(folderPath)
             s = Seebug(paths.POCSUITE_RC_PATH)
-            if (s.token or not s.static()) or not s.token:
-                    logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, Please input Seebug Token for use Seebug API，you can get it in [https://www.seebug.org/accounts/detail].')
+            if not s.newToken():
+                    logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, Please input Telnet404 Email account for use Seebug API，you can get it in [https://www.seebug.org/accounts/detail].')
                     s.write_conf()
                     if not s.static():
                         sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
-            logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug token authorization succeed.')
+            logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug API authorization succeed.')
             logger.log(CUSTOM_LOGGING.SYSINFO, s.seek(argsDict['vulKeyword']))
+
+            if len(s.pocs) == 0:
+                infoMsg = "No available PoC for your Telnet404 account, Try exchange PoC on Seebug website!\n(https://www.seebug.org)"
+                logger.log(CUSTOM_LOGGING.WARNING, infoMsg)
+
             for poc in s.pocs:
                 p = s.retrieve(poc['id'])
                 tmp = '%s/%s.py' % (folderPath, poc['id'])
