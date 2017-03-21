@@ -9,6 +9,7 @@ import os
 import ast
 import json
 import urllib
+import getpass
 try:
     from pocsuite.lib.request.basic import req as requests
 except:
@@ -27,9 +28,11 @@ class ZoomEye():
             self.confPath = confPath
             self.parser = ConfigParser.ConfigParser()
             self.parser.read(self.confPath)
-
-            self.username = self.parser.get('zoomeye', 'Username')
-            self.password = self.parser.get('zoomeye', 'Password')
+            try:
+                self.username = self.parser.get('Telnet404', 'Account')
+                self.password = self.parser.get('Telnet404', 'Password')
+            except:
+                pass
 
     def newToken(self):
         data = '{{"username": "{}", "password": "{}"}}'.format(self.username, self.password)
@@ -72,13 +75,13 @@ class ZoomEye():
             return []
 
     def write_conf(self):
-        if not self.parser.has_section("zoomeye"):
-            self.parser.add_section("zoomeye")
+        if not self.parser.has_section("Telnet404"):
+            self.parser.add_section("Telnet404")
 
-        username = raw_input("ZoomEye Email:")
-        password = raw_input("ZoomEye Password:")
-        self.parser.set("zoomeye", "Username", username)
-        self.parser.set("zoomeye", "Password", password)
+        username = raw_input("Telnet404 email account:")
+        password = getpass.getpass("Telnet404 password:")
+        self.parser.set("Telnet404", "Account", username)
+        self.parser.set("Telnet404", "Password", password)
         self.username = username
         self.password = password
         self.parser.write(open(self.confPath, "w"))
@@ -86,18 +89,30 @@ class ZoomEye():
 
 class Seebug():
     def __init__(self, confPath=None):
-        self.token = None
+        self.headers = self.username = self.password = None
 
         if confPath:
             self.confPath = confPath
             self.parser = ConfigParser.ConfigParser()
             self.parser.read(self.confPath)
-            self.token = self.parser.get('token', 'seebug')
+            try:
+                self.username = self.parser.get('Telnet404', 'Account')
+                self.password = self.parser.get('Telnet404', 'Password')
+            except:
+                pass
 
-        self.headers = {'Authorization': 'Token %s' % self.token}
+    def newToken(self):
+        data = '{{"username": "{}", "password": "{}"}}'.format(self.username, self.password)
+        req = requests.post('https://api.zoomeye.org/user/login', data=data, )
+        content = json.loads(req.content)
+        if req.status_code != 401 and "access_token" in content:
+            self.token = content['access_token']
+            self.headers = {'Authorization': 'JWT %s' % self.token}
+            return True
+        return False
 
     def static(self):
-        req = requests.get('https://www.seebug.org/api/user/poc_list', headers=self.headers, )
+        req = requests.get('https://www.seebug.org/api/user/poc_list', headers=self.headers)
         self.stats = ast.literal_eval(req.content)
         if 'detail' in self.stats:
             return False
@@ -110,13 +125,20 @@ class Seebug():
 
     def retrieve(self, ID):
         req = requests.get('https://www.seebug.org/api/user/poc_detail?id=%s' % ID, headers=self.headers, )
-        return ast.literal_eval(req.content)
+        try:
+            ret = ast.literal_eval(req.content)
+        except:
+            ret = json.loads(req.content)
+        return ret
 
     def write_conf(self):
-        if not self.parser.has_section("token"):
-            self.parse.add_section("token")
+        if not self.parser.has_section("Telnet404"):
+            self.parser.add_section("Telnet404")
 
-        token = raw_input("Seebug Token:")
-        self.parser.set("token", "seebug", token)
-        self.token = token
+        username = raw_input("Telnet404 email account:")
+        password = getpass.getpass("Telnet404 password:")
+        self.parser.set("Telnet404", "Account", username)
+        self.parser.set("Telnet404", "Password", password)
+        self.username = username
+        self.password = password
         self.parser.write(open(self.confPath, "w"))
