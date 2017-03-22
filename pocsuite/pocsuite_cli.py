@@ -31,6 +31,7 @@ from .lib.controller.controller import start
 from .lib.core.option import init
 from .lib.core.common import delModule
 from .lib.core.common import getUnicode
+from .lib.core.update import update
 
 
 def main():
@@ -72,6 +73,10 @@ def pcsInit(PCS_OPTIONS=None):
 
         dataToStdout("[!] legal disclaimer: %s\n\n" % LEGAL_DISCLAIMER)
         dataToStdout("[*] starting at %s\n\n" % time.strftime("%X"))
+
+        if argsDict['update']:
+            update()
+            return
 
         if argsDict['dork']:
             z = ZoomEye(paths.POCSUITE_RC_PATH)
