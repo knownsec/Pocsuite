@@ -16,6 +16,7 @@ import inspect
 import posixpath
 import marshal
 import unicodedata
+import time
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.convert import stdoutencode
 from pocsuite.lib.core.log import LOGGER_HANDLER
@@ -428,3 +429,27 @@ def reIndent(s, numSpace):
     leadingSpace = numSpace * ' '
     lines = [leadingSpace + line for line in s.splitlines()]
     return '\n'.join(lines)
+
+
+def poll_process(process, suppress_errors=False):
+    """
+    Checks for process status (prints . if still running)
+    """
+
+    while True:
+        dataToStdout(".")
+        time.sleep(1)
+
+        returncode = process.poll()
+
+        if returncode is not None:
+            if not suppress_errors:
+                if returncode == 0:
+                    dataToStdout(" done\n")
+                elif returncode < 0:
+                    dataToStdout(" process terminated by signal %d\n"
+                                 % returncode)
+                elif returncode > 0:
+                    dataToStdout(" quit unexpectedly with return code %d\n"
+                                 % returncode)
+            break
