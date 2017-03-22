@@ -18,6 +18,7 @@ VERSION = __version__
 REVISION = getRevisionNumber()
 SITE = "http://pocsuite.org"
 VERSION_STRING = "pocsuite/%s%s" % (VERSION, "-%s" % REVISION if REVISION else "-nongit-%s" % time.strftime("%Y%m%d", time.gmtime(os.path.getctime(__file__))))
+GIT_REPOSITORY = "git://github.com:knownsec/Pocsuite.git"
 
 IS_WIN = subprocess.mswindows
 

@@ -25,6 +25,9 @@ def parseCmdOptions():
     parser.add_argument("--version", action="version",
                         version=VERSION, help="Show program's version number and exit")
 
+    parser.add_argument("--update", dest="update", action="store_true",
+                        help="Update Pocsuite")
+
     target = parser.add_argument_group('target')
 
     target.add_argument("-u", "--url", dest="url",
