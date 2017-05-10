@@ -25,7 +25,7 @@ PLATFORM = os.name
 PYVERSION = sys.version.split()[0]
 
 ISSUES_PAGE = "https://github.com/knownsec/Pocsuite/issues"
-GIT_REPOSITORY = "git@github.com:knownsec/Pocsuite.git"
+GIT_REPOSITORY = "https://github.com/knownsec/Pocsuite.git"
 GIT_PAGE = "https://github.com/knownsec/Pocsuite"
 
 LEGAL_DISCLAIMER = "Usage of pocsuite for attacking targets without prior mutual consent is illegal."
