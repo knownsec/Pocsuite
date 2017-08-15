@@ -42,7 +42,7 @@ def execReq(poc, mode, targetUrl):
     pocInfo, devilJson = poc['pocInfo'], poc["pocExecute"]
     result = False
 
-    infoMsg = "poc-%s '%s' has already been detected against '%s'." % (pocInfo["vulID"], pocInfo["name"], targetUrl)
+    infoMsg = "poc-%s '%s' checking '%s'." % (pocInfo["vulID"], pocInfo["name"], targetUrl)
     logger.log(CUSTOM_LOGGING.SUCCESS, infoMsg)
 
     for targetJson in devilJson[mode]:

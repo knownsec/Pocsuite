@@ -81,7 +81,7 @@ def pocThreads():
 
     while not kb.targets.empty() and kb.threadContinue:
         target, poc, pocname = kb.targets.get()
-        infoMsg = "poc:'%s' target:'%s'" % (pocname, target)
+        infoMsg = "poc:'%s' target:'%s'" % (poc.name, target)
         logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
         # TODO json
         if isinstance(poc, dict):

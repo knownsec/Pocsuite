@@ -7,6 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import types
+import logging
 import pocsuite.thirdparty.requests.exceptions as excpt
 from pocsuite.thirdparty.requests.exceptions import HTTPError
 from pocsuite.thirdparty.requests.exceptions import BaseHTTPError
@@ -185,14 +186,9 @@ class Output(object):
 
     def show_result(self):
         if self.status == OUTPUT_STATUS.SUCCESS:
-            infoMsg = "poc-%s '%s' has already been detected against '%s'." % (self.vulID, self.name, self.url)
-            logger.log(CUSTOM_LOGGING.SUCCESS, infoMsg)
             for k, v in self.result.items():
                 if isinstance(v, dict):
                     for kk, vv in v.items():
                         logger.log(CUSTOM_LOGGING.SUCCESS, "%s : %s" % (kk, vv))
                 else:
                     logger.log(CUSTOM_LOGGING.SUCCESS, "%s : %s" % (k, v))
-        else:
-            errMsg = "poc-%s '%s' failed." % (self.vulID, self.name)
-            logger.log(CUSTOM_LOGGING.ERROR, errMsg)

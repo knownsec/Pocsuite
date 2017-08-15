@@ -10,28 +10,28 @@ import os
 import sys
 import time
 import traceback
-from .api.x import Seebug
-from .api.x import ZoomEye
-from .lib.utils import versioncheck
-from .lib.core.common import unhandledExceptionMessage
-from .lib.core.enums import CUSTOM_LOGGING
-from .lib.core.common import banner
-from .lib.core.exception import PocsuiteUserQuitException
-from .lib.core.common import dataToStdout
-from .lib.core.common import setPaths
-from .lib.core.settings import LEGAL_DISCLAIMER
-from .lib.core.data import kb
-from .lib.core.data import conf
-from .lib.core.data import paths
-from .lib.core.data import logger
-from .lib.core.data import cmdLineOptions
-from .lib.parse.parser import parseCmdOptions
-from .lib.core.option import initOptions
-from .lib.controller.controller import start
-from .lib.core.option import init
-from .lib.core.common import delModule
-from .lib.core.common import getUnicode
-from .lib.core.update import update
+from pocsuite.api.x import Seebug
+from pocsuite.api.x import ZoomEye
+from pocsuite.lib.utils import versioncheck
+from pocsuite.lib.core.common import unhandledExceptionMessage
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.common import banner
+from pocsuite.lib.core.exception import PocsuiteUserQuitException
+from pocsuite.lib.core.common import dataToStdout
+from pocsuite.lib.core.common import setPaths
+from pocsuite.lib.core.settings import LEGAL_DISCLAIMER
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.data import paths
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.data import cmdLineOptions
+from pocsuite.lib.parse.parser import parseCmdOptions
+from pocsuite.lib.core.option import initOptions
+from pocsuite.lib.controller.controller import start
+from pocsuite.lib.core.option import init
+from pocsuite.lib.core.common import delModule
+from pocsuite.lib.core.common import getUnicode
+from pocsuite.lib.core.update import update
 
 
 def main():

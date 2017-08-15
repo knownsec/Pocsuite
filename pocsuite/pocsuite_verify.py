@@ -7,10 +7,10 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import sys
-from pocsuite_cli import pcsInit
-from .lib.core.settings import PCS_OPTIONS
-from .lib.core.common import banner
-from .lib.core.common import dataToStdout
+from pocsuite.pocsuite_cli import pcsInit
+from pocsuite.lib.core.settings import PCS_OPTIONS
+from pocsuite.lib.core.common import banner
+from pocsuite.lib.core.common import dataToStdout
 
 
 def main():
