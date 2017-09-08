@@ -19,8 +19,6 @@ from pocsuite.lib.core.common import StringImporter
 
 def registerPoc(pocClass):
     module = pocClass.__module__.split('.')[-1]
-    if module in kb.registeredPocs:
-        return
 
     kb.registeredPocs[module] = pocClass()
 
