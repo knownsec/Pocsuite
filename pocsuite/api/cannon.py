@@ -8,15 +8,13 @@ See the file 'docs/COPYING' for copying permission
 
 import time
 import socket
+import imp
+from os import path
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
-from pocsuite.lib.core.common import filepathParser
-from pocsuite.lib.core.common import multipleReplace
-from pocsuite.lib.core.common import StringImporter
 from pocsuite.lib.core.common import delModule
-from pocsuite.lib.core.settings import POC_IMPORTDICT
 from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
 
 
@@ -26,6 +24,7 @@ class Cannon():
         self.target = target
         self.pocString = info["pocstring"]
         self.pocName = info["pocname"].replace('.', '')
+        self.pocFile = info["pocname"]
         self.mode = mode if mode in ('verify', 'attack') else 'verify'
         self.delmodule = False
         self.params = params
@@ -41,7 +40,6 @@ class Cannon():
         except Exception:
             kb.registeredPocs = {}
 
-        self.registerPoc()
         self._setHTTPTimeout(timeout)
 
     def _setHTTPTimeout(self, timeout):
@@ -51,18 +49,31 @@ class Cannon():
         timeout = float(timeout)
         socket.setdefaulttimeout(timeout)
 
-    def registerPoc(self):
-        pocString = multipleReplace(self.pocString, POC_IMPORTDICT)
-        _, self.moduleName = filepathParser(self.pocName)
+    def loadPoc(self):
+        class_name = 'POCBase'
+        filepath = path.dirname(self.pocFile)
         try:
-            importer = StringImporter(self.moduleName, pocString)
-            importer.load_module(self.moduleName)
-        except ImportError, ex:
-            logger.log(CUSTOM_LOGGING.ERROR, ex)
+            file_name = path.split(self.pocFile)[-1].split('.')[0]
+            fp,pathname,description = imp.find_module(file_name,[filepath])
+        except ImportError as e:
+            logger.exception(e)
+            raise
+        try:
+            _module = imp.load_module(class_name,fp,pathname,description)
+            _pocbase = getattr(_module,class_name)
+            for v in _module.__dict__.values():
+                if isinstance(v,type) and _pocbase in v.__bases__:
+                    return v()
+        except Exception as e:
+            logger.exception(e)
+            raise
+        finally:
+            if fp:
+                fp.close()
 
     def run(self):
         try:
-            poc = kb.registeredPocs[self.moduleName]
+            poc = self.loadPoc()
             result = poc.execute(self.target, headers=conf.httpHeaders, mode=self.mode, params=self.params)
             output = (self.target, self.pocName, result.vulID, result.appName, result.appVersion, (1, "success") if result.is_success() else result.error, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
 
