@@ -36,12 +36,15 @@ class ZoomEye():
 
     def newToken(self):
         data = '{{"username": "{}", "password": "{}"}}'.format(self.username, self.password)
-        req = requests.post('https://api.zoomeye.org/user/login', data=data, )
-        content = json.loads(req.content)
-        if req.status_code != 401 and "access_token" in content:
-            self.token = content['access_token']
-            self.headers = {'Authorization': 'JWT %s' % self.token}
-            return True
+        try:
+            req = requests.post('https://api.zoomeye.org/user/login', data=data, )
+            content = json.loads(req.content)
+            if req.status_code != 401 and "access_token" in content:
+                self.token = content['access_token']
+                self.headers = {'Authorization': 'JWT %s' % self.token}
+                return True
+        except Exception as ex:
+            pass
         return False
 
     def resourceInfo(self):
@@ -103,12 +106,15 @@ class Seebug():
 
     def newToken(self):
         data = '{{"username": "{}", "password": "{}"}}'.format(self.username, self.password)
-        req = requests.post('https://api.zoomeye.org/user/login', data=data, )
-        content = json.loads(req.content)
-        if req.status_code != 401 and "access_token" in content:
-            self.token = content['access_token']
-            self.headers = {'Authorization': 'JWT %s' % self.token}
-            return True
+        try:
+            req = requests.post('https://api.zoomeye.org/user/login', data=data, )
+            content = json.loads(req.content)
+            if req.status_code != 401 and "access_token" in content:
+                self.token = content['access_token']
+                self.headers = {'Authorization': 'JWT %s' % self.token}
+                return True
+        except Exception as ex:
+            pass
         return False
 
     def static(self):

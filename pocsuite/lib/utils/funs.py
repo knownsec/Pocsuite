@@ -12,8 +12,7 @@ import codecs
 import string
 import random
 from socket import gethostbyname
-from urlparse import urlsplit
-
+from urlparse import urlparse
 from pocsuite.lib.core.data import logger
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
@@ -24,10 +23,11 @@ def url2ip(url):
     """
     works like turning 'http://baidu.com' => '180.149.132.47'
     """
-    iport = urlsplit(url)[1].split(':')
-    if len(iport) > 1:
-        return gethostbyname(iport[0]), iport[1]
-    return gethostbyname(iport[0])
+
+    urlPrased = urlparse(url)
+    if urlPrased.port:
+        return gethostbyname(urlPrased.hostname), urlPrased.port
+    return gethostbyname(urlPrased.hostname)
 
 
 def writeText(fileName, content, encoding='utf8'):
