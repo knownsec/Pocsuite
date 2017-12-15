@@ -52,8 +52,7 @@ class ZoomEye():
         content = json.loads(req.content)
         if 'plan' in content:
             self.plan = content['plan']
-            self.resources['web-search'] = content['resources']['web-search']
-            self.resources['host-search'] = content['resources']['host-search']
+            self.resources['search-limit'] = content['resources']['search']
             return True
         return False
 

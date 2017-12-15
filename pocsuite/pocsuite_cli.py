@@ -95,7 +95,7 @@ def pcsInit(PCS_OPTIONS=None):
             info = z.resources
             logger.log(
                 CUSTOM_LOGGING.SYSINFO,
-                'Available ZoomEye web search limit count: {}, host search limit count: {}'.format(info['web-search'], info['host-search'])
+                'Available ZoomEye search limit count: {}'.format(info['search-limit'])
             )
 
             tmpIpFile = paths.POCSUITE_OUTPUT_PATH + '/zoomeye_%s.txt' % time.strftime('%Y_%m_%d_%H_%M_%S')
