@@ -216,22 +216,26 @@ def setMultipleTarget():
     if not conf.urlFile:
         for pocname, pocInstance in kb.registeredPocs.items():
             target_urls = []
-            if conf.url.endswith('/24'):
-                try:
-                    socket.inet_aton(conf.url.split('/')[0])
-                    base_addr = conf.url[:conf.url.rfind('.') + 1]
-                    target_urls = ['{}{}'.format(base_addr, i)
-                                   for i in xrange(1, 255 + 1)]
-                except socket.error:
-                    errMsg = 'only id address acceptable'
-                    logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+            if conf.url:
+                if conf.url.endswith('/24'):
+                    try:
+                        socket.inet_aton(conf.url.split('/')[0])
+                        base_addr = conf.url[:conf.url.rfind('.') + 1]
+                        target_urls = ['{}{}'.format(base_addr, i)
+                                       for i in xrange(1, 255 + 1)]
+                    except socket.error:
+                        errMsg = 'only id address acceptable'
+                        logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+                else:
+                    target_urls = conf.url.split(',')
+
+                for url in target_urls:
+                    if url:
+                        kb.targets.put((url, pocInstance, pocname))
             else:
-                target_urls = conf.url.split(',')
-
-            for url in target_urls:
-                if url:
-                    kb.targets.put((url, pocInstance, pocname))
-
+                errMsg = 'the url needs to be set'
+                logger.log(CUSTOM_LOGGING.ERROR, errMsg)
+                break
         return
 
     conf.urlFile = safeExpandUser(conf.urlFile)
