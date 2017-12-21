@@ -19,15 +19,20 @@ from pocsuite.lib.core.enums import CUSTOM_LOGGING
 from pocsuite.api.request import req
 
 
-def url2ip(url):
+def url2ip(url, with_port=False):
     """
     works like turning 'http://baidu.com' => '180.149.132.47'
     """
 
-    urlPrased = urlparse(url)
-    if urlPrased.port:
-        return gethostbyname(urlPrased.hostname), urlPrased.port
-    return gethostbyname(urlPrased.hostname)
+    url_prased = urlparse(url)
+    if url_prased.port:
+        ret = gethostbyname(url_prased.hostname), url_prased.port
+    elif not url_prased.port and url_prased.scheme == 'https':
+        ret = gethostbyname(url_prased.hostname), 443
+    else:
+        ret = gethostbyname(url_prased.hostname), 80
+
+    return ret if with_port else ret[0]
 
 
 def writeText(fileName, content, encoding='utf8'):
