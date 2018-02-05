@@ -1,7 +1,7 @@
 # Usage
 
-- **pocsuite**: a cool and hackable commane line program
-- **pcs-console**: a interactive interface.
+- **pocsuite**: a cool and hackable command line program
+- **pcs-console**: an interactive interface.
 
 ## pocsuite
 
