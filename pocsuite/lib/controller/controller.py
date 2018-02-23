@@ -10,6 +10,7 @@ import os
 import time
 import shutil
 import tempfile
+import platform
 from textwrap import dedent
 from pocsuite.lib.core.settings import REPORT_HTMLBASE
 from pocsuite.lib.core.settings import REPORT_TABLEBASE
@@ -135,6 +136,11 @@ def _setRecordFiles():
         if type(status) != str:
             status = status[1]
         outputPath = os.path.join(getUnicode(paths.POCSUITE_OUTPUT_PATH), normalizeUnicode(getUnicode(target)))
+        # colon is illegal in windows file system
+        if "Windows" in platform.platform():
+            # replace colon between ip and port as "-", avoid unicode replace error
+            # bypass the first colon in drive letter like "C:\"
+            outputPath = outputPath[:4] + outputPath[4:].replace(":", "-")
 
         if not os.path.isdir(outputPath):
             try:
