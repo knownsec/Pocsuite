@@ -13,7 +13,7 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Pocsuite：An Open-sourced Remote Vulnerability Testing Framework</title>
+    <title>Pocsuite3：An Open-sourced Remote Vulnerability Testing Framework</title>
     <script>
     var _hmt = _hmt || [];
     (function() {
@@ -29,9 +29,9 @@
   <body>
     <header>
       <div class="inner">
-        <h1>Pocsuite</h1>
+        <h1>Pocsuite3</h1>
         <h2>An Open-sourced Remote Vulnerability Testing Framework</h2>
-        <a href="https://github.com/knownsec/Pocsuite" class="button"><small>View project on</small> GitHub</a>
+        <a href="https://github.com/knownsec/pocsuite3" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
 
@@ -50,17 +50,37 @@
 <h2 id="introduction">
 <a id="Introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p>Pocsuite is an open-sourced remote vulnerability testing and PoC development framework developed by the Knownsec Security Team. It serves as the cornerstone of the team.</p>
+<p>Pocsuite3 is an open-sourced remote vulnerability testing and PoC development framework developed by the Knownsec 404 Team. It serves as the cornerstone of the team.</p>
 <p>You can use Pocsuite to verify and exploit vulnerabilities or write PoC/Exp based on it. You can also integrate Pocsuite in your vulnerability testing tool, which provides a standard calling class.</p>
 
+<h2 id="features">
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
+
+<p><ul>
+  <li>PoC scripts can running with `attack`,`verify`, `shell` mode in different way</li>
+  <li>Plugin ecosystem</li>
+  <li>Dynamic loading PoC script from any where (local file, redis , database, Seebug ...)</li>
+  <li>Load multi-target from any where (CIDR, local file, redis , database, Zoomeye ...)</li>
+  <li>Results can be easily exported</li>
+  <li>Dynamic patch and hook requests </li>
+  <li>Both command line tool and python package import to use</li>
+  <li>IPV6 support</li>
+  <li>Global HTTP/HTTPS/SOCKS proxy support</li>
+  <li>Simple spider API for PoC script to use</li>
+  <li>Integrate with [Seebug](https://www.seebug.org) (for load PoC from Seebug website)</li>
+  <li>Integrate with [ZoomEye](https://www.zoomeye.org) (for load target from ZoomEye `Dork`)</li>
+  <li>Integrate with [Ceye](http://ceye.io/) (for verify blind DNS and HTTP request)</li>
+  <li>More ...</li>
+  </ul>
+</p>
 
 <h2 id="functions">
 <a id="Functions" class="anchor" href="#functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Functions</h2>
 
 <h3 id="vul_test" style="margin-left: 35px;">
-<a id="Vulnerability Testing Framework" class="anchor" href="#vul_test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vulnerability Testing Frameworkul_test</h3>
+<a id="Vulnerability Testing Framework" class="anchor" href="#vul_test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vulnerability Testing Framework</h3>
 
-<p>Written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets against multiple exploit-plugins in advance.（See<a href="https://github.com/knownsec/Pocsuite/blob/master/docs/USAGE.md"> "Pocsuite usage"</a>）</p>
+<p>Written in Python and supported both validation and exploitation two plugin-invoked modes, Pocsuite could import batch targets from files and test those targets against multiple exploit-plugins in advance.（See<a href="https://github.com/knownsec/pocsuite3/blob/master/docs/USAGE.md"> "Pocsuite usage"</a>）</p>
 
 <h3 id="develop_kit" style="margin-left: 35px;">
 <a id="PoC/Exp Development Kit" class="anchor" href="#develop_kit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PoC/Exp Development Kit</h3>
@@ -76,23 +96,22 @@
 <a id="Integrated ZoomEye & Seebug APIs" class="anchor" href="#integrated_api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Integrated ZoomEye And Seebug APIs</h3>
 <p>Pocsuite is also an extremely useful tool to integrate Seebug and ZoomEye APIs in a collaborative way. Vulnerablity assessment can be done automatically and effectively by searching targets through ZoomEye and acquiring PoC scripts from Seebug or locally.</p>
 
-
 <h2 id="install">
 <a id="Installation" class="anchor" href="#%E5%AE%89%E8%A3%85" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>Pocsuite works out of the box with Python version 2.6.x and 2.7.x on any platform.</p>
+<p>pocsuite3 works out of the box with Python version 3.x on any platform.</p>
 
 <p>You can use Git to clone the latest source code repository</p>
 
-<div class="highlight highlight-source-shell"><pre>    $ git clone git@github.com:knownsec/Pocsuite.git</pre></div>
+<div class="highlight highlight-source-shell"><pre>    $ git clone git@github.com:knownsec/pocsuite3.git</pre></div>
 
-<p>Or click <a href="https://github.com/knownsec/Pocsuite/archive/master.zip">here</a> to download the latest source zip package, and extract</p>
+<p>Or click <a href="https://github.com/knownsec/pocsuite3/archive/master.zip">here</a> to download the latest source zip package, and extract</p>
 
-<div class="highlight highlight-source-shell"><pre>    $ wget https://github.com/knownsec/Pocsuite/archive/master.zip
+<div class="highlight highlight-source-shell"><pre>    $ wget https://github.com/knownsec/pocsuite3/archive/master.zip
     $ unzip master.zip</pre></div>
 
 <div class="highlight highlight-source-shell"><pre>    $ <span class="pl-c1">cd</span> Pocsuite
-    $ python pocsuite.py --version</pre></div>
+    $ python cli.py --version</pre></div>
 
 <p>Or use pip</p>
 
@@ -102,11 +121,11 @@
 <h2 id="usage">
 <a id="Usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 <ul>
-<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/USAGE.md">How to use Pocsuite test vulnerability</a>
+<li><a href="https://github.com/knownsec/pocsuite3/blob/master/docs/USAGE.md">How to use Pocsuite test vulnerability</a>
 </li>
-<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/CODING.md">How to develop PoC/Exp based on Pocsuite</a>
+<li><a href="https://github.com/knownsec/pocsuite3/blob/master/docs/CODING.md">How to develop PoC/Exp based on Pocsuite</a>
 </li>
-<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/INTEGRATE.md">How to integrate Pocsuite in applications</a>
+<li><a href="https://github.com/knownsec/pocsuite3/blob/master/docs/CODING.md">How to integrate Pocsuite in applications</a>
 </li>
 </ul>
 
@@ -121,10 +140,10 @@
 <a id="Links" class="anchor" href="#%E7%9B%B8%E5%85%B3%E9%93%BE%E6%8E%A5" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Links</h2>
 
 <ul>
-<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/THANKS.md">Thanks List</a></li>
-<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/CHANGELOG.md">Change Log</a></li>
-<li><a href="https://github.com/knownsec/Pocsuite/issues">Bug Feedback</a></li>
-<li><a href="https://github.com/knownsec/Pocsuite/blob/master/docs/COPYING">Copying</a></li>
+<li><a href="https://github.com/knownsec/pocsuite3/blob/master/docs/CONTRIBUTORS.md">Thanks List</a></li>
+<li><a href="https://github.com/knownsec/pocsuite3/blob/master/CHANGELOG.md">Change Log</a></li>
+<li><a href="https://github.com/knownsec/pocsuite3/issues">Bug Feedback</a></li>
+<li><a href="https://github.com/knownsec/pocsuite3/blob/master/COPYING">Copying</a></li>
 <li><a href="http://pocsuite.org">Pocsuite Website: http://pocsuite.org</a></li>
 <li><a href="https://www.seebug.org">Seebug Website: https://www.seebug.org</a></li>
 <li><a href="https://www.zoomeye.org">ZoomEye Website: https://www.zoomeye.org</a></li>
