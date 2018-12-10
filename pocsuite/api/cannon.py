@@ -8,6 +8,7 @@ See the file 'docs/COPYING' for copying permission
 
 import time
 import socket
+import hashlib
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.data import logger
@@ -31,6 +32,8 @@ class Cannon():
         self.params = params
         conf.isPycFile = info.get('ispycfile', False)
         conf.httpHeaders = HTTP_DEFAULT_HEADER
+        # fix issue #112
+        conf.retry = 0
         if headers:
             conf.httpHeaders.update(headers)
 
@@ -51,7 +54,8 @@ class Cannon():
 
     def registerPoc(self):
         pocString = multipleReplace(self.pocString, POC_IMPORTDICT)
-        _, self.moduleName = filepathParser(self.pocName)
+        _, fileName = filepathParser(self.pocName)
+        self.moduleName = "%s%s" %(fileName, hashlib.md5(self.target).hexdigest()[:8])
         try:
             importer = StringImporter(self.moduleName, pocString)
             importer.load_module(self.moduleName)

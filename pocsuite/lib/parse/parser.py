@@ -25,6 +25,9 @@ def parseCmdOptions():
     parser.add_argument("--version", action="version",
                         version=VERSION, help="Show program's version number and exit")
 
+    parser.add_argument("--update", dest="update", action="store_true",
+                        help="Update Pocsuite")
+
     target = parser.add_argument_group('target')
 
     target.add_argument("-u", "--url", dest="url",
@@ -112,6 +115,8 @@ def parseCmdOptions():
                    help="search type used in ZoomEye API, web or host")
     X.add_argument("--vul-keyword", dest="vulKeyword", action="store", default=None,
                    help="Seebug keyword used for search.")
+    X.add_argument("--ssv-id", dest="ssvid", action="store", default=None,
+                   help="Seebug SSVID number for target PoC.")
 
     args = parser.parse_args()
     return args.__dict__

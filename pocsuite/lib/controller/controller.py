@@ -10,6 +10,7 @@ import os
 import time
 import shutil
 import tempfile
+import platform
 from textwrap import dedent
 from pocsuite.lib.core.settings import REPORT_HTMLBASE
 from pocsuite.lib.core.settings import REPORT_TABLEBASE
@@ -47,6 +48,7 @@ def start():
     runThreads(conf.threads, pocThreads)
 
     resultTable = PrettyTable(["target-url", "poc-name", "poc-id", "component", "version", "status"])
+    resultTable.align["target-url"] = "l"
     resultTable.padding_width = 1
 
     if not kb.results:
@@ -80,7 +82,7 @@ def pocThreads():
 
     while not kb.targets.empty() and kb.threadContinue:
         target, poc, pocname = kb.targets.get()
-        infoMsg = "poc:'%s' target:'%s'" % (pocname, target)
+        infoMsg = "poc:'%s' target:'%s'" % (poc.name, target)
         logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
         # TODO json
         if isinstance(poc, dict):
@@ -89,10 +91,11 @@ def pocThreads():
             output = (target, pocname, pocInfo["vulID"], pocInfo["appName"], pocInfo["appVersion"], "success" if result else "failed", time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
         else:
             kb.pCollect.add(poc.__module__)
-            result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=True)
+            result = poc.execute(target, headers=conf.httpHeaders, mode=conf.mode, params=conf.params, verbose=False)
             if not result:
                 continue
-            output = (target, pocname, result.vulID, result.appName, result.appVersion, "success" if result.is_success() else result.error, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
+            result_status = "success" if result.is_success() else "failed"
+            output = (target, pocname, result.vulID, result.appName, result.appVersion, result_status, time.strftime("%Y-%m-%d %X", time.localtime()), str(result.result))
             result.show_result()
 
         kb.results.add(output)
@@ -133,6 +136,11 @@ def _setRecordFiles():
         if type(status) != str:
             status = status[1]
         outputPath = os.path.join(getUnicode(paths.POCSUITE_OUTPUT_PATH), normalizeUnicode(getUnicode(target)))
+        # colon is illegal in windows file system
+        if "Windows" in platform.platform():
+            # replace colon between ip and port as "-", avoid unicode replace error
+            # bypass the first colon in drive letter like "C:\"
+            outputPath = outputPath[:4] + outputPath[4:].replace(":", "-")
 
         if not os.path.isdir(outputPath):
             try:

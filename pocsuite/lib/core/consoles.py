@@ -7,6 +7,10 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import os
+import pdb
+import signal
+from cmd import Cmd
+
 from pocsuite.lib.core.data import kb
 from pocsuite.lib.core.data import conf
 from pocsuite.lib.core.data import paths
@@ -21,14 +25,20 @@ from pocsuite.lib.core.option import _setHTTPReferer
 from pocsuite.lib.core.option import _setHTTPCookies
 from pocsuite.lib.core.option import _setHTTPProxy
 from pocsuite.lib.core.option import _setHTTPTimeout
+
 from pocsuite.lib.core.settings import HTTP_DEFAULT_HEADER
 from pocsuite.lib.controller.check import pocViolation
 from pocsuite.lib.controller.setpoc import setPoc
+from pocsuite.lib.controller.setpoc import loadPoc
+
 from pocsuite.lib.controller.controller import start
-from pocsuite.thirdparty.cmd2.cmd2 import Cmd
 from pocsuite.thirdparty.oset.pyoset import oset
 from pocsuite.thirdparty.prettytable.prettytable import PrettyTable
 from pocsuite.thirdparty.colorama.initialise import init as coloramainit
+
+from pocsuite.api.seebug import Seebug
+import codecs
+
 
 try:
     import readline
@@ -40,46 +50,84 @@ except:
     pass
 
 
-def initializePoc(folders):
-    # 加载文件夹下的poc时默认只加载modules目录下的, modules目录下可以新建文件夹, 如wordpress
-    # 默认情况不加载wordpress文件夹内的poc
-    # Usage: pcs-console.py modules/wordpress tests
-    # 调用方式如上时可以将modules/wordpress 和 tests两个文件夹下的poc导入
-    pocNumber = 0
-    if not os.path.isdir(paths.POCSUITE_MODULES_PATH):
-        os.makedirs(paths.POCSUITE_MODULES_PATH)
-    folders.append(paths.POCSUITE_MODULES_PATH)
-    for folder in folders:
-        files = os.listdir(folder)
-        for file in files:
-            if file.endswith(".py") or file.endswith('.json') and "__init__" not in file:
-                pocNumber += 1
-                kb.unloadedList.update({pocNumber: os.path.join(folder, file)})
-
-
-def avaliable():
-    graph = PrettyTable(["pocId", "avaliablePocName", "Folder"])
-    graph.align["PocsName"] = "m"
-    graph.padding_width = 1
-
-    for k, v in kb.unloadedList.iteritems():
-        path, name = filepathParser(v)
-        graph.add_row([k, name, os.path.relpath(path, paths.POCSUITE_ROOT_PATH)])
-
-    print graph
+def handler(signum, frame):
+    """Handle Signals"""
     print
 
 
-class baseConsole(Cmd):
+class BaseInterpreter(Cmd):
+    ruler = '='
+    lastcmd = ''
+    intro = None
+    doc_leader = ''
+    doc_header = 'Core Commands Menu (help <command> for details)'
+    misc_header = 'Miscellaneous help topics:'
+    undoc_header = 'No help on following command(s)'
 
+    def __init__(self):
+        Cmd.__init__(self)
+        self.do_help.__func__.__doc__ = "Show help menu"
+
+    def emptyline(self):
+        """Called when an empty line is entered in response to the prompt."""
+        if self.lastcmd:
+            return self.onecmd(self.lastcmd)
+
+    def default(self, line):
+        """Called on an input line when the cmd prefix is not recognized."""
+        pass
+        # return line
+
+    def precmd(self, line):
+        """Hook method executed just before the command line is interpreted,
+        but after the input prompt is generated and issued"""
+        return line
+
+    def postcmd(self, stop, line):
+        """Hook method executed just after a command dispatch is finished."""
+        return stop
+
+    def preloop(self):
+        """Hook method executed once when the cmdloop() method is called."""
+        pass
+
+    def postloop(self):
+        """Hook method executed once when the cmdloop() method is
+        about to return"""
+        pass
+
+    def shell_will_go(self):
+        "Enter into a pocsuite interactive shell"
+        try:
+            self.cmdloop()
+        except (KeyboardInterrupt, pdb.bdb.BdbQuit):
+            print
+
+    def print_topics(self, header, cmds, cmdlen, maxcol):
+        """make help menu more readable"""
+        if cmds:
+            self.stdout.write(header)
+            self.stdout.write("\n")
+            if self.ruler:
+                self.stdout.write(self.ruler * len(header))
+                self.stdout.write("\n")
+
+            for cmd in cmds:
+                help_msg = getattr(self, "do_{}".format(cmd)).__doc__
+                self.stdout.write("{:<16}".format(cmd))
+                self.stdout.write(help_msg)
+                self.stdout.write("\n")
+            self.stdout.write("\n")
+
+
+class PocsuiteInterpreter(BaseInterpreter):
     def __init__(self):
         if IS_WIN:
             coloramainit()
-        Cmd.__init__(self)
-        os.system("clear")
+        BaseInterpreter.__init__(self)
 
         conf.report = False
-        conf.retry = False
+        conf.retry = 0
         conf.delay = 0
         conf.quiet = False
         conf.isPocString = False
@@ -101,19 +149,15 @@ class baseConsole(Cmd):
         conf.timeout = 5
         conf.httpHeaders = HTTP_DEFAULT_HEADER
 
-        self.prompt = "Pcs> "
+        self.prompt = "Pocsuite> "
         banner()
         self.case_insensitive = False
+        self.showcommands = [_ for _ in dir(self) if _.startswith('show_')]
 
-    def do_verify(self, args):
-        conf.mode = 'verify'
-        self._execute()
+        self.current_pocid = 1
 
-    def do_attack(self, args):
-        conf.mode = 'attack'
-        self._execute()
-
-    def _execute(self):
+    def exploit(self):
+        """Start to exploit targets"""
         kb.results = oset()
 
         _setHTTPUserAgent()
@@ -129,235 +173,212 @@ class baseConsole(Cmd):
 
         start()
 
-    def do_config(self, args):
-        subConsole = configConsole()
-        subConsole.cmdloop()
+    def is_a_poc(self, filename):
+        """Is a valid pocsuite poc"""
+        if not filename:
+            return False
 
-    def do_poc(self, args):
-        subConsole = pocConsole()
-        subConsole.cmdloop()
+        fname_lower = filename.lower()
+        if fname_lower in ("__init__.py"):
+            return False
 
-    def do_ls(self, args):
-        if not args:
-            print
-            print "[Command]"
-            print "   config       : register global configs. "
-            print "   poc          : enter pocConsole, basic poc operation. "
-            print
-            print "[Mode]"
-            print "   verify       : conducting verification. "
-            print "   attack       : conduncting attack. "
-            print
-
-    def do_help(self, args):
-        self.do_ls(args)
-
-    pass
-
-
-class configConsole(Cmd):
-
-    def __init__(self):
-        Cmd.__init__(self)
-        self.prompt = "Pcs.config> "
-        self.case_insensitive = False
-
-    def do_url(self, args):
-        if not args:
-            conf.url = raw_input('Pcs.config.url> ')
+        if fname_lower.endswith('.py') or fname_lower.endswith('.json'):
+            return True
         else:
-            conf.url = str(args)
+            return False
 
-    def do_thread(self, args):
-        if not args:
-            conf.threads = input('Pcs.config.threads> ')
-        else:
-            conf.threads = int(args)
+    def save_poc(self, filename, data):
+        if not data:
+            return
 
-    def do_urlfile(self, args):
-        if not args:
-            conf.urlFile = raw_input('Pcs.config.urlFile> ')
-        else:
-            conf.urlFile = str(args)
+        with codecs.open(filename, "w", encoding="utf-8") as f:
+            f.write(data)
 
-    def do_header(self, args):
-        subConsole = headerConsole()
-        subConsole.cmdloop()
-        pass
+    def import_poc(self, pocfile=None):
+        """Import a poc file or from a directory"""
+        if pocfile and os.path.isfile(pocfile) and self.is_a_poc(pocfile):
+            kb.pocs.update(loadPoc(pocfile))
+            if pocfile not in kb.unloadedList.values():
+                kb.unloadedList.update({self.current_pocid: pocfile})
+                self.current_pocid += 1
 
-    def do_proxy(self, args):
-        if not args:
-            conf.proxy = raw_input('Pcs.config.proxy> ')
-        else:
-            conf.proxy = str(args)
-        pass
+    def import_poc_dir(self, pocdir=None):
+        """Import a pocfile / multiple pocs from a directory"""
+        if pocdir and os.path.isdir(pocdir):
+            for fname in os.listdir(pocdir):
+                fname = os.path.join(pocdir, fname)
+                self.import_poc(fname)
 
-    def do_timeout(self, args):
-        if not args:
-            conf.timeout = raw_input('Pcs.config.timeout> ')
-        else:
-            conf.timeout = args
-        conf.timeout = int(conf.timeout)
-        pass
+    def do_seebug(self, line):
+        """Download pocs from seebug with API Token"""
+        sb = Seebug()
+        sb.token = raw_input("[*] Seebug API Token: ")
+        if not os.path.isdir(paths.POCSUITE_MODULES_PATH):
+            os.makedirs(paths.POCSUITE_MODULES_PATH)
 
-    def do_show(self, args):
+        pocs = sb.poc_list()
+        for poc in pocs:
+            ssvid = poc.get('id')
+            # name = poc.get('name')
 
-        graph = PrettyTable(["config", "value"])
-        graph.align["config"] = "l"
+            if ssvid and str(ssvid).isdigit():
+                filename = os.path.join(
+                    paths.POCSUITE_MODULES_PATH, "{}.py".format(ssvid))
+                code = sb.poc_code(ssvid)
 
-        for k, v in conf.iteritems():
-            if v and k != 'httpHeaders':
-                graph.add_row([k, v])
-        print graph
+                self.save_poc(filename, code)
+                print('[+] seebug ssvid-{} ---->> {}'.format(ssvid, filename))
+        self.import_poc_dir(pocdir=paths.POCSUITE_MODULES_PATH)
 
-    def do_ls(self, args):
-        if not args:
-            print
-            print "[Command]"
-            print "   thread       : set multiple threads. (Default 1) "
-            print "   url          : set target url from stdin. "
-            print "   urlFile      : set target url from urlFile. "
-            print "   q            : return upper level. "
-            print
-            print "[Option]"
-            print "   header       : set http headers for follow requests."
-            print "   proxy        : set proxy. format: '(http|https|socks4|socks5)://address:port'."
-            print "   timeout      : set max requests time. (Default 5s)"
-            print "   show         : show config."
-            print
+    def do_debug(self, line):
+        """Enter into python debug mode"""
+        signal.signal(signal.SIGINT, handler)
+        import pdb
+        debugger = pdb.Pdb()
+        debugger.prompt = "Pocsuite-debug-shell> "
+        debugger.set_trace()
 
-    def do_help(self, args):
-        self.do_ls(args)
+    def do_verify(self, args):
+        """Verify Mode, checks if a vuln exists or not"""
+        conf.mode = 'verify'
+        self.exploit()
 
+    def do_attack(self, args):
+        """Attack mode, sends exploit payload"""
+        conf.mode = 'attack'
+        self.exploit()
 
-class headerConsole(Cmd):
+    def do_back(self, line):
+        """Move back from the current Interpreter"""
+        return True
 
-    def __init__(self):
-        Cmd.__init__(self)
-        self.prompt = "Pcs.config.header> "
-        self.case_insensitive = False
+    def do_banner(self, line):
+        """Display an awesome framework banner"""
+        banner()
 
-    def do_ls(self, args):
-        if not args:
-            print
-            print "[Command]"
-            print "   cookie       : set cookie for requests. "
-            print "   referer      : set referer for requests. "
-            print "   ua           : set ua for requests. "
-            print "   q            : return upper level. "
-            print
-        pass
+    def do_exit(self, line):
+        """Exit the current interpre"""
+        return True
 
-    def do_cookie(self, args):
-        if not args:
-            conf.cookie = raw_input('Pcs.config.header.cookie> ')
-        else:
-            conf.cookie = str(args)
+    def do_pocdel(self, line):
+        """Unload specific poc file(s)"""
+        if line and line.isdigit() and int(line) in kb.unloadedList:
+            poc_path = kb.unloadedList.get(int(line))
+            poc_name = os.path.basename(poc_path)
+            if poc_name in kb.pocs:
+                kb.pocs.pop(poc_name)
+                poc_modname = poc_name.split('.')
+                poc_modname = '.'.join(poc_modname[:-1])
+                if poc_modname in kb.registeredPocs:
+                    kb.registeredPocs.pop(poc_modname)
+                print '[*] unload poc-{}: {}'.format(line, poc_name)
 
-    def do_referer(self, args):
-        if not args:
-            conf.referer = raw_input('Pcs.config.header.referer> ')
-        else:
-            conf.referer = str(args)
+    def do_pocadd(self, line):
+        """Load available poc(s) from a directory or a file"""
+        if os.path.isfile(line):
+            self.import_poc(pocfile=line)
+        elif os.path.isdir(line):
+            self.import_poc_dir(pocdir=line)
 
-    def do_ua(self, args):
-        if not args:
-            conf.agent = raw_input('Pcs.config.header.user-agent> ')
-        else:
-            conf.agent = str(args)
-
-    def do_help(self, args):
-        self.do_ls(args)
-
-
-class pocConsole(Cmd):
-
-    def __init__(self):
-        Cmd.__init__(self)
-        self.prompt = "Pcs.poc> "
-        self.case_insensitive = False
-
-    def do_ls(self, args):
-        if not args:
-            print
-            print "[Command]"
-            print "   avaliable    : list avaliable poc file(s)"
-            print "   search       : search from avaliable poc file(s). "
-            print "   load         : load specific poc file(s). "
-            print "   loaded       : list all loaded poc file(s). "
-            print "   unload       : list all unload poc files(s)."
-            print "   clear        : unload all loaded poc file(s)."
-            print "   q            : return upper level. "
-            print
-
-            pass
-
-    def do_avaliable(self, args):
-        avaliable()
-
-    def do_load(self, args):
-        if args.isdigit():
-            conf.pocFile = kb.unloadedList[int(args)]
-            del kb.unloadedList[int(args)]
-            pass
-        else:
-            conf.pocFile = args
-
-        conf.pocname = os.path.split(conf.pocFile)[1]
-        setPoc()
-
-        print '[*] load poc file(s) success!'
+    def do_poclist(self, line):
+        """Show all available pocs / task pocs"""
+        msg_format = "  {:>12} {:<32} "
         print
-        pass
-
-    def do_loaded(self, args):
-        registerPocFromDict()
-
-        graph = PrettyTable(["pocId", "loadedPocsName"])
-        graph.align["LoadedPocsName"] = "m"
-        graph.padding_width = 1
-        count = 0
-
-        if hasattr(kb, 'registeredPocs') and getattr(kb, 'registeredPocs'):
-            for poc in sorted(kb.registeredPocs.keys()):
-                count += 1
-                graph.add_row([count, poc])
-        else:
-            graph.add_row(["0", "None"])
-        print graph
+        print(msg_format.format('IMPORTED-ID', 'POC-PATH'))
+        print(msg_format.format('===========', '========'))
+        for i in kb.unloadedList.items():
+            print(msg_format.format(*i))
         print
 
-    def do_unload(self, args):
-        # TODO 补全
-        graph = PrettyTable(["pocId", "unloadPocsName"])
-        graph.align["unloadPocsName"] = "m"
-        graph.padding_width = 1
-
-        if hasattr(kb, 'unloadedList') and getattr(kb, 'unloadedList'):
-            for no in sorted(kb.unloadedList.keys()):
-                from ntpath import split
-                graph.add_row([no, split(kb.unloadedList[no])[1]])
-        else:
-            graph.add_row(["0", "None"])
-        print graph
+        print
+        print(msg_format.format('POC--STATUS', 'POC-PATH'))
+        print(msg_format.format('===========', '========'))
+        for i in kb.pocs.keys():
+            print(msg_format.format("ok", i))
         print
 
-    def do_clear(self, args):
-        initializeKb()
-        pass
+    def do_set(self, line):
+        """Set key equal to value"""
+        key, value, pairs = self.parseline(line)
 
-    def do_help(self, args):
-        self.do_ls(args)
+        if (not key) or (not value):
+            self.help_set()
+            return False
 
-    def do_search(self, args):
-        graph = PrettyTable(["pocId", "PocName"])
-        graph.align["PocName"] = "m"
-        graph.padding_width = 1
+        if key in conf:
+            conf[key] = value
 
-        for k, v in kb.unloadedList.iteritems():
-            if str(args) in v:
-                graph.add_row([k, filepathParser(v)[1]])
-        print graph
-        pass
+    def do_show(self, line):
+        """Show available options / modules"""
+        key, value, pairs = self.parseline(line)
 
-    pass
+        if (not key):
+            self.help_show()
+            return False
+
+        method = 'show_{}'.format(key)
+        if method in self.showcommands and hasattr(self, method):
+            func = getattr(self, method)
+            func()
+
+    def complete_set(self, line, text, *ignored):
+        """Tab complete set"""
+        keys = []
+        if line:
+            keys = [_ for _ in conf.keys() if _.startswith(line)]
+        else:
+            keys = conf.keys()
+        return keys
+
+    def available_show_completion(self, text):
+        """Match all possible show commands"""
+        return filter(lambda x: x.startswith(text), self.showcommands)
+
+    def complete_show(self, line, text, *ignored):
+        """Tab complete show"""
+        if line:
+            line = "show_{}".format(line)
+            methods = self.available_show_completion(line)
+        else:
+            methods = self.showcommands
+
+        return map(lambda x: x.replace('show_', ''), methods)
+
+    def show_options(self):
+        """Show options"""
+        msg_format = "  {:>12} {:<32} "
+        print
+        print(msg_format.format('OPTION-KEY', 'OPTION-VALUE'))
+        print(msg_format.format('==========', '============'))
+        for i in conf.items():
+            print(msg_format.format(*i))
+        print
+
+    def help_back(self):
+        print
+        print('  Usage : back')
+        print('  Desp  : {}'.format(getattr(self, 'do_back').__doc__))
+        print('  Demo  : back')
+        print
+
+    def help_pocadd(self):
+        print
+        print('  Usage :  pocadd /path/to/pocfile or /path/to/poc_dir')
+        print('  Desp  :  {}'.format(getattr(self, 'do_pocadd').__doc__))
+        print('  Demo  :  pocadd modules')
+        print
+
+    def help_set(self):
+        print
+        print('  Usage :  set <key> <value>')
+        print('  Desp  :  {}'.format(getattr(self, 'do_set').__doc__))
+        print('  Demo  :  set threads 1')
+        print
+
+    def help_show(self):
+        """Show available options / pocs"""
+        print
+        print('  Usage : show | show <options | pocs>')
+        print('  Desp  : {}'.format(getattr(self, 'do_show').__doc__))
+        print('  Demo  : show options')
+        print

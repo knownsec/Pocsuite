@@ -21,10 +21,32 @@ version 2.0.4
 ---------------
 * Fix bug in lib/core/common.py: not import locale and used it
 * Fix bug in lib/core/common.py: there is not Variable or constant name NULL,bug it is used
-* Fix bug in lib/core/consoles.py:baseConsole:do_ls:endless loop when command ls something
+* Fix bug in lib/core/consoles.py:PocsuiteInterpreter:do_ls:endless loop when command ls something
 * Add file .travis.yml and integrate travis-ci
 * PEP8 and fix some error Variable
 * Update cannon API, you can custom mode/Http Headers/Http Timeout and params
+
+
+version 2.0.4.1
+---------------
+* Add api method output.error and modify output.fail
+* Optimization results show
+* Fix bug in lib/core/poc.py: output.error is not tuple type
+* Update ZoomEye API address
+
+
+version 2.0.4.2
+---------------
+* Add seebug api support
+* Add zoomeye api support
+* Add random functions
+* Add a new console feature
+* Update cannon doc
+* Fix AttributeErrir bug in pocsuite/api/x.py
+* Fix OSError bug in pocsuite/lib/core/consoles.py
+* Fix pep8 syntax check
+* Fix output bug in pocsuite/lib/core/poc.py
+* Fix timeout retry bug in pocsuite/lib/core/option.py
 
 
 version 3.0

@@ -7,6 +7,7 @@ See the file 'docs/COPYING' for copying permission
 """
 
 import types
+import logging
 import pocsuite.thirdparty.requests.exceptions as excpt
 from pocsuite.thirdparty.requests.exceptions import HTTPError
 from pocsuite.thirdparty.requests.exceptions import BaseHTTPError
@@ -53,7 +54,7 @@ class POCBase(object):
         self.params = strToDict(params) if params else {}
         self.mode = mode
         self.verbose = verbose
-        self.expt = 'None'
+        self.expt = (0, 'None')
         # TODO
         output = None
 
@@ -154,7 +155,7 @@ class Output(object):
     '''
 
     def __init__(self, poc=None):
-        self.error = ''
+        self.error = tuple()
         self.result = {}
         self.status = OUTPUT_STATUS.FAILED
         if poc:
@@ -174,23 +175,20 @@ class Output(object):
         self.status = OUTPUT_STATUS.SUCCESS
         self.result = result
 
-    def fail(self, error):
+    def fail(self, error=""):
         self.status = OUTPUT_STATUS.FAILED
         assert isinstance(error, types.StringType)
-        if type(self.error) == str:
-            error = (0, error)
-        self.error = error
+        self.error = (0, error)
+
+    def error(self, error=""):
+        self.expt = (ERROR_TYPE_ID.OTHER, error)
+        self.error = (0, error)
 
     def show_result(self):
         if self.status == OUTPUT_STATUS.SUCCESS:
-            infoMsg = "poc-%s '%s' has already been detected against '%s'." % (self.vulID, self.name, self.url)
-            logger.log(CUSTOM_LOGGING.SUCCESS, infoMsg)
             for k, v in self.result.items():
                 if isinstance(v, dict):
                     for kk, vv in v.items():
                         logger.log(CUSTOM_LOGGING.SUCCESS, "%s : %s" % (kk, vv))
                 else:
                     logger.log(CUSTOM_LOGGING.SUCCESS, "%s : %s" % (k, v))
-        else:
-            errMsg = "poc-%s '%s' failed." % (self.vulID, self.name)
-            logger.log(CUSTOM_LOGGING.ERROR, errMsg)

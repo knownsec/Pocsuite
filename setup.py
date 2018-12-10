@@ -22,6 +22,7 @@ Pocsuite is an open-sourced remote vulnerability testing and proof-of-concept de
     include_package_data=True,
     zip_safe=False,
     install_requires=[
+        'lxml',
     ],
     entry_points={
         'console_scripts': [

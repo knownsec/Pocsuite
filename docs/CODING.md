@@ -111,7 +111,7 @@ Pocsuite 支持 Python 2.7，如若编写 Python 格式的 PoC，需要开发者
     }
     ```
 
-    output 为 Pocsuite 标准输出API，如果要输出调用成功信息则使用 `output.success(result)`,如果要输出调用失败则 `output.fail('Error Message')`,建议直接使用模板中的parse_output通用结果处理函数对_verify和_attack结果进行处理。
+    output 为 Pocsuite 标准输出API，如果要输出调用成功信息则使用 `output.success(result)`,如果要输出调用失败则 `output.fail()`,系统自动捕获异常，不需要PoC里处理捕获,如果PoC里使用try...except 来捕获异常，可通过`output.error('Error Message')`来传递异常内容,建议直接使用模板中的parse_output通用结果处理函数对_verify和_attack结果进行处理。
     ```
     def _verify(self, verify=True):
         result = {}
@@ -124,7 +124,7 @@ Pocsuite 支持 Python 2.7，如若编写 Python 格式的 PoC，需要开发者
         if result:
             output.success(result)
         else:
-            output.fail('Internet nothing returned')
+            output.fail()
         return output
     ```
 
@@ -149,80 +149,80 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
 2. PoC JSON 有两个 key，pocInfo 和 pocExecute，分别代表 PoC 信息部分执行体。
 
     ```
-{
-    "pocInfo":{},
-    "pocExecute":{}
-}
+    {
+        "pocInfo":{},
+        "pocExecute":{}
+    }
     ```
 
 3. 填写 pocInfo 部分：
 
     ```
-{
-    "pocInfo":{
-        "vulID": "poc-2015-0107",
-        "name": "Openssl 1.0.1 内存读取 信息泄露漏洞",
-        "protocol": "http",
-        "author": "test",
-        "references": ["http://drops.wooyun.org/papers/1381"],
-        "appName": "OpenSSL",
-        "appVersion" : "1.0.1~1.0.1f, 1.0.2-beta, 1.0.2-beta1",
-        "vulType": "Information Disclosure",
-        "desc" :"OpenSSL是一个强大的安全套接字层密码库。这次漏洞被称为OpenSSL“心脏出血”漏洞，这是关于 OpenSSL 的信息泄漏漏洞导致的安全问题。它使攻击者能够从内存中读取最多64 KB的数据。安全人员表示：无需任何特权信息或身份验证，我们就可以从我们自己的（测试机上）偷来X.509证书的私钥、用户名与密码、聊天工具的消息、电子邮件以及重要的商业文档和通信等数据.",
-        "samples": ["http://www.baidu.com", "http://www.qq.com"]
-    },
-    "pocExecute":{}
-}   
+    {
+        "pocInfo":{
+            "vulID": "poc-2015-0107",
+            "name": "Openssl 1.0.1 内存读取 信息泄露漏洞",
+            "protocol": "http",
+            "author": "test",
+            "references": ["http://drops.wooyun.org/papers/1381"],
+            "appName": "OpenSSL",
+            "appVersion" : "1.0.1~1.0.1f, 1.0.2-beta, 1.0.2-beta1",
+            "vulType": "Information Disclosure",
+            "desc" :"OpenSSL是一个强大的安全套接字层密码库。这次漏洞被称为OpenSSL“心脏出血”漏洞，这是关于 OpenSSL 的信息泄漏漏洞导致的安全问题。它使攻击者能够从内存中读取最多64 KB的数据。安全人员表示：无需任何特权信息或身份验证，我们就可以从我们自己的（测试机上）偷来X.509证书的私钥、用户名与密码、聊天工具的消息、电子邮件以及重要的商业文档和通信等数据.",
+            "samples": ["http://www.baidu.com", "http://www.qq.com"]
+        },
+        "pocExecute":{}
+    }   
     ```
     各字段的含义与 python 属性部分相同。
 
 4. 填写 pocExecute 部分：
     pocExecute 分为 verify 和 attack 两部分
     ```
-{
-    "pocInfo":{},
-    "pocExecute":{
-        "verify":[],
-        "attack":[]
+    {
+        "pocInfo":{},
+        "pocExecute":{
+            "verify":[],
+            "attack":[]
+        }
     }
-}
     ```
     **填写 verify 部分:**
     ```
-{
-    "pocInfo":{},
-    "pocExecute":{
-        "verify":[
-            {
-                "step": "1",
-                "method": "get",
-                "vulPath": "/api.php",
-                "params": "test=123&seebug=1234",
-                "necessary": "",
-                "headers": {"cookie": "123"},
-                "status":"200",
-                "match": {
-                    "regex": ["baidu","google"],
-                    "time": "time"
+    {
+        "pocInfo":{},
+        "pocExecute":{
+            "verify":[
+                {
+                    "step": "1",
+                    "method": "get",
+                    "vulPath": "/api.php",
+                    "params": "test=123&seebug=1234",
+                    "necessary": "",
+                    "headers": {"cookie": "123"},
+                    "status":"200",
+                    "match": {
+                        "regex": ["baidu","google"],
+                        "time": "time"
+                    }
+                },
+                {
+                    "step": "2",
+                    "method": "get",
+                    "vulPath": "/api.php",
+                    "params": "test=seebug",
+                    "necessary": "",
+                    "headers": "",
+                    "status": "200",
+                    "match":{
+                        "regex": [""],
+                        "time": "0.01"
+                    }
                 }
-            },
-            {
-                "step": "2",
-                "method": "get",
-                "vulPath": "/api.php",
-                "params": "test=seebug",
-                "necessary": "",
-                "headers": "",
-                "status": "200",
-                "match":{
-                    "regex": [""],
-                    "time": "0.01"
-                }
-            }
-        ],
-        "attack":[]
+            ],
+            "attack":[]
+        }
     }
-}
     ```
     >说明：
 
@@ -252,32 +252,32 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
 
     **填写 attack 部分:**
     ```
-{
-    "pocInfo":{},
-    "pocExecute":{
-        "verify":[],
-        "attack":[
-            {
-                "step": "1",
-                "method": "get",
-                "vulPath": "/api.php",
-                "params": "test=123&seebug=1234",
-                "necessary": "",
-                "headers": {"cookie": "123"},
-                "status":"200",
-                "match": {
-                    "regex": ["baidu","google"],
-                    "time": "time"
-                },
-                "result":{
-                  "AdminInfo":{
-                    "Password":"<regex>www(.+)com"
-                  }
-                }
-            }        
-        ]
+    {
+        "pocInfo":{},
+        "pocExecute":{
+            "verify":[],
+            "attack":[
+                {
+                    "step": "1",
+                    "method": "get",
+                    "vulPath": "/api.php",
+                    "params": "test=123&seebug=1234",
+                    "necessary": "",
+                    "headers": {"cookie": "123"},
+                    "status":"200",
+                    "match": {
+                        "regex": ["baidu","google"],
+                        "time": "time"
+                    },
+                    "result":{
+                    "AdminInfo":{
+                        "Password":"<regex>www(.+)com"
+                    }
+                    }
+                }        
+            ]
+        }
     }
-}
     ```
     attack 部分和 verify 部分类似，比 verify 部分多一个 "result".
 
@@ -318,7 +318,7 @@ JSON 格式的 PoC 类似于完形填空,只需要填写相应的字段的值即
         检测 PHP 文件上传是否成功,
 
             token = randomStr()
-            payload = '<?php echo md5(%s);unlink(__FILE__);?>' % token
+            payload = '<?php echo md5("%s");unlink(__FILE__);?>' % token
             ...
 
             if hashlib.new('md5', token).hexdigest() in content:
@@ -505,7 +505,7 @@ class TestPOC(POCBase):
         if result:
             output.success(result)
         else:
-            output.fail('Internet nothing returned')
+            output.fail()
         return output
 
 register(TestPOC)

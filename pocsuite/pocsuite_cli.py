@@ -10,27 +10,28 @@ import os
 import sys
 import time
 import traceback
-from .api.x import Seebug
-from .api.x import ZoomEye
-from .lib.utils import versioncheck
-from .lib.core.common import unhandledExceptionMessage
-from .lib.core.enums import CUSTOM_LOGGING
-from .lib.core.common import banner
-from .lib.core.exception import PocsuiteUserQuitException
-from .lib.core.common import dataToStdout
-from .lib.core.common import setPaths
-from .lib.core.settings import LEGAL_DISCLAIMER
-from .lib.core.data import kb
-from .lib.core.data import conf
-from .lib.core.data import paths
-from .lib.core.data import logger
-from .lib.core.data import cmdLineOptions
-from .lib.parse.parser import parseCmdOptions
-from .lib.core.option import initOptions
-from .lib.controller.controller import start
-from .lib.core.option import init
-from .lib.core.common import delModule
-from .lib.core.common import getUnicode
+from pocsuite.api.x import Seebug
+from pocsuite.api.x import ZoomEye
+from pocsuite.lib.utils import versioncheck
+from pocsuite.lib.core.common import unhandledExceptionMessage
+from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.common import banner
+from pocsuite.lib.core.exception import PocsuiteUserQuitException
+from pocsuite.lib.core.common import dataToStdout
+from pocsuite.lib.core.common import setPaths
+from pocsuite.lib.core.settings import LEGAL_DISCLAIMER
+from pocsuite.lib.core.data import kb
+from pocsuite.lib.core.data import conf
+from pocsuite.lib.core.data import paths
+from pocsuite.lib.core.data import logger
+from pocsuite.lib.core.data import cmdLineOptions
+from pocsuite.lib.parse.parser import parseCmdOptions
+from pocsuite.lib.core.option import initOptions
+from pocsuite.lib.controller.controller import start
+from pocsuite.lib.core.option import init
+from pocsuite.lib.core.common import delModule
+from pocsuite.lib.core.common import getUnicode
+from pocsuite.lib.core.update import update
 
 
 def main():
@@ -73,13 +74,17 @@ def pcsInit(PCS_OPTIONS=None):
         dataToStdout("[!] legal disclaimer: %s\n\n" % LEGAL_DISCLAIMER)
         dataToStdout("[*] starting at %s\n\n" % time.strftime("%X"))
 
+        if argsDict['update']:
+            update()
+            return
+
         if argsDict['dork']:
             z = ZoomEye(paths.POCSUITE_RC_PATH)
             if z.newToken():
                 logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization success.')
                 z.resourceInfo()
             else:
-                logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization failed,Please input ZoomEye Email and Password for use ZoomEye API!')
+                logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization failed,Please input Telnet404 Email account and Password for use ZoomEye API!')
                 z.write_conf()
                 if z.newToken():
                     logger.log(CUSTOM_LOGGING.SUCCESS, 'ZoomEye API authorization success.')
@@ -90,7 +95,7 @@ def pcsInit(PCS_OPTIONS=None):
             info = z.resources
             logger.log(
                 CUSTOM_LOGGING.SYSINFO,
-                'Aavaliable ZoomEye search, web-search{}, host-search{}'.format(info['web-search'], info['host-search'])
+                'Available ZoomEye search limit count: {}'.format(info['search-limit'])
             )
 
             tmpIpFile = paths.POCSUITE_OUTPUT_PATH + '/zoomeye_%s.txt' % time.strftime('%Y_%m_%d_%H_%M_%S')
@@ -112,9 +117,35 @@ def pcsInit(PCS_OPTIONS=None):
             errMsg = 'No "url" or "urlFile" or "dork" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
 
-        if not any((argsDict['pocFile'], argsDict['vulKeyword'])):
-            errMsg = 'No "url" or "urlFile" or "vulKeyword" assigned.'
+        if not any((argsDict['pocFile'], argsDict['vulKeyword'], argsDict['ssvid'])):
+            errMsg = 'No "--url" or "--file" or "--vul-keyword" or "--ssv-id" assigned.'
             sys.exit(logger.log(CUSTOM_LOGGING.ERROR, errMsg))
+
+        if argsDict['ssvid']:
+            if not os.path.exists(paths.POCSUITE_MODULES_PATH):
+                os.mkdir(paths.POCSUITE_MODULES_PATH)
+            if not argsDict['ssvid'].isdigit():
+                warnMsg = "Paramenter SSV ID must be integer number"
+                logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
+            else:
+                s = Seebug(paths.POCSUITE_RC_PATH)
+                if not s.newToken():
+                    logger.log(CUSTOM_LOGGING.ERROR,
+                               'Seebug API authorization failed, Please input Telnet404 Email account for use Seebug API，you can get it in [https://www.seebug.org/accounts/detail].')
+                    s.write_conf()
+                    if not s.static():
+                        sys.exit(logger.log(CUSTOM_LOGGING.ERROR,
+                                            'Seebug API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
+                logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug API authorization succeed.')
+                p = s.retrieve(argsDict['ssvid'])
+                if 'code' in p:
+                    tmp = '%s/%s.py' % (paths.POCSUITE_MODULES_PATH, argsDict['ssvid'])
+                    with open(tmp, 'w') as fp:
+                        fp.write(p['code'])
+                    conf.pocFile = tmp
+                else:
+                    warnMsg = "Fetch SSV-ID '%s' PoC failed! Check your Telnet404 account API permission." % argsDict['ssvid']
+                    logger.log(CUSTOM_LOGGING.WARNING, warnMsg)
 
         if argsDict['vulKeyword']:
             if not os.path.exists(paths.POCSUITE_MODULES_PATH):
@@ -123,13 +154,18 @@ def pcsInit(PCS_OPTIONS=None):
             if not os.path.exists(folderPath):
                 os.mkdir(folderPath)
             s = Seebug(paths.POCSUITE_RC_PATH)
-            if (s.token or not s.static()) or not s.token:
-                    logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, Please input Seebug Token for use Seebug API，you can get it in [https://www.seebug.org/accounts/detail].')
+            if not s.newToken():
+                    logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, Please input Telnet404 Email account for use Seebug API，you can get it in [https://www.seebug.org/accounts/detail].')
                     s.write_conf()
                     if not s.static():
                         sys.exit(logger.log(CUSTOM_LOGGING.ERROR, 'Seebug API authorization failed, make sure correct credentials provided in "~/.pocsuiterc".'))
-            logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug token authorization succeed.')
+            logger.log(CUSTOM_LOGGING.SUCCESS, 'Seebug API authorization succeed.')
             logger.log(CUSTOM_LOGGING.SYSINFO, s.seek(argsDict['vulKeyword']))
+
+            if len(s.pocs) == 0:
+                infoMsg = "No available PoC for your Telnet404 account, Try exchange PoC on Seebug website!\n(https://www.seebug.org)"
+                logger.log(CUSTOM_LOGGING.WARNING, infoMsg)
+
             for poc in s.pocs:
                 p = s.retrieve(poc['id'])
                 tmp = '%s/%s.py' % (folderPath, poc['id'])

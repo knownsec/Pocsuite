@@ -9,6 +9,20 @@
 
 Pocsuite is an open-sourced remote vulnerability testing and proof-of-concept development framework developed by the [**Knownsec Security Team**](http://www.knownsec.com/). It comes with a powerful proof-of-concept engine, many niche features for the ultimate penetration testers and security researchers.
 
+## How to use
+
+### Pocsuite with seebug PoC search and zoomeye dork
+[![asciicast](https://asciinema.org/a/133345.png)](https://asciinema.org/a/133345)
+
+### Pocsuite with seebug PoC and zoomeye dork
+[![asciicast](https://asciinema.org/a/133344.png)](https://asciinema.org/a/133344)
+
+### Pocsuite with zoomeye API
+
+[![asciicast](https://asciinema.org/a/133343.png)](https://asciinema.org/a/133343)
+
+### Pocsuite with seebug PoC API online
+[![asciicast](https://asciinema.org/a/133342.png)](https://asciinema.org/a/133342)
 
 ## Requirements
 

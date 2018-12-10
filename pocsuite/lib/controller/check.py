@@ -74,7 +74,7 @@ def checkJsonInfo(pocName, pocInstance):
 
 def checkPocInfo(pocName, pocInstance):
     infos = []
-    infoMsg = "checking %s" % pocName
+    infoMsg = "checking %s" % pocInstance.name
     logger.log(CUSTOM_LOGGING.SYSINFO, infoMsg)
     for attr in POC_ATTRS:
         if hasattr(pocInstance, attr) and getattr(pocInstance, attr):
