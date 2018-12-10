@@ -117,19 +117,19 @@ class Seebug():
         return False
 
     def static(self):
-        req = requests.get('https://www.seebug.org/api/user/poc_list', headers=self.headers)
+        req = requests.get('https://www.seebug.org/api/user/poc_list?framework=2', headers=self.headers)
         self.stats = ast.literal_eval(req.content)
         if 'detail' in self.stats:
             return False
         return 'According to record total %s PoC purchased' % len(self.stats)
 
     def seek(self, keyword):
-        req = requests.get('https://www.seebug.org/api/user/poc_list?q=%s' % keyword, headers=self.headers, )
+        req = requests.get('https://www.seebug.org/api/user/poc_list?framework=2&q=%s' % keyword, headers=self.headers, )
         self.pocs = ast.literal_eval(req.content)
         return '%s purchased poc related to keyword "%s"' % (len(self.pocs), keyword)
 
     def retrieve(self, ID):
-        req = requests.get('https://www.seebug.org/api/user/poc_detail?id=%s' % ID, headers=self.headers, )
+        req = requests.get('https://www.seebug.org/api/user/poc_detail?framework=2&id=%s' % ID, headers=self.headers, )
         try:
             ret = ast.literal_eval(req.content)
         except:
