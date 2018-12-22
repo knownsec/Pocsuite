@@ -4,12 +4,15 @@
 import os
 import pychrome
 import urlparse
+import tempfile
+import platform
 from pocsuite.api.poc import register
 from pocsuite.api.poc import Output, POCBase
 from pocsuite.lib.core.data import paths,logger
 from pocsuite.lib.core.common import getUnicode
 from pocsuite.lib.core.common import normalizeUnicode
 from pocsuite.lib.core.enums import CUSTOM_LOGGING
+from pocsuite.lib.core.exception import PocsuiteSystemException
 
 
 # 环境配置:
@@ -105,7 +108,25 @@ class Dork(POCBase):
 
 
 	def _output2file(self,outputPath,msg):
-		with open(outputPath,'a') as f:
+
+		if "Windows" in platform.platform():
+			outputPath = outputPath[:4] + outputPath[4:].replace(":", "-")
+
+		if not os.path.isdir(outputPath):
+			try:
+				os.makedirs(outputPath, 0755)
+			except:
+				print "guess what?!"
+
+		recordFile = os.path.join(outputPath, "gdork2result.txt")
+
+		if not os.path.isfile(recordFile):
+			with open(recordFile, "w") as f:
+				for m in msg:
+					f.write(m + '\n')
+			return
+
+		with open(recordFile,'a+') as f:
 			for m in msg:
 				f.write(m + '\n')
 
@@ -125,7 +146,7 @@ class Dork(POCBase):
 		subdomins=list(set(tmp))
 		result['VerifyInfo'] = {}
 		outputPath = os.path.join(getUnicode(paths.POCSUITE_OUTPUT_PATH), normalizeUnicode(getUnicode(DorkGrammar)))
-		outputPath = os.path.join(outputPath,"gdork2result.txt")
+		# outputPath = os.path.join(outputPath,"gdork2result.txt")
 		j=1
 		if subdomins:
 			self._output2file(outputPath,subdomins)	

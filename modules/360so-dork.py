@@ -4,6 +4,8 @@
 import os
 import pychrome
 import urlparse
+import tempfile
+import platform
 from pocsuite.api.poc import register
 from pocsuite.api.poc import Output, POCBase
 from pocsuite.lib.core.data import paths,logger
@@ -102,10 +104,27 @@ class Dork(POCBase):
 
 
 	def _output2file(self,outputPath,msg):
-		with open(outputPath,'a') as f:
+
+		if "Windows" in platform.platform():
+			outputPath = outputPath[:4] + outputPath[4:].replace(":", "-")
+
+		if not os.path.isdir(outputPath):
+			try:
+				os.makedirs(outputPath, 0755)
+			except:
+				print "guess what?!"
+
+		recordFile = os.path.join(outputPath, "so2result.txt")
+
+		if not os.path.isfile(recordFile):
+			with open(recordFile, "w") as f:
+				for m in msg:
+					f.write(m + '\n')
+			return
+
+		with open(recordFile,'a+') as f:
 			for m in msg:
 				f.write(m + '\n')
-
 	def _attack(self):
 		return self._verify() 
 
@@ -120,8 +139,9 @@ class Dork(POCBase):
 		# 去重
 		subdomins=list(set(tmp))
 		result['VerifyInfo'] = {}
+
 		outputPath = os.path.join(getUnicode(paths.POCSUITE_OUTPUT_PATH), normalizeUnicode(getUnicode(DorkGrammar)))
-		outputPath = os.path.join(outputPath,"so2result.txt")
+		# outputPath = os.path.join(outputPath,"so2result.txt")
 		j=1
 		if subdomins:
 			self._output2file(outputPath,subdomins)	
