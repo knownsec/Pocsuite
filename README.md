@@ -7,7 +7,7 @@
 
 ## Overview
 
-Pocsuite is an open-sourced remote vulnerability testing and proof-of-concept development framework developed by the [**Knownsec Security Team**](http://www.knownsec.com/). It comes with a powerful proof-of-concept engine, many niche features for the ultimate penetration testers and security researchers.
+Pocsuite is an open-sourced remote vulnerability testing and proof-of-concept development framework developed by the [**Knownsec 404 Team**](http://www.knownsec.com/). It comes with a powerful proof-of-concept engine, many niche features for the ultimate penetration testers and security researchers.
 
 ## How to use
 
