@@ -13,7 +13,7 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Pocsuite：an open-sourced remote vulnerability testing framework</title>
+    <title>Pocsuite3：Open-sourced Remote Vulnerability Testing Framework</title>
     <script>
     var _hmt = _hmt || [];
     (function() {
@@ -30,7 +30,7 @@
     <header>
       <div class="inner">
         <h1>Pocsuite3</h1>
-        <h2>Pocsuite3 是知道创宇404实验室打造的一款开源的远程漏洞测试框架</h2>
+        <h2>Pocsuite3 是知道创宇 404 实验室打造的一款开源的远程漏洞测试框架</h2>
         <a href="https://github.com/knownsec/pocsuite3" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
@@ -43,16 +43,16 @@
 | .-. | .-. | .--(  .-'|  ||  ,--'-.  .-| .-. :
 | '-' ' '-' \ `--.-'  `'  ''  |  | |  | \   --.
 |  |-' `---' `---`----' `----'`--' `--'  `----'
-`--'                        http://pocsuite.org
+`--'                        https://pocsuite.org
 
 </code></pre>
 
 <h2 id="introduction">
 <a id="简介" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>简介</h2>
 
-<p>Pocsuite 是由知道创宇404实验室打造的一款开源的远程漏洞测试框架。它是知道创宇安全研究团队发展的基石，是团队发展至今一直维护的一个项目，保障了我们的 Web 安全研究能力的领先。</p>
+<p>Pocsuite3 是由知道创宇 404 实验室打造的一款开源的远程漏洞测试框架。它是知道创宇安全研究团队发展的基石，是团队发展至今一直维护的一个项目，保障了我们的 Web 安全研究能力的领先。</p>
 
-<p>你可以直接使用 Pocsuite 进行漏洞的验证与利用；你也可以基于 Pocsuite 进行 PoC/Exp 的开发，因为它也是一个 PoC 开发框架；同时，你还可以在你的漏洞测试工具里直接集成 Pocsuite，它也提供标准的调用类。</p>
+<p>你可以直接使用 Pocsuite3 进行漏洞的验证与利用；你也可以基于 Pocsuite3 进行 PoC/Exp 的开发，因为它也是一个 PoC 开发框架；同时，你还可以在你的漏洞测试工具里直接集成 Pocsuite3，它也提供标准的调用类。</p>
 
 
 
@@ -62,31 +62,31 @@
 <h3 id="vul_test" style="margin-left: 35px;">
 <a id="漏洞测试框架" class="anchor" href="#vul_test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>漏洞测试框架</h3>
 
-<p>Pocsuite3 采用 Python3 编写，支持验证，利用 及 shell 三种插件模式，你可以指定单个目标或者从文件导入多个目标，使用单个 PoC 或者 PoC 集合进行漏洞的验证或利用。可以使用命令行模式进行调用，也支持类似 Metaspolit 的交互模式进行处理，除此之外，还包含了一些基本的如输出结果报告等功能。（使用方法参考<a href="https://github.com/knownsec/pocsuite3/blob/master/docs/USAGE.md">《Pocsuite 使用方法》</a>）</p>
+<p>Pocsuite3 采用 Python3 编写，支持验证，利用及 shell 三种插件模式，你可以指定单个目标或者从文件导入多个目标，使用单个 PoC 或者 PoC 集合进行漏洞的验证或利用。可以使用命令行模式进行调用，也支持类似 Metasploit 的交互模式进行处理，除此之外，还包含了一些基本的如输出结果报告等功能。（使用方法参考<a href="https://github.com/knownsec/pocsuite3/blob/master/docs/USAGE.md">《Pocsuite3 使用方法》</a>）</p>
 
 <h3 id="develop_kit" style="margin-left: 35px;">
 <a id="PoC/Exp 开发包" class="anchor" href="#develop_kit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PoC/Exp 开发包</h3>
 
-<p>Pocsuite3 也是一个 PoC/Exp 的 SDK，也就是开发包，我们封装了基础的 PoC 类,以及一些常用的方法，比如 Webshell 的相关方法，基于Pocsuite3 进行 PoC/Exp 的开发，你可以只要编写最核心的漏洞验证部分代码，而不用去关心整体的结果输出等其他一些处理。基于 Pocsuite3 编写的 PoC/Exp 可以直接被 Pocsuite 使用，Seebug网站也有几千个基于pocsuite 的 PoC/Exp。</p>
+<p>Pocsuite3 也是一个 PoC/Exp 的 SDK，也就是开发包，我们封装了基础的 PoC 类，以及一些常用的方法，比如 Webshell 的相关方法，基于 Pocsuite3 进行 PoC/Exp 的开发，你可以只要编写最核心的漏洞验证部分代码，而不用去关心整体的结果输出等其他一些处理。基于 Pocsuite3 编写的 PoC/Exp 可以直接被 Pocsuite3 使用，Seebug 网站也有几千个基于 Pocsuite3 的 PoC/Exp。</p>
 
 <h3 id="develop_module" style="margin-left: 35px;">
 <a id="可被集成模块" class="anchor" href="#develop_module" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>可被集成模块</h3>
 
-<p>Pocsuite3 除了本身具有直接就是一个安全工具除外，也可以作为一个Python包被集成进漏洞测试模块。你还可以基于 Pocsuite3 开发你自己的应用，我们在 Pocsuite3 里封装了可以被其他程序 import 的 PoC 调用类，你可以基于 Pocsuite3 进行二次开发，调用 Pocsuite3 开发您自己的漏洞验证工具。</p>
+<p>Pocsuite3 除了本身直接就是一个安全工具外，也可以作为一个 Python 包被集成进漏洞测试模块。你还可以基于 Pocsuite3 开发你自己的应用，我们在 Pocsuite3 里封装了可以被其他程序 import 的 PoC 调用类，你可以基于 Pocsuite3 进行二次开发，调用 Pocsuite3 开发您自己的漏洞验证工具。</p>
 
 <h3 id="integrated_api" style="margin-left: 35px;">
 <a id="集成 ZoomEye 与 Seebug API" class="anchor" href="#integrated_api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>集成 ZoomEye， Seebug，  Ceye</h3>
 
-<p>Pocsuite3 还集成了 ZoomEye， Seebug，  Ceye API，通过该功能，你可以通过 ZoomEye API 批量获取指定条件的测试目标（通过 ZoomEye 的 Dork 进行搜索），同时通过 Seebug API 读取指定组件或者类型的漏洞的 PoC 或者本地 PoC，进行自动化的批量测试。利用Ceye 验证盲打的 DNS 和 HTTP 请求</p>
+<p>Pocsuite3 还集成了 ZoomEye，Seebug，Ceye API，通过该功能，你可以通过 ZoomEye API 批量获取指定条件的测试目标（通过 ZoomEye 的 Dork 进行搜索），同时通过 Seebug API 读取指定组件或者类型的漏洞的 PoC 或者本地 PoC，进行自动化的批量测试。利用 Ceye 验证盲打的 DNS 和 HTTP 请求。</p>
 
 <h2 id="features">
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
 
 <p><ul>
-    <li>PoC scripts can running with `attack`,`verify`, `shell` mode in different way</li>
+    <li>PoC scripts can running with `verify, `attack`, `shell` mode in different way</li>
     <li>Plugin ecosystem</li>
-    <li>Dynamic loading PoC script from any where (local file, redis , database, Seebug ...)</li>
-    <li>Load multi-target from any where (CIDR, local file, redis , database, Zoomeye ...)</li>
+    <li>Dynamic loading PoC script from any where (local file, redis, database, Seebug ...)</li>
+    <li>Load multi-target from any where (CIDR, local file, redis, database, ZoomEye ...)</li>
     <li>Results can be easily exported</li>
     <li>Dynamic patch and hook requests </li>
     <li>Both command line tool and python package import to use</li>
@@ -102,33 +102,57 @@
 
 <h2 id="install">
 <a id="安装" class="anchor" href="#%E5%AE%89%E8%A3%85" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>安装</h2>
-<p>Pocsuite 可以运行在 Python 3.x 版本的任何平台上。</p>
+<p>Pocsuite3 可以运行在支持 Python 3.6+ 的任何平台上，可使用以下任意一种方式安装：</p>
 
-<p>你可以通过用 Git 来克隆代码仓库中的最新源代码</p>
+<p>Python pip</p>
 
-<div class="highlight highlight-source-shell"><pre>    $ git clone git@github.com:knownsec/pocsuite3.git</pre></div>
+<div class="highlight highlight-source-shell"><pre>
+$ pip3 install pocsuite3
 
-<p>或者你可以点击 <a href="https://github.com/knownsec/pocsuite3/archive/master.zip">这里</a> 下载最新的源代码 zip 包,并解压</p>
+# 使用国内镜像加速下载
+$ pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple pocsuite3
 
-<div class="highlight highlight-source-shell"><pre>    $ wget https://github.com/knownsec/pocsuite3/archive/master.zip
-    $ unzip master.zip</pre></div>
+$ pocsuite --version
+</pre></div>
 
-<div class="highlight highlight-source-shell"><pre>    $ <span class="pl-c1">cd</span> pocsuite3
-    $ python cli.py --version</pre></div>
+<p>MacOS</p>
+<div class="highlight highlight-source-shell"><pre>
+$ brew update
+$ brew info pocsuite3
+$ brew install pocsuite3
+</pre></div>
 
-<p>或者直接使用</p>
 
-<div class="highlight highlight-source-shell"><pre>    $ pip install pocsuite3
-    $ pocsuite --version</pre></div>
+<p>Debian, Ubuntu, Kali</p>
+<div class="highlight highlight-source-shell"><pre>
+$ sudo apt update
+$ sudo apt install pocsuite3
+</pre></div>
+
+<p>ArchLinux</p>
+<div class="highlight highlight-source-shell"><pre>
+$ yay pocsuite3
+</pre></div>
+
+<p>你也可以使用 Git 来克隆代码仓库中的最新源代码，然后通过源码安装</p>
+<div class="highlight highlight-source-shell"><pre>
+$ git clone https://github.com/knownsec/pocsuite3.git
+$ cd pocsuite3
+$ pip3 install -r requirements.txt
+$ python3 setup.py install
+</pre></div>
+
+<p>或者你可以点击 <a href="https://github.com/knownsec/pocsuite3/archive/master.zip">这里</a> 下载最新的源代码 zip 包。</p>
+
 
 <h2 id="usage">
 <a id="使用" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用</h2>
 <ul>
-<li><a href="https://github.com/knownsec/pocsuite3/blob/master/docs/USAGE.md">如何直接使用 Pocsuite 测试漏洞</a>
+<li><a href="https://github.com/knownsec/pocsuite3/blob/master/docs/USAGE.md">如何直接使用 Pocsuite3 测试漏洞</a>
 </li>
-<li><a href="https://github.com/knownsec/pocsuite3/blob/master/docs/CODING.md">如何基于 Pocsuite 开发 PoC/Exp</a>
+<li><a href="https://github.com/knownsec/pocsuite3/blob/master/docs/CODING.md">如何基于 Pocsuite3 开发 PoC/Exp</a>
 </li>
-<li><a href="https://github.com/knownsec/pocsuite3/blob/master/docs/CODING.md">如何在应用里集成 Pocsuite</a>
+<li><a href="https://github.com/knownsec/pocsuite3/blob/master/docs/CODING.md">如何在应用里集成 Pocsuite3</a>
 </li>
 </ul>
 
@@ -147,7 +171,7 @@
 <li><a href="https://github.com/knownsec/pocsuite3/blob/master/CHANGELOG.md">Change Log</a></li>
 <li><a href="https://github.com/knownsec/pocsuite3/issues">问题/BUG反馈</a></li>
 <li><a href="https://github.com/knownsec/pocsuite3/blob/master/COPYING">版权声明</a></li>
-<li><a href="http://pocsuite.org">Pocsuite 官网 http://pocsuite.org</a></li>
+<li><a href="https://pocsuite.org">Pocsuite3 官网 https://pocsuite.org</a></li>
 <li><a href="https://www.seebug.org">Seebug 官网 https://www.seebug.org</a></li>
 <li><a href="https://www.zoomeye.org">ZoomEye 官网 https://www.zoomeye.org</a></li>
 </ul>
@@ -164,7 +188,7 @@
             .tar.gz file
           </a>
 
-          <p class="repo-owner"><a href="https://github.com/knownsec/Pocsuite"></a> is maintained by <a href="https://github.com/knownsec">Knownsec</a>.</p>
+          <p class="repo-owner"><a href="https://github.com/knownsec/Pocsuite3"></a> is maintained by <a href="https://github.com/knownsec">Knownsec</a>.</p>
 
 
 
